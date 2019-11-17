@@ -26,6 +26,22 @@
 #endif
 
 
+#if (defined __GNUC__ || defined __clang__)
+#   define SAGE_COLD __attribute__((cold))
+#else
+#   define SAGE_COLD
+#   warning "SAGE_COLD has no effect on non GCC-compatible compilers"
+#endif
+
+
+#if (defined __GNUC__ || defined __clang__)
+#   define sage_likely(p) (__builtin_expect (!!(p), 1))
+#else
+#   define sage_likely(p) (p)
+#   warning "sage_likely() has no effecto on non GCC-compatible compilers"
+#endif
+
+
 #if defined __cplusplus
     } /* extern "C" */
 #endif
