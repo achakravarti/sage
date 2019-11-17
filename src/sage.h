@@ -1,6 +1,12 @@
 #if (!defined SCHEME_ASSISTED_GAME_ENGINE)
 #   define SCHEME_ASSISTED_GAME_ENGINE
 
+
+#include <stdbool.h>
+#include <inttypes.h>
+#include <stdio.h>
+
+
 #if defined __cplusplus
     extern "C" {
 #endif
@@ -62,6 +68,16 @@
 #   define sage_unlikely(p) (p)
 #   warning "sage_unlikely() has no effect on non GCC-compatible compilers"
 #endif
+
+
+#define sage_require(condition)                                       \
+do {                                                                  \
+    if (sage_unlikely (!(condition))) {                               \
+        printf ("sage_require() condition failed: %s [%s, %s, %d]\n", \
+                #condition, __func__, __FILE__, __LINE__);            \
+        exit (EXIT_FAILURE);                                          \
+    }                                                                 \
+} while (0)
 
 
 struct sage_point_t {
