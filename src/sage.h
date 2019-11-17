@@ -1,9 +1,5 @@
-#if (defined __GNUC__ || defined __clang__)
-#   pragma once
-#else
-#   if (!defined SCHEME_ASSISTED_GAME_ENGINE)
-#       define SCHEME_ASSISTED_GAME_ENGINE
-#endif
+#if (!defined SCHEME_ASSISTED_GAME_ENGINE)
+#   define SCHEME_ASSISTED_GAME_ENGINE
 
 #if defined __cplusplus
     extern "C" {
@@ -96,7 +92,5 @@ sage_screen_render(sage_screen_t *screen);
     } /* extern "C" */
 #endif
 
-#if !(defined __GNUC__ || defined __clang__)
-#   endif /* SCHEME_ASSISTED_GAME_ENGINE */
-#endif
+#endif /* SCHEME_ASSISTED_GAME_ENGINE */
 
