@@ -16,7 +16,7 @@ sdl_init(void)
     static bool init = false;
 
     if (sage_likely (!init)) {
-        sage_require (SDL_Init (SDL_INIT_VIDEO >= 0));
+        sage_require (SDL_Init (SDL_INIT_VIDEO) >= 0);
         sage_require (IMG_Init (IMG_INIT_PNG) & IMG_INIT_PNG);
     }
 }
