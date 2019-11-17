@@ -104,6 +104,20 @@ extern SAGE_HOT void
 sage_screen_render(sage_screen_t *screen);
 
 
+typedef struct __sage_image sage_image_t;
+
+extern SAGE_HOT sage_image_t*
+sage_image_new(const char *path, sage_screen_t *scn);
+
+extern sage_image_t*
+sage_image_free(sage_image_t *img);
+
+extern SAGE_HOT void
+sage_image_render(sage_image_t *img, 
+                  const struct sage_point_t *loc, 
+                  const struct sage_area_t *scale);
+
+
 #if defined __cplusplus
     } /* extern "C" */
 #endif
