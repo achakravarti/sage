@@ -25,7 +25,7 @@
 
 #define sage_compiler_gnuex()              \
     (sage_compiler () == SAGE_COMPILER_GCC \
-     || sage_compiler == SAGE_COMPILER_CLANG)
+     || sage_compiler () == SAGE_COMPILER_CLANG)
 
 
 #if (sage_compiler_gnuex ())
@@ -67,6 +67,17 @@
 #   warning "sage_unlikely() has no effect on non GCC-compatible compilers"
 #endif
 
+
+struct sage_point_t {
+    int16_t x;
+    int16_t y;
+};
+
+
+struct sage_area_t {
+    uint16_t h;
+    uint16_t w;
+};
 
 #if defined __cplusplus
     } /* extern "C" */
