@@ -10,6 +10,18 @@
 #endif
 
 
+#define SAGE_COMPILER_GNUC (0)
+#define SAGE_COMPILER_CLANG (1)
+
+#if (defined __GNUC__)
+#   define sage_compiler() SAGE_COMPILER_GNUC
+#elif (defined __clang__)
+#   define sage_compiler() SAGE_COMPILER_CLANG
+#else
+#   error "sage_compiler(): unsupported C compiler"
+#endif
+
+
 #if (defined __GNUC__ || defined __clang__)
 #   define SAGE_PURE __attribute__((pure))
 #else
