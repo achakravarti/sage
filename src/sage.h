@@ -10,11 +10,11 @@
 #endif
 
 
-#define SAGE_COMPILER_GNUC (0)
+#define SAGE_COMPILER_GCC (0)
 #define SAGE_COMPILER_CLANG (1)
 
 #if (defined __GNUC__)
-#   define sage_compiler() SAGE_COMPILER_GNUC
+#   define sage_compiler() SAGE_COMPILER_GCC
 #elif (defined __clang__)
 #   define sage_compiler() SAGE_COMPILER_CLANG
 #else
