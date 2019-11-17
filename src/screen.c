@@ -42,6 +42,13 @@ error:
 extern sage_screen_t*
 sage_screen_free(sage_screen_t *screen)
 {
+    SDL_DestroyWindow (screen->window);
+    free (screen);
+
+    IMG_Quit ();
+    SDL_Quit ();
+
+    return NULL;
 }
 
 extern SAGE_HOT void
