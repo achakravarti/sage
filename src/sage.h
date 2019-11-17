@@ -79,6 +79,19 @@ struct sage_area_t {
     uint16_t w;
 };
 
+
+typedef struct __sage_screen sage_screen_t;
+
+extern sage_screen_t*
+sage_screen_new(const char *title, struct sage_area_t *resolution);
+
+extern sage_screen_t*
+sage_screen_free(sage_screen_t *screen);
+
+extern SAGE_HOT void
+sage_screen_render(sage_screen_t *screen);
+
+
 #if defined __cplusplus
     } /* extern "C" */
 #endif
