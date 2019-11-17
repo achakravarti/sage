@@ -38,7 +38,15 @@
 #   define sage_likely(p) (__builtin_expect (!!(p), 1))
 #else
 #   define sage_likely(p) (p)
-#   warning "sage_likely() has no effecto on non GCC-compatible compilers"
+#   warning "sage_likely() has no effect on non GCC-compatible compilers"
+#endif
+
+
+#if (defined __GNUC__ || defined __clang__)
+#   define sage_unlikely(p) (__builtin_expect (!!(p), 0))
+#else
+#   define sage_unlikely(p) (p)
+#   warning "sage_unlikely() has no effect on non GCC-compatible compilers"
 #endif
 
 
