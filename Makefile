@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = src/screen.c test/runner.c
+OBJS = src/screen.c src/image.c test/runner.c
 
 #CC specifies which compiler we're using
 CC = gcc

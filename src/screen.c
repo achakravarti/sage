@@ -61,6 +61,13 @@ sage_screen_free(sage_screen_t *screen)
 }
 
 
+extern SAGE_HOT void*
+sage_screen_surface(sage_screen_t *scn)
+{
+    return scn->surface;
+}
+
+
 extern SAGE_HOT void
 sage_screen_render(sage_screen_t *screen)
 {
