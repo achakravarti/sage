@@ -14,7 +14,15 @@
 #   define SAGE_PURE __attribute__((pure))
 #else
 #   define SAGE_PURE
-#   warning SAGE_PURE has no effect on non GCC-compatible compilers
+#   warning "SAGE_PURE has no effect on non GCC-compatible compilers"
+#endif
+
+
+#if (defined __GNUC__ || defined __clang__)
+#   define SAGE_HOT __attribute__((hot))
+#else
+#   define SAGE_HOT
+#   warning "SAGE_HOT has no effect on non GCC-compatible compilers"
 #endif
 
 
