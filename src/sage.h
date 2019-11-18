@@ -83,13 +83,13 @@
 #endif
 
 
-#define sage_require(c)                                               \
-do {                                                                  \
-    if (sage_unlikely (!(c))) {                                       \
-        printf ("sage_require() condition failed: %s [%s, %s, %d]\n", \
-                #c, __func__, __FILE__, __LINE__);                    \
-        exit (EXIT_FAILURE);                                          \
-    }                                                                 \
+#define sage_require(c)                                                 \
+do {                                                                    \
+    if (sage_unlikely (!(c))) {                                         \
+        printf ("sage_require() condition failed @ %s() [%s:%d]: %s\n", \
+                __func__, __FILE__, __LINE__, #c);                      \
+        exit (EXIT_FAILURE);                                            \
+    }                                                                   \
 } while (0)
 
 
@@ -130,8 +130,8 @@ sage_image_free(sage_image_t *img);
 
 extern SAGE_HOT void
 sage_image_render(sage_image_t *img, 
-                  const struct sage_point_t loc, 
-                  const struct sage_area_t scale);
+                  struct sage_point_t loc, 
+                  struct sage_area_t scale);
 
 
 #if defined __cplusplus
