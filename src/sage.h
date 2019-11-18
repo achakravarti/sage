@@ -70,11 +70,24 @@
 #endif
 
 
-#define sage_require(condition)                                       \
+#if !(defined NDEBUG)
+#   define sage_assert(c)                                                \
+    do {                                                                 \
+        if (sage_unlikely (!(c))) {                                      \
+            printf ("sage_assert() condition failed: %s [%s, %s, %d]\n", \
+                    #c, __func__, __FILE__, __LINE__);                   \
+            abort ();                                                    \
+    } while (0)
+#else
+#   define sage_assert(c)
+#endif
+
+
+#define sage_require(c)                                               \
 do {                                                                  \
-    if (sage_unlikely (!(condition))) {                               \
+    if (sage_unlikely (!(c))) {                                       \
         printf ("sage_require() condition failed: %s [%s, %s, %d]\n", \
-                #condition, __func__, __FILE__, __LINE__);            \
+                #c, __func__, __FILE__, __LINE__);                    \
         exit (EXIT_FAILURE);                                          \
     }                                                                 \
 } while (0)
