@@ -4,10 +4,8 @@
 
 struct __sage_screen {
     SDL_Window *window;
-    SDL_Surface *surface;
+    SDL_Renderer *renderer;
 };
-
-
 
 
 static void
@@ -36,14 +34,22 @@ sage_screen_new(const char *title, struct sage_area_t res)
     sdl_init ();
 
     sage_screen_t *scn = malloc (sizeof *scn);
-    sage_require (scn);
+    sage_require (scn != NULL);
     
-    scn->window = SDL_CreateWindow (title, SDL_WINDOWPOS_UNDEFINED,
-                                    SDL_WINDOWPOS_UNDEFINED, res.w, res.h,
+    scn->window = SDL_CreateWindow (title, 
+                                    SDL_WINDOWPOS_UNDEFINED,
+                                    SDL_WINDOWPOS_UNDEFINED, 
+                                    res.w, 
+                                    res.h,
                                     SDL_WINDOW_SHOWN);
-    sage_require (scn->window);
+    sage_require (scn->window != NULL);
 
-    sage_require ((scn->surface = SDL_GetWindowSurface (scn->window)));
+    scn->renderer = SDL_CreateRenderer (scn->window, 
+                                        -1, 
+                                        SDL_RENDERER_ACCELERATED);
+    sage_require (scn->renderer != NULL);
+    SDL_SetRenderDrawColor (scn->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
     return scn;
 }
 
@@ -62,15 +68,22 @@ sage_screen_free(sage_screen_t *scn)
 
 
 extern SAGE_HOT void*
-sage_screen_surface(sage_screen_t *scn)
+sage_screen_brush(sage_screen_t *scn)
 {
-    return scn->surface;
+    return scn->renderer;
+}
+
+
+extern SAGE_HOT void
+sage_screen_clear(sage_screen_t *scn)
+{
+    SDL_RenderClear (scn->renderer);
 }
 
 
 extern SAGE_HOT void
 sage_screen_render(sage_screen_t *scn)
 {
-    SDL_UpdateWindowSurface (scn->window);
+    SDL_RenderPresent (scn->renderer);
 }
 

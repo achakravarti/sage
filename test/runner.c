@@ -9,7 +9,7 @@ main(int argc, char *argv[])
     (void) argc;
     (void) argv;
 
-    register struct sage_area_t res = {.w = 640, .h = 480};
+    /*register struct sage_area_t res = {.w = 640, .h = 480};
     sage_screen_t *scn = sage_screen_new ("Sage Test", res);
 
     sage_image_t *img = sage_image_new ("test/res/sample.png", scn);
@@ -28,7 +28,7 @@ main(int argc, char *argv[])
     }
 
     sage_image_free (img);
-    sage_screen_free (scn);
+    sage_screen_free (scn);*/
 
     return 0;
 }

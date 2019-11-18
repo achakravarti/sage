@@ -114,24 +114,38 @@ extern sage_screen_t*
 sage_screen_free(sage_screen_t *scn);
 
 extern SAGE_HOT void*
-sage_screen_surface(sage_screen_t *scn);
+sage_screen_brush(sage_screen_t *scn);
+
+extern SAGE_HOT void
+sage_screen_clear(sage_screen_t *scn);
 
 extern SAGE_HOT void
 sage_screen_render(sage_screen_t *scn);
 
 
-typedef struct __sage_image sage_image_t;
+typedef struct __sage_texture sage_texture_t;
 
-extern SAGE_HOT sage_image_t*
-sage_image_new(const char *path, sage_screen_t *scn);
+extern SAGE_HOT sage_texture_t*
+sage_texture_new(const char *path, sage_screen_t *scn);
 
-extern sage_image_t*
-sage_image_free(sage_image_t *img);
+extern sage_texture_t*
+sage_texture_free(sage_texture_t *tex);
 
 extern SAGE_HOT void
-sage_image_render(sage_image_t *img, 
-                  struct sage_point_t loc, 
-                  struct sage_area_t scale);
+sage_texture_draw(sage_texture_t *tex, struct sage_point_t dst);
+
+extern SAGE_HOT void
+sage_texture_draw_clipped(sage_texture_t *tex, 
+                          struct sage_point_t dst,
+                          struct sage_point_t src,
+                          struct sage_area_t clip);
+
+extern SAGE_HOT void
+sage_texture_draw_scaled(sage_texture_t *tex, 
+                         struct sage_point_t dst,
+                         struct sage_area_t proj,
+                         struct sage_point_t src,
+                         struct sage_area_t clip);
 
 
 #if defined __cplusplus
