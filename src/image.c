@@ -41,10 +41,10 @@ sage_image_free(sage_image_t *img)
 
 extern SAGE_HOT void
 sage_image_render(sage_image_t *img, 
-                  const struct sage_point_t *loc, 
-                  const struct sage_area_t *scale)
+                  const struct sage_point_t loc, 
+                  const struct sage_area_t scale)
 {
-    SDL_Rect r = {.x = loc->x, .y = loc->y, .w = scale->w, .h = scale->h}; 
+    SDL_Rect r = {.x = loc.x, .y = loc.y, .w = scale.w, .h = scale.h}; 
     SDL_BlitScaled (img->image, NULL, img->screen, &r);
 }
 

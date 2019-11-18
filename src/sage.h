@@ -108,16 +108,16 @@ struct sage_area_t {
 typedef struct __sage_screen sage_screen_t;
 
 extern sage_screen_t*
-sage_screen_new(const char *title, struct sage_area_t *resolution);
+sage_screen_new(const char *title, struct sage_area_t res);
 
 extern sage_screen_t*
-sage_screen_free(sage_screen_t *screen);
+sage_screen_free(sage_screen_t *scn);
 
 extern SAGE_HOT void*
 sage_screen_surface(sage_screen_t *scn);
 
 extern SAGE_HOT void
-sage_screen_render(sage_screen_t *screen);
+sage_screen_render(sage_screen_t *scn);
 
 
 typedef struct __sage_image sage_image_t;
@@ -130,8 +130,8 @@ sage_image_free(sage_image_t *img);
 
 extern SAGE_HOT void
 sage_image_render(sage_image_t *img, 
-                  const struct sage_point_t *loc, 
-                  const struct sage_area_t *scale);
+                  const struct sage_point_t loc, 
+                  const struct sage_area_t scale);
 
 
 #if defined __cplusplus

@@ -31,29 +31,29 @@ sdl_quit(void)
 
 
 extern sage_screen_t*
-sage_screen_new(const char *title, struct sage_area_t *resolution)
+sage_screen_new(const char *title, struct sage_area_t res)
 {
     sdl_init ();
 
-    sage_screen_t *screen = malloc (sizeof *screen);
-    sage_require (screen);
+    sage_screen_t *scn = malloc (sizeof *scn);
+    sage_require (scn);
     
-    screen->window = SDL_CreateWindow (title, SDL_WINDOWPOS_UNDEFINED,
-                                       SDL_WINDOWPOS_UNDEFINED, resolution->w,
-                                       resolution->h, SDL_WINDOW_SHOWN);
-    sage_require (screen->window);
+    scn->window = SDL_CreateWindow (title, SDL_WINDOWPOS_UNDEFINED,
+                                    SDL_WINDOWPOS_UNDEFINED, res.w, res.h,
+                                    SDL_WINDOW_SHOWN);
+    sage_require (scn->window);
 
-    sage_require ((screen->surface = SDL_GetWindowSurface (screen->window)));
-    return screen;
+    sage_require ((scn->surface = SDL_GetWindowSurface (scn->window)));
+    return scn;
 }
 
 
 extern sage_screen_t*
-sage_screen_free(sage_screen_t *screen)
+sage_screen_free(sage_screen_t *scn)
 {
-    if (sage_likely (screen)) {
-        SDL_DestroyWindow (screen->window);
-        free (screen);
+    if (sage_likely (scn)) {
+        SDL_DestroyWindow (scn->window);
+        free (scn);
     }
 
     sdl_quit ();
@@ -69,8 +69,8 @@ sage_screen_surface(sage_screen_t *scn)
 
 
 extern SAGE_HOT void
-sage_screen_render(sage_screen_t *screen)
+sage_screen_render(sage_screen_t *scn)
 {
-    SDL_UpdateWindowSurface (screen->window);
+    SDL_UpdateWindowSurface (scn->window);
 }
 
