@@ -16,7 +16,8 @@ sage_texture_new(const char *path, sage_screen_t *scn)
     sage_texture_t *tex = malloc (sizeof *tex);
     sage_require (tex != NULL);
 
-    tex->img = IMG_LoadTexture (sage_screen_brush (scn), path);
+    tex->brush = sage_screen_brush (scn);
+    tex->img = IMG_LoadTexture (tex->brush, path);
     sage_require (tex->img != NULL);
 
     tex->dim.x = tex->dim.y = 0;
