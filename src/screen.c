@@ -1,89 +1,67 @@
+#include <threads.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "./sage.h"
 
-struct __sage_screen {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-};
+
+static thread_local struct {
+    SDL_Window *wnd;
+    SDL_Renderer *brush;
+} *screen = NULL;
 
 
-static void
-sdl_init(void)
+extern void
+sage_screen_start(const char *title, struct sage_area_t res)
 {
-    static bool init = false;
 
-    if (sage_likely (!init)) {
-        sage_require (SDL_Init (SDL_INIT_VIDEO) >= 0);
-        sage_require (IMG_Init (IMG_INIT_PNG) & IMG_INIT_PNG);
-    }
+    if (sage_unlikely (screen))
+        return;
+
+    sage_require (SDL_Init (SDL_INIT_VIDEO) >= 0);
+    sage_require (IMG_Init (IMG_INIT_PNG) & IMG_INIT_PNG);
+
+    sage_require (screen = malloc (sizeof *screen));
+
+    sage_require (screen->wnd = SDL_CreateWindow (
+        title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, res.w, res.h,
+        SDL_WINDOW_SHOWN));
+
+    sage_require (screen->brush = SDL_CreateRenderer (
+        screen->wnd, -1, SDL_RENDERER_ACCELERATED));
+    SDL_SetRenderDrawColor (screen->brush, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
 
-static inline void
-sdl_quit(void)
+extern void
+sage_screen_stop(void)
 {
+    if (sage_likely (screen)) {
+        SDL_DestroyRenderer (screen->brush);
+        SDL_DestroyWindow (screen->wnd);
+        free (screen);
+    }
+
     IMG_Quit ();
     SDL_Quit ();
 }
 
 
-extern sage_screen_t*
-sage_screen_new(const char *title, struct sage_area_t res)
-{
-    sdl_init ();
-
-    sage_screen_t *scn = malloc (sizeof *scn);
-    sage_require (scn != NULL);
-    
-    scn->window = SDL_CreateWindow (title, 
-                                    SDL_WINDOWPOS_UNDEFINED,
-                                    SDL_WINDOWPOS_UNDEFINED, 
-                                    res.w, 
-                                    res.h,
-                                    SDL_WINDOW_SHOWN);
-    sage_require (scn->window != NULL);
-
-    scn->renderer = SDL_CreateRenderer (scn->window, 
-                                        -1, 
-                                        SDL_RENDERER_ACCELERATED);
-    sage_require (scn->renderer != NULL);
-    SDL_SetRenderDrawColor (scn->renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-    return scn;
-}
-
-
-extern sage_screen_t*
-sage_screen_free(sage_screen_t *scn)
-{
-    if (sage_likely (scn)) {
-        SDL_DestroyWindow (scn->window);
-        free (scn);
-    }
-
-    sdl_quit ();
-    return NULL;
-}
-
-
 extern SAGE_HOT void*
-sage_screen_brush(sage_screen_t *scn)
+sage_screen_brush(void)
 {
-    return scn->renderer;
+    return screen->brush;
 }
 
 
 extern SAGE_HOT void
-sage_screen_clear(sage_screen_t *scn)
+sage_screen_clear(void)
 {
-    SDL_RenderClear (scn->renderer);
+    SDL_RenderClear (screen->brush);
 }
 
 
-extern SAGE_HOT void
-sage_screen_render(sage_screen_t *scn)
+extern SAGE_HOT void sage_screen_render(void)
 {
-    SDL_RenderPresent (scn->renderer);
+    SDL_RenderPresent (screen->brush);
 }
 

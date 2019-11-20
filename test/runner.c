@@ -10,9 +10,11 @@ main(int argc, char *argv[])
     (void) argv;
 
     register struct sage_area_t res = {.w = 640, .h = 480};
-    sage_screen_t *scn = sage_screen_new ("Sage Test", res);
+    /*sage_screen_t *scn = sage_screen_new ("Sage Test", res);*/
+    sage_screen_start ("Sage Test", res);
 
-    sage_texture_t *tex = sage_texture_new ("test/res/sample.png", scn);
+    /*sage_texture_t *tex = sage_texture_new ("test/res/sample.png", scn);*/
+    sage_texture_t *tex = sage_texture_new ("test/res/sample.png");
    
     bool quit = false;
     SDL_Event e;
@@ -22,14 +24,17 @@ main(int argc, char *argv[])
         while (SDL_PollEvent (&e)) {
             quit = (e.type == SDL_QUIT);
 
-            sage_screen_clear (scn);
+            /*sage_screen_clear (scn);*/
+            sage_screen_clear ();
             sage_texture_draw (tex, loc);
-            sage_screen_render (scn);
+            /*sage_screen_render (scn);*/
+            sage_screen_render ();
         }
     }
 
-    sage_texture_free (tex);
-    sage_screen_free (scn);
+    tex = sage_texture_free (tex);
+    /*scn = sage_screen_free (scn);*/
+    sage_screen_stop ();
 
     return 0;
 }

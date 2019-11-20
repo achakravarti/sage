@@ -105,28 +105,24 @@ struct sage_area_t {
 };
 
 
-typedef struct __sage_screen sage_screen_t;
+extern void
+sage_screen_start(const char *title, struct sage_area_t res);
 
-extern sage_screen_t*
-sage_screen_new(const char *title, struct sage_area_t res);
-
-extern sage_screen_t*
-sage_screen_free(sage_screen_t *scn);
+extern void
+sage_screen_stop(void);
 
 extern SAGE_HOT void*
-sage_screen_brush(sage_screen_t *scn);
+sage_screen_brush(void);
 
 extern SAGE_HOT void
-sage_screen_clear(sage_screen_t *scn);
+sage_screen_clear(void);
 
-extern SAGE_HOT void
-sage_screen_render(sage_screen_t *scn);
+extern SAGE_HOT void sage_screen_render(void);
 
 
 typedef struct __sage_texture sage_texture_t;
 
-extern SAGE_HOT sage_texture_t*
-sage_texture_new(const char *path, sage_screen_t *scn);
+extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path);
 
 extern sage_texture_t*
 sage_texture_free(sage_texture_t *tex);

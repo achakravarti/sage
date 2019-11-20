@@ -10,16 +10,12 @@ struct __sage_texture {
 };
 
 
-extern SAGE_HOT sage_texture_t*
-sage_texture_new(const char *path, sage_screen_t *scn)
+extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path)
 {
-    sage_texture_t *tex = malloc (sizeof *tex);
-    sage_require (tex != NULL);
+    sage_texture_t *tex;
+    sage_require (tex = malloc (sizeof *tex));
 
-    tex->brush = sage_screen_brush (scn);
-    tex->img = IMG_LoadTexture (tex->brush, path);
-    sage_require (tex->img != NULL);
-
+    sage_require (tex->img = IMG_LoadTexture (sage_screen_brush (), path));
     tex->dim.x = tex->dim.y = 0;
     SDL_QueryTexture (tex->img, NULL, NULL, &tex->dim.w, &tex->dim.h);
 
@@ -43,7 +39,7 @@ extern SAGE_HOT void
 sage_texture_draw(sage_texture_t *tex, struct sage_point_t dst)
 {
     SDL_Rect r = {.x = dst.x, .y = dst.y, .w = tex->dim.w, .h = tex->dim.h};
-    SDL_RenderCopy (tex->brush, tex->img, NULL, &r);
+    SDL_RenderCopy (sage_screen_brush (), tex->img, NULL, &r);
 }
 
 
@@ -55,7 +51,7 @@ sage_texture_draw_clipped(sage_texture_t *tex,
 {
     SDL_Rect rsrc = {.x = src.x, .y = src.y, .w = clip.w, .h = clip.h};
     SDL_Rect rdst = {.x = dst.x, .y = dst.y, .w = clip.w, .h = clip.h};
-    SDL_RenderCopy (tex->brush, tex->img, &rsrc, &rdst);
+    SDL_RenderCopy (sage_screen_brush (), tex->img, &rsrc, &rdst);
 }
 
 
@@ -68,6 +64,6 @@ sage_texture_draw_scaled(sage_texture_t *tex,
 {
     SDL_Rect rsrc = {.x = src.x, .y = src.y, .w = clip.w, .h = clip.h};
     SDL_Rect rdst = {.x = dst.x, .y = dst.y, .w = proj.w, .h = proj.h};
-    SDL_RenderCopy (tex->brush, tex->img, &rsrc, &rdst);
+    SDL_RenderCopy (sage_screen_brush (), tex->img, &rsrc, &rdst);
 }
 
