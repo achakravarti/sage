@@ -1,4 +1,3 @@
-#include <threads.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "./sage.h"
@@ -13,7 +12,6 @@ static thread_local struct {
 extern void
 sage_screen_start(const char *title, struct sage_area_t res)
 {
-
     if (sage_unlikely (screen))
         return;
 
