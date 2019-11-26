@@ -272,6 +272,13 @@ extern SAGE_HOT enum sage_keyboard_state_t sage_keyboard_state(
 extern SAGE_HOT void sage_keyboard_input(void);
 
 
+extern void sage_event_start(void);
+
+extern void sage_event_stop(void);
+
+extern SAGE_HOT void sage_event_run(void);
+
+
 typedef struct __sage_texture sage_texture_t;
 
 extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path);
