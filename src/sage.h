@@ -106,6 +106,49 @@ struct sage_area_t {
 };
 
 
+enum sage_compare_t {
+    SAGE_COMPARE_LT = -1,
+    SAGE_COMPARE_EQ = 0,
+    SAGE_COMPARE_GT = 1
+};
+
+
+/** VECTOR **/
+
+typedef struct sage_vector_t sage_vector_t;
+
+extern sage_vector_t *sage_vector_new(float x, float y);
+
+extern sage_vector_t *sage_vector_new_zero(void);
+
+extern sage_vector_t *sage_vector_copy(const sage_vector_t *src);
+
+extern sage_vector_t *sage_vector_free(sage_vector_t *ctx);
+
+extern float sage_vector_x(const sage_vector_t *ctx);
+
+extern float sage_vector_y(const sage_vector_t *ctx);
+
+extern void sage_vector_x_set(sage_vector_t *ctx, float x);
+
+extern void sage_vector_y_set(sage_vector_t *ctx, float y);
+
+extern float sage_vector_len(const sage_vector_t *ctx);
+
+extern void sage_vector_norm(sage_vector_t *vec);
+
+extern enum sage_compare_t sage_vector_cmp(const sage_vector_t *lhs,
+                                           const sage_vector_t *rhs);
+
+extern void sage_vector_add(sage_vector_t *ctx, const sage_vector_t *add);
+
+extern void sage_vector_sub(sage_vector_t *ctx, const sage_vector_t *sub);
+
+extern void sage_vector_mul(sage_vector_t *ctx, float mul);
+
+extern void sage_vector_div(sage_vector_t *ctx, const float div);
+
+
 /** SCREEN **/
 
 
