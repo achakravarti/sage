@@ -106,6 +106,9 @@ struct sage_area_t {
 };
 
 
+/** SCREEN **/
+
+
 extern void
 sage_screen_start(const char *title, struct sage_area_t res);
 
@@ -119,6 +122,9 @@ extern SAGE_HOT void
 sage_screen_clear(void);
 
 extern SAGE_HOT void sage_screen_render(void);
+
+
+/** KEYBOARD **/
 
 
 enum sage_keyboard_key_t {
@@ -272,11 +278,17 @@ extern SAGE_HOT enum sage_keyboard_state_t sage_keyboard_state(
 extern SAGE_HOT void sage_keyboard_input(void);
 
 
+/** EVENT **/
+
+
 extern void sage_event_start(void);
 
 extern void sage_event_stop(void);
 
 extern SAGE_HOT void sage_event_run(void);
+
+
+/** TEXTURE **/
 
 
 typedef struct __sage_texture sage_texture_t;
@@ -285,6 +297,8 @@ extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path);
 
 extern sage_texture_t*
 sage_texture_free(sage_texture_t *tex);
+
+extern SAGE_HOT struct sage_area_t sage_texture_area(const sage_texture_t *tex);
 
 extern SAGE_HOT void
 sage_texture_draw(sage_texture_t *tex, struct sage_point_t dst);
@@ -301,6 +315,41 @@ sage_texture_draw_scaled(sage_texture_t *tex,
                          struct sage_area_t proj,
                          struct sage_point_t src,
                          struct sage_area_t clip);
+
+
+/** SPRITE **/
+
+
+struct sage_frame_t {
+    uint16_t r;
+    uint16_t c;
+};
+
+
+typedef struct sage_sprite_t sage_sprite_t;
+
+extern sage_sprite_t *sage_sprite_new(const char *path, 
+                                      struct sage_frame_t tot);
+
+extern sage_sprite_t *sage_sprite_copy(const sage_sprite_t *src);
+
+extern sage_sprite_t *sage_sprite_free(sage_sprite_t *ctx);
+
+extern struct sage_area_t sage_sprite_area(const sage_sprite_t *ctx);
+
+extern struct sage_frame_t sage_sprite_frame(const sage_sprite_t *ctx);
+
+extern SAGE_HOT void sage_sprite_frame_set(sage_sprite_t *ctx,
+                                           struct sage_frame_t frm);
+
+extern size_t sage_sprite_frame_count(const sage_sprite_t *ctx);
+
+extern SAGE_HOT void sage_sprite_draw(const sage_sprite_t *ctx, 
+                                      struct sage_point_t dst);
+
+extern SAGE_HOT void sage_sprite_draw_scaled(const sage_sprite_t *ctx, 
+                                             struct sage_point_t dst,
+                                             struct sage_area_t prj);
 
 
 #if defined __cplusplus

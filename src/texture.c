@@ -35,6 +35,13 @@ sage_texture_free(sage_texture_t *tex)
 }
 
 
+extern SAGE_HOT struct sage_area_t sage_texture_area(const sage_texture_t *tex)
+{
+    struct sage_area_t area = {.w = tex->dim.w, .h = tex->dim.h};
+    return area;
+}
+
+
 extern SAGE_HOT void
 sage_texture_draw(sage_texture_t *tex, struct sage_point_t dst)
 {
