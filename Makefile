@@ -1,5 +1,6 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = src/screen.c src/keyboard.c src/texture.c test/runner.c
+OBJS = src/screen.c src/keyboard.c src/texture.c src/sprite.c src/vector.c \
+       test/runner.c
 
 #CC specifies which compiler we're using
 CC = gcc
@@ -9,7 +10,7 @@ CC = gcc
 COMPILER_FLAGS = -Wall -Wextra
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lSDL2 -lSDL2_image
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lm
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = sage-runner

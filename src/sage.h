@@ -6,6 +6,7 @@
 #include <inttypes.h>
 #include <threads.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 #if defined __cplusplus
@@ -117,36 +118,50 @@ enum sage_compare_t {
 
 typedef struct sage_vector_t sage_vector_t;
 
-extern sage_vector_t *sage_vector_new(float x, float y);
+extern sage_vector_t *
+sage_vector_new(float x, float y);
 
-extern sage_vector_t *sage_vector_new_zero(void);
+extern sage_vector_t *
+sage_vector_new_zero(void);
 
-extern sage_vector_t *sage_vector_copy(const sage_vector_t *src);
+extern sage_vector_t *
+sage_vector_copy(const sage_vector_t *src);
 
-extern sage_vector_t *sage_vector_free(sage_vector_t *ctx);
+extern sage_vector_t *
+sage_vector_free(sage_vector_t *ctx);
 
-extern float sage_vector_x(const sage_vector_t *ctx);
+extern float 
+sage_vector_x(const sage_vector_t *ctx);
 
-extern float sage_vector_y(const sage_vector_t *ctx);
+extern float 
+sage_vector_y(const sage_vector_t *ctx);
 
-extern void sage_vector_x_set(sage_vector_t *ctx, float x);
+extern void 
+sage_vector_x_set(sage_vector_t *ctx, float x);
 
-extern void sage_vector_y_set(sage_vector_t *ctx, float y);
+extern void 
+sage_vector_y_set(sage_vector_t *ctx, float y);
 
-extern float sage_vector_len(const sage_vector_t *ctx);
+extern float 
+sage_vector_len(const sage_vector_t *ctx);
 
-extern void sage_vector_norm(sage_vector_t *vec);
+extern void 
+sage_vector_norm(sage_vector_t *ctx);
 
-extern enum sage_compare_t sage_vector_cmp(const sage_vector_t *lhs,
-                                           const sage_vector_t *rhs);
+extern enum sage_compare_t 
+sage_vector_cmp(const sage_vector_t *lhs, const sage_vector_t *rhs);
 
-extern void sage_vector_add(sage_vector_t *ctx, const sage_vector_t *add);
+extern void 
+sage_vector_add(sage_vector_t *ctx, const sage_vector_t *add);
 
-extern void sage_vector_sub(sage_vector_t *ctx, const sage_vector_t *sub);
+extern void 
+sage_vector_sub(sage_vector_t *ctx, const sage_vector_t *sub);
 
-extern void sage_vector_mul(sage_vector_t *ctx, float mul);
+extern void 
+sage_vector_mul(sage_vector_t *ctx, float mul);
 
-extern void sage_vector_div(sage_vector_t *ctx, const float div);
+extern void 
+sage_vector_div(sage_vector_t *ctx, const float div);
 
 
 /** SCREEN **/
@@ -371,28 +386,34 @@ struct sage_frame_t {
 
 typedef struct sage_sprite_t sage_sprite_t;
 
-extern sage_sprite_t *sage_sprite_new(const char *path, 
-                                      struct sage_frame_t tot);
+extern sage_sprite_t *
+sage_sprite_new(const char *path, struct sage_frame_t tot);
 
-extern sage_sprite_t *sage_sprite_copy(const sage_sprite_t *src);
+extern sage_sprite_t *
+sage_sprite_copy(const sage_sprite_t *src);
 
-extern sage_sprite_t *sage_sprite_free(sage_sprite_t *ctx);
+extern sage_sprite_t *
+sage_sprite_free(sage_sprite_t *ctx);
 
-extern struct sage_area_t sage_sprite_area(const sage_sprite_t *ctx);
+extern struct sage_area_t 
+sage_sprite_area(const sage_sprite_t *ctx);
 
-extern struct sage_frame_t sage_sprite_frame(const sage_sprite_t *ctx);
+extern struct sage_frame_t 
+sage_sprite_frame(const sage_sprite_t *ctx);
 
-extern SAGE_HOT void sage_sprite_frame_set(sage_sprite_t *ctx,
-                                           struct sage_frame_t frm);
+extern SAGE_HOT void 
+sage_sprite_frame_set(sage_sprite_t *ctx, struct sage_frame_t frm);
 
-extern size_t sage_sprite_frame_count(const sage_sprite_t *ctx);
+extern size_t 
+sage_sprite_frame_count(const sage_sprite_t *ctx);
 
-extern SAGE_HOT void sage_sprite_draw(const sage_sprite_t *ctx, 
-                                      struct sage_point_t dst);
+extern SAGE_HOT void 
+sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst);
 
-extern SAGE_HOT void sage_sprite_draw_scaled(const sage_sprite_t *ctx, 
-                                             struct sage_point_t dst,
-                                             struct sage_area_t prj);
+extern SAGE_HOT void 
+sage_sprite_draw_scaled(const sage_sprite_t *ctx, 
+                        struct sage_point_t dst,
+                        struct sage_area_t prj);
 
 
 #if defined __cplusplus

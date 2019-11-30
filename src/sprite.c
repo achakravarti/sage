@@ -9,7 +9,8 @@ struct sage_sprite_t {
 };
 
 
-extern sage_sprite_t *sage_sprite_new(const char *path, struct sage_frame_t tot)
+extern sage_sprite_t *
+sage_sprite_new(const char *path, struct sage_frame_t tot)
 {
     sage_sprite_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
@@ -22,7 +23,8 @@ extern sage_sprite_t *sage_sprite_new(const char *path, struct sage_frame_t tot)
 }
 
 
-extern sage_sprite_t *sage_sprite_copy(const sage_sprite_t *src)
+extern sage_sprite_t *
+sage_sprite_copy(const sage_sprite_t *src)
 {
     sage_sprite_t *cp;
     sage_require (cp = malloc (sizeof *cp));
@@ -32,7 +34,8 @@ extern sage_sprite_t *sage_sprite_copy(const sage_sprite_t *src)
 }
 
 
-extern sage_sprite_t *sage_sprite_free(sage_sprite_t *ctx)
+extern sage_sprite_t *
+sage_sprite_free(sage_sprite_t *ctx)
 {
     if (sage_likely (ctx)) {
         ctx->tex = sage_texture_free (ctx->tex);
@@ -43,34 +46,37 @@ extern sage_sprite_t *sage_sprite_free(sage_sprite_t *ctx)
 }
 
 
-extern struct sage_area_t sage_sprite_area(const sage_sprite_t *ctx)
+extern struct sage_area_t 
+sage_sprite_area(const sage_sprite_t *ctx)
 {
     struct sage_area_t area = {.w = ctx->tot.c, .h = ctx->tot.r};
     return area;
 }
 
 
-extern struct sage_frame_t sage_sprite_frame(const sage_sprite_t *ctx)
+extern struct sage_frame_t 
+sage_sprite_frame(const sage_sprite_t *ctx)
 {
     return ctx->cur;
 }
 
 
-extern SAGE_HOT void sage_sprite_frame_set(sage_sprite_t *ctx,
-                                           struct sage_frame_t frm)
+extern SAGE_HOT void 
+sage_sprite_frame_set(sage_sprite_t *ctx, struct sage_frame_t frm)
 {
     ctx->cur = frm;
 }
 
 
-extern size_t sage_sprite_frame_count(const sage_sprite_t *ctx)
+extern size_t 
+sage_sprite_frame_count(const sage_sprite_t *ctx)
 {
     return ctx->tot.r * ctx->tot.c;
 }
 
 
-extern SAGE_HOT void sage_sprite_draw(const sage_sprite_t *ctx, 
-                                      struct sage_point_t dst)
+extern SAGE_HOT void 
+sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst)
 {
     struct sage_area_t area = sage_texture_area (ctx->tex);
     struct sage_area_t clip = {.w = area.w / ctx->tot.c, 
@@ -82,9 +88,10 @@ extern SAGE_HOT void sage_sprite_draw(const sage_sprite_t *ctx,
 }
 
 
-extern SAGE_HOT void sage_sprite_draw_scaled(const sage_sprite_t *ctx,
-                                             struct sage_point_t dst, 
-                                             struct sage_area_t prj)
+extern SAGE_HOT void 
+sage_sprite_draw_scaled(const sage_sprite_t *ctx,
+                        struct sage_point_t dst, 
+                        struct sage_area_t prj)
 {
     struct sage_area_t area = sage_texture_area (ctx->tex);
     struct sage_area_t clip = {.w = area.w / ctx->tot.c, 
