@@ -79,6 +79,7 @@
             printf ("sage_assert() condition failed: %s [%s, %s, %d]\n", \
                     #c, __func__, __FILE__, __LINE__);                   \
             abort ();                                                    \
+        }                                                                \
     } while (0)
 #else
 #   define sage_assert(c)
@@ -414,6 +415,19 @@ extern SAGE_HOT void
 sage_sprite_draw_scaled(const sage_sprite_t *ctx, 
                         struct sage_point_t dst,
                         struct sage_area_t prj);
+
+
+extern void 
+sage_sprite_factory_start(void);
+
+extern void 
+sage_sprite_factory_stop(void);
+
+extern void 
+sage_sprite_factory_register(const sage_sprite_t *spr);
+
+extern sage_sprite_t *
+sage_sprite_factory_spawn(size_t idx);
 
 
 #if defined __cplusplus
