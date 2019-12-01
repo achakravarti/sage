@@ -49,7 +49,7 @@ sage_sprite_factory_register(const sage_sprite_t *spr)
 
 
 extern sage_sprite_t *
-sage_sprite_factory_spawn(size_t idx)
+sage_sprite_factory_spawn(sage_id_t idx)
 {
     sage_assert (sprite_pool && sprite_pool->lst);
     sage_assert (idx > 0 && idx <= sprite_pool->len);

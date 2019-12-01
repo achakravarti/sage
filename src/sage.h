@@ -134,17 +134,23 @@ sage_vector_free(sage_vector_t *ctx);
 extern float 
 sage_vector_x(const sage_vector_t *ctx);
 
+extern void 
+sage_vector_x_set(sage_vector_t *ctx, float x);
+
 extern float 
 sage_vector_y(const sage_vector_t *ctx);
 
 extern void 
-sage_vector_x_set(sage_vector_t *ctx, float x);
-
-extern void 
 sage_vector_y_set(sage_vector_t *ctx, float y);
+
+extern struct sage_point_t
+sage_vector_point(const sage_vector_t *ctx);
 
 extern float 
 sage_vector_len(const sage_vector_t *ctx);
+
+extern bool
+sage_vector_visible(const sage_vector_t *ctx);
 
 extern void 
 sage_vector_norm(sage_vector_t *ctx);
@@ -417,6 +423,9 @@ sage_sprite_draw_scaled(const sage_sprite_t *ctx,
                         struct sage_area_t prj);
 
 
+typedef size_t sage_id_t;
+
+
 extern void 
 sage_sprite_factory_start(void);
 
@@ -427,7 +436,45 @@ extern void
 sage_sprite_factory_register(const sage_sprite_t *spr);
 
 extern sage_sprite_t *
-sage_sprite_factory_spawn(size_t idx);
+sage_sprite_factory_spawn(sage_id_t idx);
+
+
+typedef struct sage_entity_t sage_entity_t;
+
+typedef void (sage_entity_f)(sage_entity_t *ctx);
+
+extern sage_entity_t *
+sage_entity_new(sage_id_t sid,
+                sage_entity_f *upd,
+                sage_entity_f *free,
+                sage_entity_f *draw);
+
+extern sage_entity_t *
+sage_entity_copy(const sage_entity_t *src);
+
+extern sage_entity_t *
+sage_entity_free(sage_entity_t *ctx);
+
+extern sage_vector_t *
+sage_entity_vector(const sage_entity_t *ctx);
+
+extern void 
+sage_entity_vector_set(sage_entity_t *ctx, const sage_vector_t *vec);
+
+extern struct sage_frame_t 
+sage_entity_frame(const sage_entity_t *ctx);
+
+extern void 
+sage_entity_frame_set(sage_entity_t *ctx, struct sage_frame_t frm);
+
+extern void 
+sage_entity_move(sage_entity_t *ctx, const sage_vector_t *vel);
+
+extern void 
+sage_entity_update(sage_entity_t *ctx);
+
+extern void 
+sage_entity_draw(sage_entity_t *ctx);
 
 
 #if defined __cplusplus

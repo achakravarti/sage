@@ -87,11 +87,25 @@ sage_vector_y_set(sage_vector_t *ctx, float y)
 }
 
 
+extern struct sage_point_t
+sage_vector_point(const sage_vector_t *ctx)
+{
+    struct sage_point_t pt = {.x = (int16_t) ctx->x, .y = (int16_t) ctx->y};
+    return pt;
+}
+
 extern float 
 sage_vector_len(const sage_vector_t *ctx)
 {
     double x = (double) ctx->x, y = (double) ctx->y;
     return (float) sqrt ((x * x) + (y * y));
+}
+
+
+extern bool
+sage_vector_visible(const sage_vector_t *ctx)
+{
+    return !float_lt (ctx->x, 0.0f) && !float_lt (ctx->y, 0.0f);
 }
 
 
