@@ -477,6 +477,19 @@ extern void
 sage_entity_draw(sage_entity_t *ctx);
 
 
+extern void 
+sage_entity_factory_start(void);
+
+extern void 
+sage_entity_factory_stop(void);
+
+extern void 
+sage_entity_factory_register(const sage_entity_t *ent);
+
+extern sage_entity_t *
+sage_entity_factory_spawn(sage_id_t idx);
+
+
 #if defined __cplusplus
     } /* extern "C" */
 #endif

@@ -1,6 +1,6 @@
 #OBJS specifies which files to compile as part of the project
 OBJS = src/screen.c src/keyboard.c src/texture.c src/sprite.c src/vector.c \
-       src/sprite-factory.c src/entity.c test/runner.c
+       src/sprite-factory.c src/entity.c src/entity-factory.c test/runner.c
 
 #CC specifies which compiler we're using
 CC = gcc
