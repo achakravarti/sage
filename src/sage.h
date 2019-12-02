@@ -490,6 +490,19 @@ extern sage_entity_t *
 sage_entity_factory_spawn(sage_id_t idx);
 
 
+extern void sage_arena_start(void);
+
+extern void sage_arena_stop(void);
+
+extern sage_id_t sage_arena_push(const sage_id_t id);
+
+extern void sage_arena_pop(sage_id_t id);
+
+extern void sage_arena_update(void);
+
+extern void sage_arena_draw(void);
+
+
 #if defined __cplusplus
     } /* extern "C" */
 #endif
