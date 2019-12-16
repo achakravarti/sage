@@ -6,6 +6,7 @@
 static thread_local struct {
     SDL_Window *wnd;
     SDL_Renderer *brush;
+    struct sage_viewport_t *vp;
 } *screen = NULL;
 
 
@@ -55,6 +56,36 @@ extern SAGE_HOT void
 sage_screen_clear(void)
 {
     SDL_RenderClear (screen->brush);
+}
+
+
+extern SAGE_HOT struct sage_viewport_t *
+sage_screen_viewport(void)
+{
+    struct sage_viewport_t *cp;
+    sage_require (cp = malloc (sizeof *cp));
+
+    cp->point = screen->vp->point;
+    cp->area = screen->vp->area;
+
+    return cp;
+}
+
+
+extern SAGE_HOT void
+sage_screen_viewport_set(const struct sage_viewport_t *vp)
+{
+    free (screen->vp);
+    sage_require (screen->vp = malloc (sizeof *screen->vp));
+
+    screen->vp->point = vp->point;
+    screen->vp->area = vp->area;
+
+    SDL_Rect rvp = {.x = screen->vp->point.x,
+                    .y = screen->vp->point.y,
+                    .w = screen->vp->area.w,
+                    .h = screen->vp->area.h};
+    SDL_RenderSetViewport (screen->brush, &rvp);
 }
 
 
