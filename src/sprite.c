@@ -82,9 +82,12 @@ sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst)
     struct sage_area_t clip = {.w = area.w / ctx->tot.c, 
                                .h = area.h / ctx->tot.r};
 
-    struct sage_point_t src = {.x = clip.w * (ctx->tot.c - 1), 
-                               .y = clip.h * (ctx->tot.r - 1)};
-    sage_texture_draw_clipped (ctx->tex, dst, src, clip);
+    struct sage_point_t nw = {.x = clip.w * (ctx->tot.c - 1), 
+                              .y = clip.h * (ctx->tot.r - 1)};
+    //sage_texture_draw_clipped (ctx->tex, dst, src, clip);
+
+    sage_texture_clip (ctx->tex, nw, clip);
+    sage_texture_draw (ctx->tex, dst);
 }
 
 
@@ -97,9 +100,13 @@ sage_sprite_draw_scaled(const sage_sprite_t *ctx,
     struct sage_area_t clip = {.w = area.w / ctx->tot.c, 
                                .h = area.h / ctx->tot.r};
 
-    struct sage_point_t src = {.x = clip.w * (ctx->tot.c - 1), 
-                               .y = clip.h * (ctx->tot.r - 1)};
-    sage_texture_draw_scaled (ctx->tex, dst, prj, src, clip);
+    struct sage_point_t nw = {.x = clip.w * (ctx->tot.c - 1), 
+                              .y = clip.h * (ctx->tot.r - 1)};
+    //sage_texture_draw_scaled (ctx->tex, dst, prj, src, clip);
+
+    sage_texture_clip (ctx->tex, nw, clip);
+    sage_texture_scale (ctx->tex, prj);
+    sage_texture_draw (ctx->tex, dst);
 }
 
 

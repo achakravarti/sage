@@ -646,7 +646,7 @@ extern SAGE_HOT void sage_event_run(void);
 /** TEXTURE **/
 
 
-typedef struct __sage_texture sage_texture_t;
+typedef struct sage_texture_t sage_texture_t;
 
 extern SAGE_HOT sage_texture_t *
 sage_texture_new(const char *path);
@@ -657,6 +657,20 @@ sage_texture_free(sage_texture_t *tex);
 extern SAGE_HOT struct sage_area_t 
 sage_texture_area(const sage_texture_t *tex);
 
+extern void
+sage_texture_clip(sage_texture_t *ctx, 
+                  struct sage_point_t nw,
+                  struct sage_area_t clip);
+extern void
+sage_texture_scale(sage_texture_t *ctx, struct sage_area_t proj);
+
+extern void
+sage_texture_reset(sage_texture_t *ctx);
+
+extern SAGE_HOT void
+sage_texture_draw(sage_texture_t *ctx, struct sage_point_t dst);
+
+/*
 extern SAGE_HOT void
 sage_texture_draw(sage_texture_t *tex, struct sage_point_t dst);
 
@@ -672,6 +686,7 @@ sage_texture_draw_scaled(sage_texture_t *tex,
                          struct sage_area_t proj,
                          struct sage_point_t src,
                          struct sage_area_t clip);
+*/
 
 
 /** SPRITE **/
