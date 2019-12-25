@@ -10,12 +10,12 @@ struct sage_sprite_t {
 
 
 extern sage_sprite_t *
-sage_sprite_new(const char *path, struct sage_frame_t tot)
+sage_sprite_new(const sage_texture_t *src, struct sage_frame_t tot)
 {
     sage_sprite_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
-    sage_require (ctx->tex = sage_texture_new (path));
 
+    ctx->tex = sage_texture_copy (src);
     ctx->tot = tot;
     ctx->cur.r = ctx->cur.c = 1;
 

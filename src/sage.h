@@ -646,13 +646,22 @@ extern SAGE_HOT void sage_event_run(void);
 /** TEXTURE **/
 
 
+typedef size_t sage_id_t;
+
+
 typedef struct sage_texture_t sage_texture_t;
 
 extern SAGE_HOT sage_texture_t *
-sage_texture_new(const char *path);
+sage_texture_new(const char *path, sage_id_t id);
+
+extern SAGE_HOT sage_texture_t *
+sage_texture_copy(const sage_texture_t *src);
 
 extern sage_texture_t*
 sage_texture_free(sage_texture_t *tex);
+
+extern sage_id_t
+sage_texture_id(const sage_texture_t *ctx);
 
 extern SAGE_HOT struct sage_area_t 
 sage_texture_area(const sage_texture_t *tex);
@@ -670,23 +679,21 @@ sage_texture_reset(sage_texture_t *ctx);
 extern SAGE_HOT void
 sage_texture_draw(sage_texture_t *ctx, struct sage_point_t dst);
 
-/*
-extern SAGE_HOT void
-sage_texture_draw(sage_texture_t *tex, struct sage_point_t dst);
 
-extern SAGE_HOT void
-sage_texture_draw_clipped(sage_texture_t *tex, 
-                          struct sage_point_t dst,
-                          struct sage_point_t src,
-                          struct sage_area_t clip);
+/** TEXTURE FACTORY **/
 
-extern SAGE_HOT void
-sage_texture_draw_scaled(sage_texture_t *tex, 
-                         struct sage_point_t dst,
-                         struct sage_area_t proj,
-                         struct sage_point_t src,
-                         struct sage_area_t clip);
-*/
+
+extern void
+sage_texture_factory_start(size_t len);
+
+extern void
+sage_texture_factory_stop(void);
+
+extern void
+sage_texture_factory_register(const sage_texture_t *tex);
+
+extern sage_texture_t *
+sage_texture_factory_spawn(sage_id_t id);
 
 
 /** SPRITE **/
@@ -701,7 +708,7 @@ struct sage_frame_t {
 typedef struct sage_sprite_t sage_sprite_t;
 
 extern sage_sprite_t *
-sage_sprite_new(const char *path, struct sage_frame_t tot);
+sage_sprite_new(const sage_texture_t *src, struct sage_frame_t tot);
 
 extern sage_sprite_t *
 sage_sprite_copy(const sage_sprite_t *src);
@@ -729,8 +736,6 @@ sage_sprite_draw_scaled(const sage_sprite_t *ctx,
                         struct sage_point_t dst,
                         struct sage_area_t prj);
 
-
-typedef size_t sage_id_t;
 
 
 extern void 

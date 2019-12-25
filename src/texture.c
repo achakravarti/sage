@@ -6,24 +6,34 @@
 struct sage_texture_t {
     SDL_Texture *img;
     SDL_Renderer *brush;
-    //SDL_Rect dim;
     SDL_Rect clip;
     struct sage_area_t proj;
-    //SDL_Rect dst;
+    sage_id_t id;
 };
 
 
-extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path)
+extern SAGE_HOT sage_texture_t *
+sage_texture_new(const char *path, sage_id_t id)
 {
     sage_texture_t *tex;
     sage_require (tex = malloc (sizeof *tex));
 
     sage_require (tex->img = IMG_LoadTexture (sage_screen_brush (), path));
     sage_texture_reset (tex);
-    //tex->dim.x = tex->dim.y = 0;
-    //SDL_QueryTexture (tex->img, NULL, NULL, &tex->dim.w, &tex->dim.h);
+    tex->id = id;
 
     return tex;
+}
+
+
+extern SAGE_HOT sage_texture_t *
+sage_texture_copy(const sage_texture_t *src)
+{
+    sage_texture_t *cp;
+    sage_require (cp = malloc (sizeof *cp));
+    sage_require (memcpy (cp, src, sizeof *cp));
+
+    return cp;
 }
 
 
@@ -39,9 +49,16 @@ sage_texture_free(sage_texture_t *tex)
 }
 
 
-extern SAGE_HOT struct sage_area_t sage_texture_area(const sage_texture_t *tex)
+extern sage_id_t
+sage_texture_id(const sage_texture_t *ctx)
 {
-    //struct sage_area_t area = {.w = tex->dim.w, .h = tex->dim.h};
+    return ctx->id;
+}
+
+
+extern SAGE_HOT struct sage_area_t 
+sage_texture_area(const sage_texture_t *tex)
+{
     int w, h;
     SDL_QueryTexture (tex->img, NULL, NULL, &w, &h);
     

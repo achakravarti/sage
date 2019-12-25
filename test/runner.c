@@ -12,7 +12,8 @@ main(int argc, char *argv[])
     register struct sage_area_t res = {.w = 640, .h = 480};
     sage_screen_start ("Sage Test", res);
 
-    sage_texture_t *tex = sage_texture_new ("test/res/sample.png");
+    sage_id_t id = 1;
+    sage_texture_t *tex = sage_texture_new ("test/res/sample.png", id);
    
     bool quit = false;
     SDL_Event e;
