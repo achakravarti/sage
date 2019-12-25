@@ -468,7 +468,7 @@ extern SAGE_HOT void*
 sage_screen_brush(void);
 
 extern SAGE_HOT void
-sage_screen_clear(void);
+sage_screen_clear(const sage_colour_t *col);
 
 extern SAGE_HOT struct sage_viewport_t *
 sage_screen_viewport(void);

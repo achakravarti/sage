@@ -53,8 +53,13 @@ sage_screen_brush(void)
 
 
 extern SAGE_HOT void
-sage_screen_clear(void)
+sage_screen_clear(const sage_colour_t *col)
 {
+    SDL_SetRenderDrawColor (screen->brush,
+                            sage_colour_red (col),
+                            sage_colour_green (col),
+                            sage_colour_blue (col),
+                            sage_colour_alpha (col));
     SDL_RenderClear (screen->brush);
 }
 
