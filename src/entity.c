@@ -1,7 +1,9 @@
+#include <string.h>
 #include "sage.h"
 
 
 struct sage_entity_t {
+    sage_id_t id;
     sage_vector_t *vec;
     sage_sprite_t *spr;
     sage_entity_f *upd;
@@ -20,8 +22,24 @@ draw_default(sage_entity_t *ctx)
 }
 
 
+static void
+free_default(sage_entity_t *ctx)
+{
+    (void) ctx;
+}
+
+
+static void
+update_default(sage_entity_t *ctx)
+{
+    (void) ctx;
+}
+
+
 extern sage_entity_t *
-sage_entity_new(sage_id_t sid,
+sage_entity_new(sage_id_t id,
+                sage_id_t texid,
+                struct sage_frame_t frm,
                 sage_entity_f *upd,
                 sage_entity_f *free,
                 sage_entity_f *draw)
@@ -31,11 +49,12 @@ sage_entity_new(sage_id_t sid,
     sage_entity_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
 
+    ctx->id = id;
     ctx->vec = sage_vector_new_zero ();
-    (void) sid; //TODO:fix
-    ctx->spr = NULL;//sage_sprite_factory_spawn (sid);//TODO:fix
-    ctx->upd = upd;
-    ctx->free = free;
+    ctx->spr = sage_sprite_new (texid, frm);
+
+    ctx->upd = upd ? upd : update_default;
+    ctx->free = free ? free : free_default;
     ctx->draw = draw ? draw : draw_default;
 
     return ctx;
@@ -43,18 +62,13 @@ sage_entity_new(sage_id_t sid,
 
 
 extern sage_entity_t *
-sage_entity_copy(const sage_entity_t *src)
+sage_entity_copy(const sage_entity_t *ctx)
 {
-    sage_assert (src);
+    sage_assert (ctx);
 
     sage_entity_t *cp;
     sage_require (cp = malloc (sizeof *cp));
-
-    cp->vec = sage_vector_copy (src->vec);
-    cp->spr = sage_sprite_copy (src->spr);
-    cp->upd = src->upd;
-    cp->free = src->free;
-    cp->draw = src->draw;
+    sage_require (memcpy (cp, ctx, sizeof *cp));
 
     return cp;
 }
@@ -67,7 +81,7 @@ sage_entity_free(sage_entity_t *ctx)
         ctx->vec = sage_vector_free (ctx->vec);
         ctx->spr = sage_sprite_free (ctx->spr);
 
-        if (ctx->free) ctx->free (ctx);
+        ctx->free (ctx);
         free (ctx);
     }
 
@@ -93,32 +107,22 @@ sage_entity_vector_set(sage_entity_t *ctx, const sage_vector_t *vec)
     ctx->vec = sage_vector_copy (vec);
 }
 
-/*
-extern struct sage_frame_t 
-sage_entity_frame(const sage_entity_t *ctx)
-{
-    sage_assert (ctx);
-
-    return sage_sprite_frame (ctx->spr);
-}
-*/
-
 
 extern void 
-sage_entity_frame_set(sage_entity_t *ctx, struct sage_frame_t frm)
-{
-    sage_assert (ctx);
-
-    sage_sprite_frame (ctx->spr, frm);
-}
-
-
-extern void 
-sage_entity_move(sage_entity_t *ctx, const sage_vector_t *vel)
+sage_entity_vector_move(sage_entity_t *ctx, const sage_vector_t *vel)
 {
     sage_assert (ctx && vel);
 
     sage_vector_add (ctx->vec, vel);
+}
+
+
+extern void 
+sage_entity_frame(sage_entity_t *ctx, struct sage_frame_t frm)
+{
+    sage_assert (ctx);
+
+    sage_sprite_frame (ctx->spr, frm);
 }
 
 

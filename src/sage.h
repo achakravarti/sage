@@ -845,7 +845,9 @@ typedef struct sage_entity_t sage_entity_t;
 typedef void (sage_entity_f)(sage_entity_t *ctx);
 
 extern sage_entity_t *
-sage_entity_new(sage_id_t sid,
+sage_entity_new(sage_id_t id,
+                sage_id_t texid,
+                struct sage_frame_t frm,
                 sage_entity_f *upd,
                 sage_entity_f *free,
                 sage_entity_f *draw);
@@ -862,14 +864,11 @@ sage_entity_vector(const sage_entity_t *ctx);
 extern void 
 sage_entity_vector_set(sage_entity_t *ctx, const sage_vector_t *vec);
 
-extern struct sage_frame_t 
-sage_entity_frame(const sage_entity_t *ctx);
+extern void 
+sage_entity_vector_move(sage_entity_t *ctx, const sage_vector_t *vel);
 
 extern void 
-sage_entity_frame_set(sage_entity_t *ctx, struct sage_frame_t frm);
-
-extern void 
-sage_entity_move(sage_entity_t *ctx, const sage_vector_t *vel);
+sage_entity_frame(sage_entity_t *ctx, struct sage_frame_t frm);
 
 extern void 
 sage_entity_update(sage_entity_t *ctx);
