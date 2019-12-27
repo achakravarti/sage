@@ -840,53 +840,6 @@ extern void
 sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst);
 
 
-#if 0
-typedef struct sage_sprite_t sage_sprite_t;
-
-extern sage_sprite_t *
-sage_sprite_new(const sage_texture_t *src, struct sage_frame_t tot);
-
-extern sage_sprite_t *
-sage_sprite_copy(const sage_sprite_t *src);
-
-extern sage_sprite_t *
-sage_sprite_free(sage_sprite_t *ctx);
-
-extern struct sage_area_t 
-sage_sprite_area(const sage_sprite_t *ctx);
-
-extern struct sage_frame_t 
-sage_sprite_frame(const sage_sprite_t *ctx);
-
-extern SAGE_HOT void 
-sage_sprite_frame_set(sage_sprite_t *ctx, struct sage_frame_t frm);
-
-extern size_t 
-sage_sprite_frame_count(const sage_sprite_t *ctx);
-
-extern SAGE_HOT void 
-sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst);
-
-extern SAGE_HOT void 
-sage_sprite_draw_scaled(const sage_sprite_t *ctx, 
-                        struct sage_point_t dst,
-                        struct sage_area_t prj);
-
-
-extern void 
-sage_sprite_factory_start(void);
-
-extern void 
-sage_sprite_factory_stop(void);
-
-extern void 
-sage_sprite_factory_register(const sage_sprite_t *spr);
-
-extern sage_sprite_t *
-sage_sprite_factory_spawn(sage_id_t idx);
-#endif
-
-
 typedef struct sage_entity_t sage_entity_t;
 
 typedef void (sage_entity_f)(sage_entity_t *ctx);
