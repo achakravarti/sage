@@ -32,7 +32,8 @@ sage_entity_new(sage_id_t sid,
     sage_require (ctx = malloc (sizeof *ctx));
 
     ctx->vec = sage_vector_new_zero ();
-    ctx->spr = sage_sprite_factory_spawn (sid);
+    (void) sid; //TODO:fix
+    ctx->spr = NULL;//sage_sprite_factory_spawn (sid);//TODO:fix
     ctx->upd = upd;
     ctx->free = free;
     ctx->draw = draw ? draw : draw_default;
@@ -92,7 +93,7 @@ sage_entity_vector_set(sage_entity_t *ctx, const sage_vector_t *vec)
     ctx->vec = sage_vector_copy (vec);
 }
 
-
+/*
 extern struct sage_frame_t 
 sage_entity_frame(const sage_entity_t *ctx)
 {
@@ -100,6 +101,7 @@ sage_entity_frame(const sage_entity_t *ctx)
 
     return sage_sprite_frame (ctx->spr);
 }
+*/
 
 
 extern void 
@@ -107,7 +109,7 @@ sage_entity_frame_set(sage_entity_t *ctx, struct sage_frame_t frm)
 {
     sage_assert (ctx);
 
-    sage_sprite_frame_set (ctx->spr, frm);
+    sage_sprite_frame (ctx->spr, frm);
 }
 
 
