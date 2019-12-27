@@ -858,6 +858,9 @@ sage_entity_copy(const sage_entity_t *src);
 extern sage_entity_t *
 sage_entity_free(sage_entity_t *ctx);
 
+extern sage_id_t
+sage_entity_id(const sage_entity_t *ctx);
+
 extern sage_vector_t *
 sage_entity_vector(const sage_entity_t *ctx);
 
@@ -887,7 +890,7 @@ extern void
 sage_entity_factory_register(const sage_entity_t *ent);
 
 extern sage_entity_t *
-sage_entity_factory_spawn(sage_id_t idx);
+sage_entity_factory_spawn(sage_id_t id);
 
 
 extern void sage_arena_start(void);

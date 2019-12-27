@@ -89,6 +89,13 @@ sage_entity_free(sage_entity_t *ctx)
 }
 
 
+extern sage_id_t
+sage_entity_id(const sage_entity_t *ctx)
+{
+    return ctx->id;
+}
+
+
 extern sage_vector_t *
 sage_entity_vector(const sage_entity_t *ctx)
 {
