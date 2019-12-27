@@ -350,7 +350,7 @@ enum sage_hue_t {
     SAGE_HUE_LIGHTSLATEGRAY = 0x778899,
     SAGE_HUE_SLATEGRAY = 0x708090,
     SAGE_HUE_DARKSLATEGRAY = 0x2F4F4F,
-    SAGE_HUE_SAGE_HUE_BLACK = 0x000000
+    SAGE_HUE_BLACK = 0x000000
 };
 
 
@@ -910,6 +910,13 @@ extern void sage_arena_pop(sage_id_t id);
 extern void sage_arena_update(void);
 
 extern void sage_arena_draw(void);
+
+
+extern void sage_game_start(void);
+
+extern void sage_game_stop(void);
+
+extern void sage_game_run(void);
 
 
 #if defined __cplusplus
