@@ -1,43 +1,105 @@
 #include "sage.h"
 
 
+struct node_t {
+    sage_id_t id;
+    sage_texture_t *tex;
+    struct node_t *next;
+};
+
+
 static thread_local struct {
-    sage_texture_t **pool;
     size_t len;
-} *factory = NULL;
+    struct node_t **buck;
+} *map = NULL;
+
+
+static inline size_t
+map_hash(sage_id_t id)
+{
+    return id % map->len;
+}
 
 
 extern void
-sage_texture_factory_start(size_t len)
+sage_texture_factory_start(void)
 {
-    sage_require (factory = malloc (sizeof *factory));
-    sage_require (factory->pool = malloc (sizeof *factory->pool * len));
-    factory->len = len;
+    if (sage_unlikely (map))
+        return;
+
+    sage_require (map = malloc (sizeof *map));
+    map->len = 5; // TODO: remove hard coded length
+
+    sage_require (map->buck = malloc (sizeof *map->buck * map->len));
+    for (register size_t i = 0; i < map->len; i++)
+        map->buck [i] = NULL;
 }
 
 
 extern void
 sage_texture_factory_stop(void)
 {
-    if (sage_likely (factory)) {
-        for (register size_t i = 0; i < factory->len; i++)
-            free (factory->pool [i]);
+    if (sage_unlikely (!map))
+        return;
+
+    struct node_t *buck, *next;
+    for (register size_t i = 0; i < map->len; i++) {
+        if ((buck = map->buck [i])) {
+            do {
+                next = buck->next;
+                free (buck);
+                buck = next;
+            } while (buck);
+        }
     }
 
-    free (factory);
+    free (map->buck);
+    free (map);
 }
 
 
 extern void
 sage_texture_factory_register(const sage_texture_t *tex)
 {
-    factory->pool [sage_texture_id (tex)] = sage_texture_copy (tex);
+    sage_id_t id = sage_texture_id (tex);
+    size_t hash = map_hash (id);
+    struct node_t *buck = map->buck [hash];
+    
+    struct node_t *itr = buck;
+    while (itr) {
+        if (itr->id == id) {
+            (void) sage_texture_free (itr->tex);
+            itr->tex = sage_texture_copy (tex);
+            return;
+        }
+
+        itr = itr->next;
+    }
+
+    struct node_t *add;
+    sage_require (add = malloc (sizeof *add));
+    add->id = id;
+    add->tex = sage_texture_copy (tex);
+    add->next = buck;
+    map->buck [hash] = add;
 }
 
 
 extern sage_texture_t *
 sage_texture_factory_spawn(sage_id_t id)
 {
-    return sage_texture_copy (factory->pool [id]);
+    struct node_t *buck = map->buck [map_hash (id)];
+    struct node_t *itr = buck;
+
+    while (itr) {
+        if (itr->id == id)
+            return sage_texture_copy (itr->tex);
+
+        itr = itr->next;
+    }
+
+    // TODO: id not found, so abort; think of cleaner code
+    sage_require (itr != NULL);
+    return NULL;
 }
 

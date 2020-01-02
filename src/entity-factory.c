@@ -2,39 +2,39 @@
 
 
 static thread_local struct {
-    sage_entity_t **lst;
+    sage_entity_t **pool;
     sage_id_t *map;
     size_t len;
     size_t cap;
-} *entity_pool = NULL;
+} *factory = NULL;
 
 
 extern void 
 sage_entity_factory_start(void)
 {
-    sage_require (entity_pool = malloc (sizeof *entity_pool));
+    sage_require (factory = malloc (sizeof *factory));
 
-    entity_pool->len = 0;
-    entity_pool->cap = 4;
+    factory->len = 0;
+    factory->cap = 4;
 
-    size_t sz = sizeof *(entity_pool->lst) * entity_pool->cap;
-    sage_require (entity_pool->lst = malloc (sz));
+    size_t sz = sizeof *(factory->pool) * factory->cap;
+    sage_require (factory->pool = malloc (sz));
 
-    sz = sizeof *entity_pool->map * entity_pool->cap;
-    sage_require (entity_pool->map = malloc (sz));
+    sz = sizeof *factory->map * factory->cap;
+    sage_require (factory->map = malloc (sz));
 }
 
 
 extern void 
 sage_entity_factory_stop(void)
 {
-    if (sage_likely (entity_pool)) {
-        for (register size_t i = 0; i < entity_pool->cap; i++)
-            free (entity_pool->lst [i]);
+    if (sage_likely (factory)) {
+        for (register size_t i = 0; i < factory->cap; i++)
+            free (factory->pool [i]);
 
-        free (entity_pool->lst);
-        free (entity_pool->map);
-        free (entity_pool);
+        free (factory->pool);
+        free (factory->map);
+        free (factory);
     }
 }
 
@@ -42,33 +42,37 @@ sage_entity_factory_stop(void)
 extern void 
 sage_entity_factory_register(const sage_entity_t *ent)
 {
-    sage_assert (entity_pool && ent);
+    sage_assert (factory && ent);
 
-    if (sage_unlikely (entity_pool->len == entity_pool->cap)) {
-        entity_pool->cap *= 2;
+    if (sage_unlikely (factory->len == factory->cap)) {
+        factory->cap *= 2;
 
-        size_t sz = sizeof *(entity_pool->lst) * entity_pool->cap;
-        sage_require (entity_pool->lst = realloc (entity_pool->lst, sz));
+        size_t sz = sizeof *(factory->pool) * factory->cap;
+        sage_require (factory->pool = realloc (factory->pool, sz));
 
-        sz = sizeof *entity_pool->map * entity_pool->cap;
-        sage_require (entity_pool->map = realloc (entity_pool->map, sz));
+        sz = sizeof *factory->map * factory->cap;
+        sage_require (factory->map = realloc (factory->map, sz));
     }
 
-    entity_pool->map [entity_pool->len] = sage_entity_id (ent);
-    entity_pool->lst [entity_pool->len++] = sage_entity_copy (ent);
+    factory->map [factory->len] = sage_entity_id (ent);
+    factory->pool [factory->len++] = sage_entity_copy (ent);
+
+    /* TODO: Replace with hash map implementation e.g.:
+     * https://web.archive.org/web/20160329102146/http://elliottback.com/wp/hashmap-implementation-in-c/ and 
+     * http://www.kaushikbaruah.com/posts/data-structure-in-c-hashmap/ and
+     * https://chromium.googlesource.com/aosp/platform/system/core/+/refs/heads/master/libcutils/hashmap.c */
 }
 
 
 extern sage_entity_t *
 sage_entity_factory_spawn(sage_id_t id)
 {
-    sage_assert (entity_pool && entity_pool->lst);
-    sage_assert (id > 0 && id <= entity_pool->len);
+    sage_assert (factory && factory->pool);
 
     register size_t idx;
-    for (idx = 0; idx < entity_pool->len; idx++)
-        if (entity_pool->map [idx] == id) break;
+    for (idx = 0; idx < factory->len; idx++)
+        if (factory->map [idx] == id) break;
 
-    return sage_entity_copy (entity_pool->lst [idx]);
+    return sage_entity_copy (factory->pool [idx]);
 }
 

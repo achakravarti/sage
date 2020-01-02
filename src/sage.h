@@ -781,7 +781,7 @@ sage_texture_draw(const sage_texture_t *ctx, struct sage_point_t dst);
 
 
 extern void
-sage_texture_factory_start(size_t len);
+sage_texture_factory_start(void);
 
 extern void
 sage_texture_factory_stop(void);

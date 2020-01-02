@@ -11,7 +11,8 @@ enum {
 static void
 factory_start(void)
 {
-    sage_texture_factory_start (TEX_COUNT);
+    //sage_texture_factory_start (TEX_COUNT);
+    sage_texture_factory_start ();
 
     sage_texture_t *tex = sage_texture_new ("test/res/sample.png", TEX_SAMPLE);
     sage_texture_factory_register (tex);
