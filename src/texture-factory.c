@@ -14,6 +14,9 @@ static thread_local struct {
 } *map = NULL;
 
 
+#define MAP_BUCKETS ((size_t) 16)
+
+
 static inline size_t
 map_hash(sage_id_t id)
 {
@@ -28,7 +31,7 @@ sage_texture_factory_start(void)
         return;
 
     sage_require (map = malloc (sizeof *map));
-    map->len = 5; // TODO: remove hard coded length
+    map->len = MAP_BUCKETS;
 
     sage_require (map->buck = malloc (sizeof *map->buck * map->len));
     for (register size_t i = 0; i < map->len; i++)
@@ -47,6 +50,7 @@ sage_texture_factory_stop(void)
         if ((buck = map->buck [i])) {
             do {
                 next = buck->next;
+                sage_texture_free (buck->tex);
                 free (buck);
                 buck = next;
             } while (buck);
