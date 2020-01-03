@@ -719,6 +719,15 @@ sage_texture_free(sage_texture_t *ctx);
 
 
 /**
+ * Gets the size in bytes of a texture instance.
+ *
+ * @return The size of a texture instance.
+ */
+extern size_t
+sage_texture_size(void);
+
+
+/**
  * Gets the ID of a texture.
  *
  * @param ctx Contextual texture instance.

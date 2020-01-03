@@ -52,6 +52,14 @@ sage_texture_free(sage_texture_t *ctx)
 }
 
 
+    /* implement the sage_texture_size() interface function */
+extern size_t
+sage_texture_size(void)
+{
+    return sizeof (struct sage_texture_t);
+}
+
+
     /* implement the sage_texture_id() interface function */
 extern sage_id_t
 sage_texture_id(const sage_texture_t *ctx)
