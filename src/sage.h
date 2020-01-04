@@ -888,6 +888,9 @@ sage_entity_copy(const sage_entity_t *src);
 extern sage_entity_t *
 sage_entity_free(sage_entity_t *ctx);
 
+extern size_t
+sage_entity_size(void);
+
 extern sage_id_t
 sage_entity_id(const sage_entity_t *ctx);
 

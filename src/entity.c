@@ -89,6 +89,13 @@ sage_entity_free(sage_entity_t *ctx)
 }
 
 
+extern size_t
+sage_entity_size(void)
+{
+    return sizeof (struct sage_entity_t);
+}
+
+
 extern sage_id_t
 sage_entity_id(const sage_entity_t *ctx)
 {
