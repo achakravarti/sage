@@ -33,12 +33,20 @@ extern void sage_game_start(void)
     if (sage_likely (!game)) {
         sage_require (game = malloc (sizeof *game));
         game->run = true;
+
+        sage_texture_factory_start ();
+        sage_entity_factory_start ();
+        sage_arena_start ();
     }
 }
 
 
 extern void sage_game_stop(void)
 {
+    sage_arena_stop ();
+    sage_entity_factory_stop ();
+    sage_texture_factory_stop ();
+
     free (game);
 }
 

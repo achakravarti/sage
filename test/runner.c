@@ -12,7 +12,7 @@ static void
 factory_start(void)
 {
     //sage_texture_factory_start (TEX_COUNT);
-    sage_texture_factory_start ();
+    //sage_texture_factory_start ();
 
     sage_texture_t *tex = sage_texture_new ("test/res/sample.png", TEX_SAMPLE);
     sage_texture_factory_register (tex);
@@ -28,6 +28,8 @@ main(int argc, char *argv[])
 
     register struct sage_area_t res = {.w = 640, .h = 480};
     sage_screen_start ("Sage Test", res);
+
+    sage_game_start ();
     factory_start ();
 
     sage_texture_t *tex = sage_texture_factory_spawn (TEX_SAMPLE);
@@ -49,7 +51,8 @@ main(int argc, char *argv[])
 
     tex = sage_texture_free (tex);
     sage_screen_stop ();
-    sage_texture_factory_stop ();
+    sage_game_stop ();
+    //sage_texture_factory_stop ();
 
     return 0;
 }

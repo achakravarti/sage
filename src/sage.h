@@ -926,24 +926,39 @@ extern sage_entity_t *
 sage_entity_factory_spawn(sage_id_t id);
 
 
-extern void sage_arena_start(void);
+extern void 
+sage_arena_start(void);
 
-extern void sage_arena_stop(void);
+extern void 
+sage_arena_stop(void);
 
-extern sage_id_t sage_arena_push(const sage_id_t id);
+extern sage_entity_t *
+sage_arena_entity(size_t idx);
 
-extern void sage_arena_pop(sage_id_t id);
+extern void
+sage_arena_entity_set(size_t idx, const sage_entity_t *ent);
 
-extern void sage_arena_update(void);
+extern size_t
+sage_arena_push(const sage_entity_t *ent);
 
-extern void sage_arena_draw(void);
+extern void 
+sage_arena_pop(size_t idx);
+
+extern void 
+sage_arena_update(void);
+
+extern void 
+sage_arena_draw(void);
 
 
-extern void sage_game_start(void);
+extern void 
+sage_game_start(void);
 
-extern void sage_game_stop(void);
+extern void 
+sage_game_stop(void);
 
-extern void sage_game_run(void);
+extern void 
+sage_game_run(void);
 
 
 #if defined __cplusplus
