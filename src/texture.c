@@ -5,10 +5,11 @@
 
     /* define the sage_texture_t struct */
 struct sage_texture_t {
-    sage_id_t id;            /* texture ID      */
-    SDL_Texture *tex;        /* raw texture     */
-    SDL_Rect clip;           /* clip area       */
-    struct sage_area_t proj; /* projection area */
+    sage_id_t id;            /* texture ID        */
+    SDL_Texture *tex;        /* raw texture       */
+    char *path;              /* texture file path */
+    SDL_Rect clip;           /* clip area         */
+    struct sage_area_t proj; /* projection area   */
 };
 
 
@@ -16,10 +17,13 @@ struct sage_texture_t {
 extern SAGE_HOT sage_texture_t *
 sage_texture_new(const char *path, sage_id_t id)
 {
-    sage_assert (path && *path);
-
     sage_texture_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
+
+    sage_assert (path && *path);
+    size_t len = strlen (path);
+    sage_require (ctx->path = malloc (len + 1));
+    strncpy (ctx->path, path, len);
 
     sage_require (ctx->tex = IMG_LoadTexture (sage_screen_brush (), path));
     sage_texture_reset (ctx);
@@ -34,10 +38,10 @@ extern SAGE_HOT sage_texture_t *
 sage_texture_copy(const sage_texture_t *ctx)
 {
     sage_assert (ctx);
+    sage_texture_t *cp = sage_texture_new (ctx->path, ctx->id);
 
-    sage_texture_t *cp;
-    sage_require (cp = malloc (sizeof *cp));
-    sage_require (memcpy (cp, ctx, sizeof *cp));
+    cp->clip = ctx->clip;
+    cp->proj = ctx->proj;
 
     return cp;
 }
@@ -49,6 +53,7 @@ sage_texture_free(sage_texture_t *ctx)
 {
     if (sage_likely (ctx)) {
         SDL_DestroyTexture (ctx->tex);
+        free (ctx->path);
         free (ctx);
     }
 

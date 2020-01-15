@@ -62,11 +62,17 @@ sage_entity_new(sage_id_t id,
 extern sage_entity_t *
 sage_entity_copy(const sage_entity_t *ctx)
 {
-    sage_assert (ctx);
+    /*sage_assert (ctx);
 
     sage_entity_t *cp;
     sage_require (cp = malloc (sizeof *cp));
     sage_require (memcpy (cp, ctx, sizeof *cp));
+
+    return cp;*/
+
+    sage_assert (ctx);
+    sage_entity_t *cp = sage_entity_new (ctx->id, sage_sprite_id (ctx->spr),
+        sage_sprite_frames (ctx->spr), ctx->upd, ctx->free, ctx->draw);
 
     return cp;
 }

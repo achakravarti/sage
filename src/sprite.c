@@ -81,6 +81,12 @@ sage_sprite_frame(sage_sprite_t *ctx, struct sage_frame_t frm)
 }
 
 
+extern struct sage_frame_t sage_sprite_frames(sage_sprite_t *ctx)
+{
+    return ctx->tot;
+}
+
+
 extern void
 sage_sprite_clip(sage_sprite_t *ctx,
                  struct sage_point_t nw,

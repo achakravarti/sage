@@ -48,33 +48,9 @@ main(int argc, char *argv[])
     texture_register ();
     entity_register ();
 
-    //sage_arena_push (sage_entity_factory_spawn (ENT_SAMPLE));
+    sage_arena_push (sage_entity_factory_spawn (ENT_SAMPLE));
     sage_game_run ();
    
-#if 0
-    sage_texture_t *tex = sage_texture_factory_spawn (TEX_SAMPLE);
-   
-    bool quit = false;
-    SDL_Event e;
-
-    register struct sage_point_t loc = {.x = 0, .y = 0};
-    sage_colour_t *blue = sage_colour_new_hue (SAGE_HUE_CORNFLOWERBLUE);
-    while (!quit) {
-        while (SDL_PollEvent (&e)) {
-            quit = (e.type == SDL_QUIT);
-
-            sage_screen_clear (blue);
-            sage_texture_draw (tex, loc);
-            sage_screen_render ();
-        }
-    }
-
-    tex = sage_texture_free (tex);
-    sage_screen_stop ();
-    sage_game_stop ();*/
-    sage_texture_factory_stop ();
-#endif
-
     return 0;
 }
 

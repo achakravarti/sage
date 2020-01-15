@@ -651,10 +651,13 @@ typedef size_t sage_id_t;
 
 typedef struct sage_id_map_t sage_id_map_t;
 
+typedef void *(sage_id_map_copy_f)(const void *ctx);
+
 typedef void (sage_id_map_free_f)(void *ctx);
 
-extern sage_id_map_t *
-sage_id_map_new(size_t buck, size_t sz, sage_id_map_free_f *free);
+
+extern sage_id_map_t *sage_id_map_new(size_t buck, size_t sz, 
+    sage_id_map_copy_f *copy, sage_id_map_free_f *free);
 
 extern sage_id_map_t *
 sage_id_map_free(sage_id_map_t *ctx);
@@ -854,6 +857,8 @@ sage_sprite_area_frame(const sage_sprite_t *ctx);
 
 extern void 
 sage_sprite_frame(sage_sprite_t *ctx, struct sage_frame_t frm);
+
+extern struct sage_frame_t sage_sprite_frames(sage_sprite_t *ctx);
 
 extern void
 sage_sprite_clip(sage_sprite_t *ctx,

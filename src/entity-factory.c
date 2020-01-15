@@ -7,6 +7,12 @@
 static thread_local sage_id_map_t *map = NULL;
 
 
+static inline void *map_copy(const void *ent)
+{
+    return sage_entity_copy ((const sage_entity_t *) ent);
+}
+
+
 static inline void
 map_free(void *ent)
 {
@@ -17,8 +23,10 @@ map_free(void *ent)
 extern void 
 sage_entity_factory_start(void)
 {
-    if (sage_likely (!map))
-        map = sage_id_map_new (MAP_BUCKETS, sage_entity_size (), map_free);
+    if (sage_likely (!map)) {
+        map = sage_id_map_new (MAP_BUCKETS, sage_entity_size (), map_copy, 
+            map_free);
+    }
 }
 
 

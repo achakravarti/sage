@@ -7,6 +7,12 @@
 static thread_local sage_id_map_t *map = NULL;
 
 
+static inline void *map_copy(const void *tex)
+{
+    return sage_texture_copy ((const sage_texture_t *) tex);
+}
+
+
 static inline void
 map_free(void *tex)
 {
@@ -17,8 +23,10 @@ map_free(void *tex)
 extern void
 sage_texture_factory_start(void)
 {
-    if (sage_likely (!map))
-        map = sage_id_map_new (MAP_BUCKETS, sage_texture_size (), map_free);
+    if (sage_likely (!map)) {
+        map = sage_id_map_new (MAP_BUCKETS, sage_texture_size (), map_copy,
+            map_free);
+    }
 }
 
 
