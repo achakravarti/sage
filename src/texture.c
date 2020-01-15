@@ -16,6 +16,8 @@ struct sage_texture_t {
 extern SAGE_HOT sage_texture_t *
 sage_texture_new(const char *path, sage_id_t id)
 {
+    sage_assert (path && *path);
+
     sage_texture_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
 
@@ -31,6 +33,8 @@ sage_texture_new(const char *path, sage_id_t id)
 extern SAGE_HOT sage_texture_t *
 sage_texture_copy(const sage_texture_t *ctx)
 {
+    sage_assert (ctx);
+
     sage_texture_t *cp;
     sage_require (cp = malloc (sizeof *cp));
     sage_require (memcpy (cp, ctx, sizeof *cp));
@@ -64,6 +68,8 @@ sage_texture_size(void)
 extern sage_id_t
 sage_texture_id(const sage_texture_t *ctx)
 {
+    sage_assert (ctx);
+
     return ctx->id;
 }
 
@@ -72,6 +78,9 @@ sage_texture_id(const sage_texture_t *ctx)
 extern SAGE_HOT struct sage_area_t 
 sage_texture_area(const sage_texture_t *ctx)
 {
+    sage_assert (ctx);
+    sage_assert (ctx->tex);
+
     int w, h;
     SDL_QueryTexture (ctx->tex, NULL, NULL, &w, &h);
     
@@ -86,6 +95,8 @@ sage_texture_clip(sage_texture_t *ctx,
                   struct sage_point_t nw,
                   struct sage_area_t clip)
 {
+    sage_assert (ctx);
+
     ctx->clip.x = nw.x;
     ctx->clip.y = nw.y;
     ctx->clip.w = clip.w;
@@ -97,6 +108,8 @@ sage_texture_clip(sage_texture_t *ctx,
 extern void
 sage_texture_scale(sage_texture_t *ctx, struct sage_area_t proj)
 {
+    sage_assert (ctx);
+
     ctx->proj = proj;
 }
 
@@ -105,6 +118,9 @@ sage_texture_scale(sage_texture_t *ctx, struct sage_area_t proj)
 extern void
 sage_texture_reset(sage_texture_t *ctx)
 {
+    sage_assert (ctx);
+    sage_assert (ctx->tex);
+
     ctx->clip.x = ctx->clip.y = 0;
     SDL_QueryTexture (ctx->tex, NULL, NULL, &ctx->clip.w, &ctx->clip.h);
     
@@ -117,6 +133,9 @@ sage_texture_reset(sage_texture_t *ctx)
 extern SAGE_HOT void
 sage_texture_draw(const sage_texture_t *ctx, struct sage_point_t dst)
 {
+    sage_assert (ctx);
+    sage_assert (ctx->tex);
+
     SDL_Rect to = {.x = dst.x, .y = dst.y, .w = ctx->proj.w, .h = ctx->proj.h};
     SDL_RenderCopy (sage_screen_brush (), ctx->tex, &ctx->clip, &to);
 }

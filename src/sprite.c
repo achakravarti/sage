@@ -65,6 +65,8 @@ sage_sprite_area(const sage_sprite_t *ctx)
 extern struct sage_area_t
 sage_sprite_area_frame(const sage_sprite_t *ctx)
 {
+    sage_assert (ctx);
+
     struct sage_area_t tot = sage_texture_area (ctx->tex);
     struct sage_area_t frm = {.w = tot.w / ctx->tot.c, .h = tot.h / ctx->tot.r};
 
@@ -113,6 +115,8 @@ sage_sprite_reset(sage_sprite_t *ctx)
 extern void
 sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst)
 {
+    sage_assert (ctx);
+
     struct sage_area_t frm = sage_sprite_area_frame (ctx);
     struct sage_point_t nw = {.x = frm.w * (ctx->cur.c - 1) + ctx->clip.x,
                               .y = frm.h * (ctx->cur.r - 1) + ctx->clip.y};

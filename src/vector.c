@@ -90,6 +90,8 @@ sage_vector_y_set(sage_vector_t *ctx, float y)
 extern struct sage_point_t
 sage_vector_point(const sage_vector_t *ctx)
 {
+    sage_assert (ctx);
+
     struct sage_point_t pt = {.x = (int16_t) ctx->x, .y = (int16_t) ctx->y};
     return pt;
 }

@@ -21,12 +21,12 @@ sage_screen_start(const char *title, struct sage_area_t res)
 
     sage_require (screen = malloc (sizeof *screen));
 
-    sage_require (screen->wnd = SDL_CreateWindow (
-        title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, res.w, res.h,
+    sage_require (screen->wnd = SDL_CreateWindow (title, 
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, res.w, res.h,
         SDL_WINDOW_SHOWN));
 
-    sage_require (screen->brush = SDL_CreateRenderer (
-        screen->wnd, -1, SDL_RENDERER_ACCELERATED));
+    sage_require (screen->brush = SDL_CreateRenderer (screen->wnd, -1, 
+        SDL_RENDERER_ACCELERATED));
     SDL_SetRenderDrawColor (screen->brush, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
@@ -55,11 +55,9 @@ sage_screen_brush(void)
 extern SAGE_HOT void
 sage_screen_clear(const sage_colour_t *col)
 {
-    SDL_SetRenderDrawColor (screen->brush,
-                            sage_colour_red (col),
-                            sage_colour_green (col),
-                            sage_colour_blue (col),
-                            sage_colour_alpha (col));
+    SDL_SetRenderDrawColor (screen->brush,  sage_colour_red (col),
+        sage_colour_green (col), sage_colour_blue (col), 
+        sage_colour_alpha (col));
     SDL_RenderClear (screen->brush);
 }
 

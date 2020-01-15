@@ -17,7 +17,7 @@ draw_default(sage_entity_t *ctx)
 {
     sage_assert (ctx);
 
-    if (sage_likely (sage_vector_visible (ctx->vec)))
+    /*if (sage_likely (sage_vector_visible (ctx->vec)))*/
         sage_sprite_draw (ctx->spr, sage_vector_point (ctx->vec));
 }
 
@@ -44,8 +44,6 @@ sage_entity_new(sage_id_t id,
                 sage_entity_f *free,
                 sage_entity_f *draw)
 {
-    sage_assert (upd);
-
     sage_entity_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
 
@@ -53,9 +51,9 @@ sage_entity_new(sage_id_t id,
     ctx->vec = sage_vector_new_zero ();
     ctx->spr = sage_sprite_new (texid, frm);
 
-    ctx->upd = upd ? upd : update_default;
-    ctx->free = free ? free : free_default;
-    ctx->draw = draw ? draw : draw_default;
+    ctx->upd = upd ? upd : &update_default;
+    ctx->free = free ? free : &free_default;
+    ctx->draw = draw ? draw : &draw_default;
 
     return ctx;
 }

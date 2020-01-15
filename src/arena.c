@@ -18,6 +18,8 @@ sage_arena_start(void)
 
     size_t sz = sizeof *(players->lst) * players->cap;
     sage_require (players->lst = malloc (sz));
+    for (register size_t i = 0; i < players->cap; i++)
+        players->lst [i] = NULL;
 }
 
 
@@ -52,14 +54,16 @@ sage_arena_entity_set(size_t idx, const sage_entity_t *ent)
 extern size_t
 sage_arena_push(const sage_entity_t *ent)
 {
+    sage_assert (ent);
+
     if (sage_unlikely (players->len == players->cap)) {
         players->cap *= 2;
         size_t sz = sizeof *players->lst * players->cap;
         sage_require (players->lst = realloc (players->lst, sz));
     }
 
-    players->lst [++players->len] = sage_entity_copy (ent);
-    return players->len;
+    players->lst [players->len] = sage_entity_copy (ent);
+    return players->len++;
 }
 
 

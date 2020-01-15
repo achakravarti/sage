@@ -53,13 +53,18 @@ extern void sage_game_stop(void)
 
 extern void sage_game_run(void)
 {
+    // TODO: problem with hues needs to be fixed
+    sage_colour_t *black = sage_colour_new_hue (SAGE_HUE_BLACK);
+
     while (sage_likely (game->run)) {
         event_listen ();
         sage_arena_update ();
 
-        sage_screen_clear (SAGE_HUE_BLACK);
+        sage_screen_clear (black);
         sage_arena_draw ();
         sage_screen_render ();
     }
+
+    sage_colour_free (black);
 }
 

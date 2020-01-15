@@ -3,20 +3,35 @@
 
 
 enum {
+    ENT_SAMPLE
+};
+
+
+enum {
     TEX_SAMPLE,
     TEX_COUNT
 };
 
 
 static void
-factory_start(void)
+texture_register(void)
 {
-    //sage_texture_factory_start (TEX_COUNT);
-    //sage_texture_factory_start ();
-
     sage_texture_t *tex = sage_texture_new ("test/res/sample.png", TEX_SAMPLE);
     sage_texture_factory_register (tex);
+    sage_texture_free (tex);
 }
+
+
+static void
+entity_register(void)
+{
+    struct sage_frame_t frm = {.r = 1, .c = 1};
+    sage_entity_t *ent = sage_entity_new (ENT_SAMPLE, TEX_SAMPLE, frm, NULL, 
+        NULL, NULL);
+    sage_entity_factory_register (ent);
+    sage_entity_free (ent);
+}
+
 
 
 int
@@ -30,8 +45,13 @@ main(int argc, char *argv[])
     sage_screen_start ("Sage Test", res);
 
     sage_game_start ();
-    factory_start ();
+    texture_register ();
+    entity_register ();
 
+    //sage_arena_push (sage_entity_factory_spawn (ENT_SAMPLE));
+    sage_game_run ();
+   
+#if 0
     sage_texture_t *tex = sage_texture_factory_spawn (TEX_SAMPLE);
    
     bool quit = false;
@@ -51,8 +71,9 @@ main(int argc, char *argv[])
 
     tex = sage_texture_free (tex);
     sage_screen_stop ();
-    sage_game_stop ();
-    //sage_texture_factory_stop ();
+    sage_game_stop ();*/
+    sage_texture_factory_stop ();
+#endif
 
     return 0;
 }
