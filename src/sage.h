@@ -840,8 +840,7 @@ typedef struct sage_sprite_t sage_sprite_t;
 extern sage_sprite_t *
 sage_sprite_new(sage_id_t texid, struct sage_frame_t tot);
 
-extern sage_sprite_t *
-sage_sprite_copy(const sage_sprite_t *src);
+extern sage_sprite_t *sage_sprite_copy(const sage_sprite_t *ctx);
 
 extern sage_sprite_t *
 sage_sprite_free(sage_sprite_t *ctx);

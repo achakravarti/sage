@@ -25,12 +25,10 @@ sage_sprite_new(sage_id_t texid, struct sage_frame_t tot)
 }
 
 
-extern sage_sprite_t *
-sage_sprite_copy(const sage_sprite_t *src)
+extern sage_sprite_t *sage_sprite_copy(const sage_sprite_t *ctx)
 {
-    sage_sprite_t *cp;
-    sage_require (cp = malloc (sizeof *cp));
-    sage_require (memcpy (cp, src, sizeof *cp));
+    sage_assert (ctx);
+    sage_sprite_t *cp = sage_sprite_new (sage_texture_id (ctx->tex), ctx->tot);
 
     return cp;
 }
@@ -113,8 +111,8 @@ sage_sprite_reset(sage_sprite_t *ctx)
     ctx->cur.r = ctx->cur.c = 1;
 
     struct sage_area_t frm = sage_sprite_area_frame (ctx);
-    ctx->clip.w = frm.w;
-    ctx->clip.h = frm.h;
+    ctx->clip.w = ctx->proj.w = frm.w;
+    ctx->clip.h = ctx->proj.h = frm.h;
 }
 
 
@@ -125,7 +123,7 @@ sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst)
 
     struct sage_area_t frm = sage_sprite_area_frame (ctx);
     struct sage_point_t nw = {.x = frm.w * (ctx->cur.c - 1) + ctx->clip.x,
-                              .y = frm.h * (ctx->cur.r - 1) + ctx->clip.y};
+        .y = frm.h * (ctx->cur.r - 1) + ctx->clip.y};
 
     struct sage_area_t clip = {.w = ctx->clip.w, .h = ctx->clip.h};
     sage_texture_clip (ctx->tex, nw, clip);

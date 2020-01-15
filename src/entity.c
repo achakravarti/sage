@@ -17,7 +17,7 @@ draw_default(sage_entity_t *ctx)
 {
     sage_assert (ctx);
 
-    /*if (sage_likely (sage_vector_visible (ctx->vec)))*/
+    if (sage_likely (sage_vector_visible (ctx->vec)))
         sage_sprite_draw (ctx->spr, sage_vector_point (ctx->vec));
 }
 
