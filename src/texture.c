@@ -10,15 +10,36 @@ struct sage_texture_t {
     char *path;              /* texture file path */
     SDL_Rect clip;           /* clip area         */
     struct sage_area_t proj; /* projection area   */
+    size_t nref;             /* reference count   */
 };
 
 
+static sage_texture_t *util_cow(sage_texture_t **ctx)
+{
+    sage_texture_t *hnd;
+    sage_assert (ctx && (hnd = *ctx) && hnd->nref >= 1);
+
+    if (hnd->nref == 1)
+        return hnd;
+
+    hnd->nref--;
+    sage_texture_t *cp = sage_texture_new (hnd->path, hnd->id);
+
+    cp->clip = hnd->clip;
+    cp->proj = hnd->proj;
+
+    return cp;
+}
+
+
     /* implement the sage_texture_new() interface function */
-extern SAGE_HOT sage_texture_t *
-sage_texture_new(const char *path, sage_id_t id)
+extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path, sage_id_t id)
 {
     sage_texture_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
+
+    ctx->id = id;
+    ctx->nref = 1;
 
     sage_assert (path && *path);
     size_t len = strlen (path);
@@ -26,62 +47,63 @@ sage_texture_new(const char *path, sage_id_t id)
     strncpy (ctx->path, path, len);
 
     sage_require (ctx->tex = IMG_LoadTexture (sage_screen_brush (), path));
-    sage_texture_reset (ctx);
-    ctx->id = id;
+    (void) sage_texture_reset (&ctx);
 
     return ctx;
 }
 
 
     /* implement the sage_texture_copy() interface function */
-extern SAGE_HOT sage_texture_t *
-sage_texture_copy(const sage_texture_t *ctx)
+extern SAGE_HOT sage_texture_t *sage_texture_copy(const sage_texture_t *ctx)
 {
     sage_assert (ctx);
-    sage_texture_t *cp = sage_texture_new (ctx->path, ctx->id);
-
-    cp->clip = ctx->clip;
-    cp->proj = ctx->proj;
+    sage_texture_t *cp = (sage_texture_t *) ctx;
+    cp->nref++;
 
     return cp;
 }
 
 
     /* implement the sage_texture_free() interface function */
-extern sage_texture_t*
-sage_texture_free(sage_texture_t *ctx)
+extern void sage_texture_free(sage_texture_t **ctx)
 {
-    if (sage_likely (ctx)) {
-        SDL_DestroyTexture (ctx->tex);
-        free (ctx->path);
-        free (ctx);
-    }
+    sage_texture_t *hnd;
 
-    return NULL;
+    if (sage_likely (ctx && (hnd = *ctx)) && !--hnd->nref) {
+        SDL_DestroyTexture (hnd->tex);
+        free (hnd->path);
+
+        free (hnd);
+        *ctx = NULL;
+    }
 }
 
 
     /* implement the sage_texture_size() interface function */
-extern size_t
-sage_texture_size(void)
+extern size_t sage_texture_size(void)
 {
     return sizeof (struct sage_texture_t);
 }
 
 
-    /* implement the sage_texture_id() interface function */
-extern sage_id_t
-sage_texture_id(const sage_texture_t *ctx)
+    /* implement the sage_texture_refcount() interface function */
+extern size_t sage_texture_refcount(const sage_texture_t *ctx)
 {
     sage_assert (ctx);
+    return ctx->nref;
+}
 
+
+    /* implement the sage_texture_id() interface function */
+extern sage_id_t sage_texture_id(const sage_texture_t *ctx)
+{
+    sage_assert (ctx);
     return ctx->id;
 }
 
 
     /* implement the sage_texture_area() interface function */
-extern SAGE_HOT struct sage_area_t 
-sage_texture_area(const sage_texture_t *ctx)
+extern SAGE_HOT struct sage_area_t sage_texture_area(const sage_texture_t *ctx)
 {
     sage_assert (ctx);
     sage_assert (ctx->tex);
@@ -95,48 +117,46 @@ sage_texture_area(const sage_texture_t *ctx)
 
 
     /* implement the sage_texture_clip() interface function */
-extern void
-sage_texture_clip(sage_texture_t *ctx, 
-                  struct sage_point_t nw,
-                  struct sage_area_t clip)
+extern void sage_texture_clip(sage_texture_t **ctx, struct sage_point_t nw,
+    struct sage_area_t clip)
 {
     sage_assert (ctx);
+    sage_texture_t *hnd = util_cow (ctx);
 
-    ctx->clip.x = nw.x;
-    ctx->clip.y = nw.y;
-    ctx->clip.w = clip.w;
-    ctx->clip.h = clip.h;
+    hnd->clip.x = nw.x;
+    hnd->clip.y = nw.y;
+    hnd->clip.w = clip.w;
+    hnd->clip.h = clip.h;
 }
 
 
     /* implement the sage_texture_scale() interface function */
-extern void
-sage_texture_scale(sage_texture_t *ctx, struct sage_area_t proj)
+extern void sage_texture_scale(sage_texture_t **ctx, struct sage_area_t proj)
 {
     sage_assert (ctx);
-
-    ctx->proj = proj;
+    (util_cow (ctx))->proj = proj;
 }
 
 
     /* implement the sage_texture_reset() interface function */
-extern void
-sage_texture_reset(sage_texture_t *ctx)
+extern void sage_texture_reset(sage_texture_t **ctx)
 {
     sage_assert (ctx);
-    sage_assert (ctx->tex);
+    sage_texture_t *hnd = util_cow (ctx);
 
-    ctx->clip.x = ctx->clip.y = 0;
-    SDL_QueryTexture (ctx->tex, NULL, NULL, &ctx->clip.w, &ctx->clip.h);
+    hnd->clip.x = hnd->clip.y = 0;
+
+    sage_assert (hnd->tex);
+    SDL_QueryTexture (hnd->tex, NULL, NULL, &hnd->clip.w, &hnd->clip.h);
     
-    ctx->proj.w = ctx->clip.w;
-    ctx->proj.h = ctx->clip.h;
+    hnd->proj.w = hnd->clip.w;
+    hnd->proj.h = hnd->clip.h;
 }
 
 
     /* implement the sage_texture_draw() interface function */
-extern SAGE_HOT void
-sage_texture_draw(const sage_texture_t *ctx, struct sage_point_t dst)
+extern SAGE_HOT void sage_texture_draw(const sage_texture_t *ctx, 
+    struct sage_point_t dst)
 {
     sage_assert (ctx);
     sage_assert (ctx->tex);

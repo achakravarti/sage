@@ -13,10 +13,11 @@ static inline void *map_copy(const void *tex)
 }
 
 
-static inline void
-map_free(void *tex)
+static inline void map_free(void *tex)
 {
-    (void) sage_texture_free ((sage_texture_t *) tex);
+    printf ("texture map_free() called...\n");
+    sage_texture_t *hnd = (sage_texture_t *) tex;
+    sage_texture_free (&hnd);
 }
 
 

@@ -38,7 +38,7 @@ extern sage_sprite_t *
 sage_sprite_free(sage_sprite_t *ctx)
 {
     if (sage_likely (ctx)) {
-        ctx->tex = sage_texture_free (ctx->tex);
+        sage_texture_free (&ctx->tex);
         free (ctx);
     }
 
@@ -117,7 +117,7 @@ sage_sprite_reset(sage_sprite_t *ctx)
 
 
 extern void
-sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst)
+sage_sprite_draw(sage_sprite_t *ctx, struct sage_point_t dst)
 {
     sage_assert (ctx);
 
@@ -126,8 +126,8 @@ sage_sprite_draw(const sage_sprite_t *ctx, struct sage_point_t dst)
         .y = frm.h * (ctx->cur.r - 1) + ctx->clip.y};
 
     struct sage_area_t clip = {.w = ctx->clip.w, .h = ctx->clip.h};
-    sage_texture_clip (ctx->tex, nw, clip);
-    sage_texture_scale (ctx->tex, ctx->proj);
+    sage_texture_clip (&ctx->tex, nw, clip);
+    sage_texture_scale (&ctx->tex, ctx->proj);
     sage_texture_draw (ctx->tex, dst);
 }
 

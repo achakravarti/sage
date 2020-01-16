@@ -18,7 +18,7 @@ texture_register(void)
 {
     sage_texture_t *tex = sage_texture_new ("test/res/sample.png", TEX_SAMPLE);
     sage_texture_factory_register (tex);
-    sage_texture_free (tex);
+    sage_texture_free (&tex);
 }
 
 
@@ -37,7 +37,6 @@ entity_register(void)
 int
 main(int argc, char *argv[])
 {
-
     (void) argc;
     (void) argv;
 
@@ -48,8 +47,12 @@ main(int argc, char *argv[])
     texture_register ();
     entity_register ();
 
-    (void) sage_arena_push (sage_entity_factory_spawn (ENT_SAMPLE));
+    sage_entity_t *ent = sage_entity_factory_spawn (ENT_SAMPLE);
+    (void) sage_arena_push (ent);
+    sage_entity_free (ent);
+
     sage_game_run ();
+    sage_game_stop ();
    
     return 0;
 }
