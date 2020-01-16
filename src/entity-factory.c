@@ -40,7 +40,7 @@ sage_entity_factory_stop(void)
 extern void 
 sage_entity_factory_register(const sage_entity_t *ent)
 {
-    sage_id_map_value_set (map, sage_entity_id (ent), ent);
+    sage_id_map_value_set (map, sage_entity_class (ent), ent);
 }
 
 

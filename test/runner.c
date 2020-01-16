@@ -48,7 +48,7 @@ main(int argc, char *argv[])
     texture_register ();
     entity_register ();
 
-    sage_arena_push (sage_entity_factory_spawn (ENT_SAMPLE));
+    (void) sage_arena_push (sage_entity_factory_spawn (ENT_SAMPLE));
     sage_game_run ();
    
     return 0;

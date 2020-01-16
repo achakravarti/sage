@@ -3,6 +3,7 @@
 
 
 struct sage_entity_t {
+    sage_id_t cls;
     sage_id_t id;
     sage_vector_t *vec;
     sage_sprite_t *spr;
@@ -37,7 +38,7 @@ update_default(sage_entity_t *ctx)
 
 
 extern sage_entity_t *
-sage_entity_new(sage_id_t id,
+sage_entity_new(sage_id_t cls,
                 sage_id_t texid,
                 struct sage_frame_t frm,
                 sage_entity_f *upd,
@@ -47,7 +48,8 @@ sage_entity_new(sage_id_t id,
     sage_entity_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
 
-    ctx->id = id;
+    ctx->cls = cls;
+    ctx->id = (sage_id_t) 0;
     ctx->vec = sage_vector_new_zero ();
     ctx->spr = sage_sprite_new (texid, frm);
 
@@ -62,16 +64,8 @@ sage_entity_new(sage_id_t id,
 extern sage_entity_t *
 sage_entity_copy(const sage_entity_t *ctx)
 {
-    /*sage_assert (ctx);
-
-    sage_entity_t *cp;
-    sage_require (cp = malloc (sizeof *cp));
-    sage_require (memcpy (cp, ctx, sizeof *cp));
-
-    return cp;*/
-
     sage_assert (ctx);
-    sage_entity_t *cp = sage_entity_new (ctx->id, sage_sprite_id (ctx->spr),
+    sage_entity_t *cp = sage_entity_new (ctx->cls, sage_sprite_id (ctx->spr),
         sage_sprite_frames (ctx->spr), ctx->upd, ctx->free, ctx->draw);
 
     return cp;
@@ -101,9 +95,21 @@ sage_entity_size(void)
 
 
 extern sage_id_t
-sage_entity_id(const sage_entity_t *ctx)
+sage_entity_class(const sage_entity_t *ctx)
+{
+    return ctx->cls;
+}
+
+
+extern sage_id_t sage_entity_id(const sage_entity_t *ctx)
 {
     return ctx->id;
+}
+
+
+extern void sage_entity_id_set(sage_entity_t *ctx, sage_id_t id)
+{
+    ctx->id = id;
 }
 
 
