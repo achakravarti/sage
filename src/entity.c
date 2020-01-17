@@ -77,7 +77,7 @@ sage_entity_free(sage_entity_t *ctx)
 {
     if (sage_likely (ctx)) {
         ctx->vec = sage_vector_free (ctx->vec);
-        ctx->spr = sage_sprite_free (ctx->spr);
+        sage_sprite_free (&ctx->spr);
 
         ctx->free (ctx);
         free (ctx);

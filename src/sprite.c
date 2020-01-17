@@ -11,11 +11,10 @@ struct sage_sprite_t {
 };
 
 
-extern sage_sprite_t *
-sage_sprite_new(sage_id_t texid, struct sage_frame_t tot)
+extern sage_sprite_t *sage_sprite_new(sage_id_t texid, struct sage_frame_t tot)
 {
-    sage_sprite_t *ctx;
-    sage_require (ctx = malloc (sizeof *ctx));
+    sage_sprite_t *ctx = sage_heap_new (sizeof *ctx);
+    //sage_require (ctx = malloc (sizeof *ctx));
 
     ctx->tex = sage_texture_factory_spawn (texid);
     ctx->tot = tot;
@@ -34,34 +33,37 @@ extern sage_sprite_t *sage_sprite_copy(const sage_sprite_t *ctx)
 }
 
 
-extern sage_sprite_t *
-sage_sprite_free(sage_sprite_t *ctx)
+extern void sage_sprite_free(sage_sprite_t **ctx)
 {
-    if (sage_likely (ctx)) {
+    /*if (sage_likely (ctx)) {
         sage_texture_free (&ctx->tex);
         free (ctx);
     }
 
-    return NULL;
+    return NULL;*/
+
+    sage_sprite_t *hnd;
+
+    if (sage_likely (ctx && (hnd = *ctx))) {
+        sage_texture_free (&hnd->tex);
+        sage_heap_free ((void **) ctx);
+    }
 }
 
 
-extern sage_id_t
-sage_sprite_id(const sage_sprite_t *ctx)
+extern sage_id_t sage_sprite_id(const sage_sprite_t *ctx)
 {
     return sage_texture_id (ctx->tex);
 }
 
 
-extern struct sage_area_t
-sage_sprite_area(const sage_sprite_t *ctx)
+extern struct sage_area_t sage_sprite_area(const sage_sprite_t *ctx)
 {
     return sage_texture_area (ctx->tex);
 }
 
 
-extern struct sage_area_t
-sage_sprite_area_frame(const sage_sprite_t *ctx)
+extern struct sage_area_t sage_sprite_area_frame(const sage_sprite_t *ctx)
 {
     sage_assert (ctx);
 
@@ -72,8 +74,7 @@ sage_sprite_area_frame(const sage_sprite_t *ctx)
 }
 
 
-extern void 
-sage_sprite_frame(sage_sprite_t *ctx, struct sage_frame_t frm)
+extern void sage_sprite_frame(sage_sprite_t *ctx, struct sage_frame_t frm)
 {
     ctx->cur = frm;
 }
@@ -85,10 +86,8 @@ extern struct sage_frame_t sage_sprite_frames(sage_sprite_t *ctx)
 }
 
 
-extern void
-sage_sprite_clip(sage_sprite_t *ctx,
-                 struct sage_point_t nw,
-                 struct sage_area_t clip)
+extern void sage_sprite_clip(sage_sprite_t *ctx, struct sage_point_t nw,
+    struct sage_area_t clip)
 {
     ctx->clip.x = nw.x;
     ctx->clip.y = nw.y;
@@ -97,15 +96,13 @@ sage_sprite_clip(sage_sprite_t *ctx,
 }
 
 
-extern void
-sage_sprite_scale(sage_sprite_t *ctx, struct sage_area_t proj)
+extern void sage_sprite_scale(sage_sprite_t *ctx, struct sage_area_t proj)
 {
     ctx->proj = proj;
 }
 
 
-extern void
-sage_sprite_reset(sage_sprite_t *ctx)
+extern void sage_sprite_reset(sage_sprite_t *ctx)
 {
     ctx->clip.x = ctx->clip.y = 0;
     ctx->cur.r = ctx->cur.c = 1;
@@ -116,8 +113,7 @@ sage_sprite_reset(sage_sprite_t *ctx)
 }
 
 
-extern void
-sage_sprite_draw(sage_sprite_t *ctx, struct sage_point_t dst)
+extern void sage_sprite_draw(sage_sprite_t *ctx, struct sage_point_t dst)
 {
     sage_assert (ctx);
 
