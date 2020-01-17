@@ -35,15 +35,13 @@ static sage_texture_t *util_cow(sage_texture_t **ctx)
     /* implement the sage_texture_new() interface function */
 extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path, sage_id_t id)
 {
-    sage_texture_t *ctx;
-    sage_require (ctx = malloc (sizeof *ctx));
-
+    sage_texture_t *ctx = sage_heap_new (sizeof *ctx);
     ctx->id = id;
     ctx->nref = 1;
 
     sage_assert (path && *path);
     size_t len = strlen (path);
-    sage_require (ctx->path = malloc (len + 1));
+    ctx->path = sage_heap_new (len + 1);
     strncpy (ctx->path, path, len);
 
     sage_require (ctx->tex = IMG_LoadTexture (sage_screen_brush (), path));
@@ -71,10 +69,8 @@ extern void sage_texture_free(sage_texture_t **ctx)
 
     if (sage_likely (ctx && (hnd = *ctx)) && !--hnd->nref) {
         SDL_DestroyTexture (hnd->tex);
-        free (hnd->path);
-
-        free (hnd);
-        *ctx = NULL;
+        sage_heap_free ((void **) &hnd->path);
+        sage_heap_free ((void **) ctx);
     }
 }
 

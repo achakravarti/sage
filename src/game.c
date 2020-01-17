@@ -31,6 +31,8 @@ static void event_listen(void)
 extern void sage_game_start(void)
 {
     if (sage_likely (!game)) {
+        sage_heap_start ();
+
         sage_require (game = malloc (sizeof *game));
         game->run = true;
 
@@ -48,6 +50,7 @@ extern void sage_game_stop(void)
     sage_texture_factory_stop ();
 
     free (game);
+    sage_heap_stop ();
 }
 
 

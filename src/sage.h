@@ -170,6 +170,17 @@ do {                                                                    \
 } while (0)
 
 
+/** HEAP MANAGER **/
+
+#define sage_heap_start()
+
+#define sage_heap_stop()
+
+extern void *sage_heap_new(size_t sz);
+
+extern void sage_heap_free(void **bfr);
+
+
 struct sage_point_t {
     int16_t x;
     int16_t y;
