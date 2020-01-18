@@ -16,7 +16,7 @@ static inline void *map_copy(const void *ent)
 static inline void map_free(void *ent)
 {
     printf ("entity map_free() called...\n");
-    (void) sage_entity_free ((sage_entity_t *) ent);
+    (void) sage_entity_free ((sage_entity_t **) &ent);
 }
 
 

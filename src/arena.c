@@ -28,7 +28,7 @@ sage_arena_stop(void)
 {
     if (sage_likely (players)) {
         for (register size_t i = 0; i < players->len; i++)
-            sage_entity_free (players->lst [i]);
+            sage_entity_free (&players->lst [i]);
 
         free (players->lst);
         free (players);
@@ -46,7 +46,7 @@ sage_arena_entity(size_t idx)
 extern void
 sage_arena_entity_set(size_t idx, const sage_entity_t *ent)
 {
-    sage_entity_free (players->lst [idx]);
+    sage_entity_free (&players->lst [idx]);
     players->lst [idx] = sage_entity_copy (ent);
 }
 
@@ -72,7 +72,7 @@ sage_arena_push(const sage_entity_t *ent)
 extern void 
 sage_arena_pop(size_t idx)
 {
-    sage_entity_free (players->lst [idx]);
+    sage_entity_free (&players->lst [idx]);
     players->lst [idx] = players->lst [players->len];
     players->lst [players->len--] = NULL;
 }

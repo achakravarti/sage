@@ -30,7 +30,7 @@ entity_register(void)
         .draw = NULL};
     sage_entity_t *ent = sage_entity_new (ENT_SAMPLE, TEX_SAMPLE, frm, &vt);
     sage_entity_factory_register (ent);
-    sage_entity_free (ent);
+    sage_entity_free (&ent);
 }
 
 
@@ -49,7 +49,7 @@ main(int argc, char *argv[])
 
     sage_entity_t *ent = sage_entity_factory_spawn (ENT_SAMPLE);
     (void) sage_arena_push (ent);
-    sage_entity_free (ent);
+    sage_entity_free (&ent);
 
     sage_game_run ();
     sage_game_stop ();
