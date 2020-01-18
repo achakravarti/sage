@@ -7,14 +7,14 @@ struct sage_entity_t {
     sage_id_t id;
     sage_vector_t *vec;
     sage_sprite_t *spr;
-    sage_entity_f *upd;
-    sage_entity_f *free;
-    sage_entity_f *draw;
+    struct sage_entity_vtable_t vt;
+    /*sage_entity_update_f *upd;
+    sage_entity_free_f *free;
+    sage_entity_draw_f *draw;*/
 };
 
 
-static void
-draw_default(sage_entity_t *ctx)
+static void draw_default(const sage_entity_t *ctx)
 {
     sage_assert (ctx);
 
@@ -23,27 +23,20 @@ draw_default(sage_entity_t *ctx)
 }
 
 
-static void
-free_default(sage_entity_t *ctx)
+static void free_default(sage_entity_t *ctx)
 {
     (void) ctx;
 }
 
 
-static void
-update_default(sage_entity_t *ctx)
+static void update_default(sage_entity_t *ctx)
 {
     (void) ctx;
 }
 
 
-extern sage_entity_t *
-sage_entity_new(sage_id_t cls,
-                sage_id_t texid,
-                struct sage_frame_t frm,
-                sage_entity_f *upd,
-                sage_entity_f *free,
-                sage_entity_f *draw)
+extern sage_entity_t *sage_entity_new(sage_id_t cls, sage_id_t texid,
+    struct sage_frame_t frm, const struct sage_entity_vtable_t *vt)
 {
     sage_entity_t *ctx;
     sage_require (ctx = malloc (sizeof *ctx));
@@ -52,10 +45,14 @@ sage_entity_new(sage_id_t cls,
     ctx->id = (sage_id_t) 0;
     ctx->vec = sage_vector_new_zero ();
     ctx->spr = sage_sprite_new (texid, frm);
+    
+    ctx->vt.update = vt->update ? vt->update : &update_default;
+    ctx->vt.draw = vt->draw ? vt->draw : &draw_default;
+    ctx->vt.free = vt->free ? vt->free : &free_default;
 
-    ctx->upd = upd ? upd : &update_default;
+    /*ctx->upd = upd ? upd : &update_default;
     ctx->free = free ? free : &free_default;
-    ctx->draw = draw ? draw : &draw_default;
+    ctx->draw = draw ? draw : &draw_default;*/
 
     return ctx;
 }
@@ -66,7 +63,7 @@ sage_entity_copy(const sage_entity_t *ctx)
 {
     sage_assert (ctx);
     sage_entity_t *cp = sage_entity_new (ctx->cls, sage_sprite_id (ctx->spr),
-        sage_sprite_frames (ctx->spr), ctx->upd, ctx->free, ctx->draw);
+        sage_sprite_frames (ctx->spr), &ctx->vt);
 
     return cp;
 }
@@ -79,7 +76,7 @@ sage_entity_free(sage_entity_t *ctx)
         ctx->vec = sage_vector_free (ctx->vec);
         sage_sprite_free (&ctx->spr);
 
-        ctx->free (ctx);
+        ctx->vt.free (ctx);
         free (ctx);
     }
 
@@ -136,7 +133,6 @@ extern void
 sage_entity_vector_move(sage_entity_t *ctx, const sage_vector_t *vel)
 {
     sage_assert (ctx && vel);
-
     sage_vector_add (ctx->vec, vel);
 }
 
@@ -145,7 +141,6 @@ extern void
 sage_entity_frame(sage_entity_t *ctx, struct sage_frame_t frm)
 {
     sage_assert (ctx);
-
     sage_sprite_frame (ctx->spr, frm);
 }
 
@@ -154,8 +149,7 @@ extern void
 sage_entity_update(sage_entity_t *ctx)
 {
     sage_assert (ctx);
-
-    ctx->upd (ctx);
+    ctx->vt.update (ctx);
 }
 
 
@@ -163,7 +157,6 @@ extern void
 sage_entity_draw(sage_entity_t *ctx)
 {
     sage_assert (ctx);
-
-    ctx->draw (ctx);
+    ctx->vt.draw (ctx);
 }
 

@@ -875,15 +875,14 @@ extern void sage_sprite_draw(sage_sprite_t *ctx, struct sage_point_t dst);
 
 typedef struct sage_entity_t sage_entity_t;
 
-typedef void (sage_entity_f)(sage_entity_t *ctx);
+struct sage_entity_vtable_t {
+    void (*update)(sage_entity_t *ctx);
+    void (*draw)(const sage_entity_t *ctx);
+    void (*free)(sage_entity_t *ctx);
+};
 
-extern sage_entity_t *
-sage_entity_new(sage_id_t cls,
-                sage_id_t texid,
-                struct sage_frame_t frm,
-                sage_entity_f *upd,
-                sage_entity_f *free,
-                sage_entity_f *draw);
+extern sage_entity_t *sage_entity_new(sage_id_t cls, sage_id_t texid,
+    struct sage_frame_t frm, const struct sage_entity_vtable_t *vt);
 
 extern sage_entity_t *
 sage_entity_copy(const sage_entity_t *src);
