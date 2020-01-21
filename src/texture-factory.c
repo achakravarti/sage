@@ -7,17 +7,17 @@
 static thread_local sage_id_map_t *map = NULL;
 
 
-static inline void *map_copy(const void *tex)
+static inline void *
+map_copy(const void *tex)
 {
     return sage_texture_copy ((const sage_texture_t *) tex);
 }
 
 
-static inline void map_free(void *tex)
+static inline void
+map_free(void **tex)
 {
-    printf ("texture map_free() called...\n");
-    sage_texture_t *hnd = (sage_texture_t *) tex;
-    sage_texture_free (&hnd);
+    sage_texture_free ((sage_texture_t **) tex);
 }
 
 
@@ -25,8 +25,8 @@ extern void
 sage_texture_factory_start(void)
 {
     if (sage_likely (!map)) {
-        map = sage_id_map_new (MAP_BUCKETS, sage_texture_size (), map_copy,
-            map_free);
+        struct sage_id_map_vtable_t vt = {.copy = map_copy, .free = map_free};
+        map = sage_id_map_new (MAP_BUCKETS, sage_texture_size (), &vt);
     }
 }
 

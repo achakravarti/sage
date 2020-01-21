@@ -8,9 +8,6 @@ struct sage_entity_t {
     sage_vector_t *vec;
     sage_sprite_t *spr;
     struct sage_entity_vtable_t vt;
-    /*sage_entity_update_f *upd;
-    sage_entity_free_f *free;
-    sage_entity_draw_f *draw;*/
 };
 
 

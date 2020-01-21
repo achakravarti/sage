@@ -660,15 +660,29 @@ extern SAGE_HOT void sage_event_run(void);
 typedef size_t sage_id_t;
 
 
+struct sage_id_map_vtable_t {
+    void *(*copy) (const void *ctx);
+    void (*free) (void **ctx);
+};
+
+
 typedef struct sage_id_map_t sage_id_map_t;
 
-typedef void *(sage_id_map_copy_f)(const void *ctx);
+/*typedef void *(sage_id_map_copy_f)(const void *ctx);
 
-typedef void (sage_id_map_free_f)(void *ctx);
+typedef void (sage_id_map_free_f)(void *ctx);*/
 
 
-extern sage_id_map_t *sage_id_map_new(size_t buck, size_t sz, 
-    sage_id_map_copy_f *copy, sage_id_map_free_f *free);
+/*extern sage_id_map_t *sage_id_map_new(size_t buck, size_t sz, 
+    sage_id_map_copy_f *copy, sage_id_map_free_f *free);*/
+
+
+extern sage_id_map_t *
+sage_id_map_new(size_t buck,
+                size_t sz,
+                struct sage_id_map_vtable_t *vt);
+
+
 
 extern sage_id_map_t *
 sage_id_map_free(sage_id_map_t *ctx);
@@ -876,9 +890,9 @@ extern void sage_sprite_draw(sage_sprite_t *ctx, struct sage_point_t dst);
 typedef struct sage_entity_t sage_entity_t;
 
 struct sage_entity_vtable_t {
-    void (*update)(sage_entity_t *ctx);
-    void (*draw)(const sage_entity_t *ctx);
-    void (*free)(sage_entity_t *ctx);
+    void (*update) (sage_entity_t *ctx);
+    void (*draw) (const sage_entity_t *ctx);
+    void (*free) (sage_entity_t *ctx);
 };
 
 extern sage_entity_t *sage_entity_new(sage_id_t cls, sage_id_t texid,

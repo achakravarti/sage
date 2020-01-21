@@ -12,8 +12,7 @@ struct node_t {
 struct sage_id_map_t {
     size_t len;
     size_t sz;
-    sage_id_map_copy_f *copy;
-    sage_id_map_free_f *free;
+    struct sage_id_map_vtable_t vt;
     struct node_t **buck;
 };
 
@@ -25,20 +24,27 @@ free_default(void *ctx)
 }
 
 
-extern sage_id_map_t *sage_id_map_new(size_t buck, size_t sz, 
-    sage_id_map_copy_f *copy, sage_id_map_free_f *free)
+extern sage_id_map_t *
+sage_id_map_new(size_t buck,
+                size_t sz,
+                struct sage_id_map_vtable_t *vt)
 {
-    sage_id_map_t *ctx;
-    sage_require (ctx = malloc (sizeof *ctx));
+    sage_id_map_t *ctx = sage_heap_new (sizeof *ctx);
 
+    sage_assert (buck);
     ctx->len = buck;
-    ctx->sz = sz;
-    ctx->copy = copy;
-    ctx->free = free ? free : free_default;
 
-    sage_require (ctx->buck = malloc (sizeof *ctx->buck * ctx->len));
-    for (register size_t i = 0; i < ctx->len; i++)
+    sage_assert (sz);
+    ctx->sz = sz;
+
+    sage_assert (vt && vt->copy && vt->free);
+    ctx->vt.copy = vt->copy;
+    ctx->vt.free = vt->free;
+
+    ctx->buck = sage_heap_new (sizeof *ctx->buck * ctx->len);
+    for (register size_t i = 0; i < ctx->len; i++) {
         ctx->buck [i] = NULL;
+    }
 
     return ctx;
 }
@@ -55,14 +61,14 @@ sage_id_map_free(sage_id_map_t *ctx)
         if ((buck = ctx->buck [i])) {
             do {
                 next = buck->next;
-                ctx->free (buck->val);
-                free (buck);
+                ctx->vt.free (&buck->val);
+                sage_heap_free ((void **) &buck);
                 buck = next;
             } while (buck);
         }
     }
 
-    free (ctx->buck);
+    sage_heap_free ((void **) &ctx->buck);
     free (ctx);
 
     return NULL;
@@ -83,8 +89,9 @@ sage_id_map_value(sage_id_map_t *ctx, sage_id_t key)
     struct node_t *itr = buck;
    
     while (itr) {
-        if (itr->key == key)
-            return ctx->copy (itr->val);
+        if (itr->key == key) {
+            return ctx->vt.copy (itr->val);
+        }
 
         itr = itr->next;
     }
@@ -104,18 +111,17 @@ sage_id_map_value_set(sage_id_map_t *ctx, sage_id_t key, const void *val)
     struct node_t *itr = buck;
     while (itr) {
         if (itr->key == key) {
-            ctx->free (itr->val);
-            itr->val = ctx->copy (val);
+            ctx->vt.free (&itr->val);
+            itr->val = ctx->vt.copy (val);
             return;
         }
 
         itr = itr->next;
     }
 
-    struct node_t *add;
-    sage_require (add = malloc (sizeof *add));
+    struct node_t *add = sage_heap_new (sizeof *add);
     add->key = key;
-    add->val = ctx->copy (val);
+    add->val = ctx->vt.copy (val);
     add->next = buck;
     ctx->buck [hash] = add;
 }
