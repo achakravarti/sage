@@ -28,9 +28,7 @@ float_eq(float lhs, float rhs)
 extern sage_vector_t *
 sage_vector_new(float x, float y)
 {
-    sage_vector_t *ctx;
-    sage_require (ctx = malloc (sizeof *ctx));
-
+    sage_vector_t *ctx = sage_heap_new (sizeof *ctx);
     ctx->x = x;
     ctx->y = y;
 
@@ -51,11 +49,10 @@ sage_vector_copy(const sage_vector_t *src)
 }
 
 
-extern sage_vector_t *
-sage_vector_free(sage_vector_t *ctx)
+extern void
+sage_vector_free(sage_vector_t **ctx)
 {
-    free (ctx);
-    return NULL;
+    sage_heap_free ((void **) ctx);
 }
 
 

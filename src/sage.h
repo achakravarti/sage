@@ -417,8 +417,8 @@ sage_vector_new_zero(void);
 extern sage_vector_t *
 sage_vector_copy(const sage_vector_t *src);
 
-extern sage_vector_t *
-sage_vector_free(sage_vector_t *ctx);
+extern void
+sage_vector_free(sage_vector_t **ctx);
 
 extern float 
 sage_vector_x(const sage_vector_t *ctx);

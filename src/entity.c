@@ -64,7 +64,7 @@ extern void sage_entity_free(sage_entity_t **ctx)
     sage_entity_t *hnd;
 
     if (sage_likely (ctx && (hnd = *ctx))) {
-        hnd->vec = sage_vector_free (hnd->vec);
+        sage_vector_free (&hnd->vec);
         sage_sprite_free (&hnd->spr);
         hnd->vt.free (hnd);
         sage_heap_free ((void **) ctx);
@@ -109,7 +109,7 @@ extern sage_vector_t *sage_entity_vector(const sage_entity_t *ctx)
 extern void sage_entity_vector_set(sage_entity_t *ctx, const sage_vector_t *vec)
 {
     sage_assert (ctx && vec);
-    sage_vector_free (ctx->vec);
+    sage_vector_free (&ctx->vec);
     ctx->vec = sage_vector_copy (vec);
 }
 
