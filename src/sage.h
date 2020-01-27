@@ -965,29 +965,32 @@ extern sage_id_t
 sage_entity_id(const sage_entity_t *ctx);
 
 extern void 
-sage_entity_id_set(sage_entity_t *ctx, 
+sage_entity_id_set(sage_entity_t **ctx,
                    sage_id_t     id);
+
+extern size_t
+sage_entity_refcount(const sage_entity_t *ctx);
 
 extern sage_vector_t *
 sage_entity_vector(const sage_entity_t *ctx);
 
 extern void 
-sage_entity_vector_set(sage_entity_t       *ctx, 
+sage_entity_vector_set(sage_entity_t       **ctx, 
                        const sage_vector_t *vec);
 
 extern void 
-sage_entity_vector_move(sage_entity_t       *ctx, 
+sage_entity_vector_move(sage_entity_t       **ctx, 
                         const sage_vector_t *vel);
 
 extern void 
-sage_entity_frame(sage_entity_t       *ctx, 
+sage_entity_frame(sage_entity_t       **ctx, 
                   struct sage_frame_t frm);
 
 extern void 
-sage_entity_update(sage_entity_t *ctx);
+sage_entity_update(sage_entity_t **ctx);
 
 extern void 
-sage_entity_draw(sage_entity_t *ctx);
+sage_entity_draw(const sage_entity_t *ctx);
 
 
 extern void 

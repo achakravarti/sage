@@ -63,7 +63,7 @@ sage_arena_push(const sage_entity_t *ent)
     }
 
     players->lst [players->len] = sage_entity_copy (ent);
-    sage_entity_id_set (players->lst [players->len], players->len);
+    sage_entity_id_set (&players->lst [players->len], players->len);
 
     return players->len++;
 }
@@ -82,7 +82,7 @@ extern void
 sage_arena_update(void)
 {
     for (register size_t i = 0; i < players->len; i++)
-        sage_entity_update (players->lst [i]);
+        sage_entity_update (&players->lst [i]);
 }
 
 

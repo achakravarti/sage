@@ -50,10 +50,6 @@ sage_sprite_new(sage_id_t           texid,
 extern sage_sprite_t *
 sage_sprite_copy(const sage_sprite_t *ctx)
 {
-    /*sage_assert (ctx);
-    sage_sprite_t *cp = sage_sprite_new (sage_texture_id (ctx->tex), ctx->tot);
-    return cp;*/
-
     sage_assert(ctx);
     sage_sprite_t *cp = (sage_sprite_t *) ctx;
     cp->nref++;
