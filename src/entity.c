@@ -142,22 +142,25 @@ sage_entity_vector_move(sage_entity_t       *ctx,
 }
 
 
-extern void sage_entity_frame(sage_entity_t       *ctx, 
-                              struct sage_frame_t frm)
+extern void 
+sage_entity_frame(sage_entity_t       *ctx, 
+                  struct sage_frame_t frm)
 {
     sage_assert(ctx);
     sage_sprite_frame(ctx->spr, frm);
 }
 
 
-extern void sage_entity_update(sage_entity_t *ctx)
+extern void 
+sage_entity_update(sage_entity_t *ctx)
 {
     sage_assert(ctx);
     ctx->vt.update(ctx);
 }
 
 
-extern void sage_entity_draw(sage_entity_t *ctx)
+extern void 
+sage_entity_draw(sage_entity_t *ctx)
 {
     sage_assert(ctx);
     ctx->vt.draw(ctx);

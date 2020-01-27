@@ -861,30 +861,50 @@ struct sage_frame_t {
 
 typedef struct sage_sprite_t sage_sprite_t;
 
-extern sage_sprite_t *sage_sprite_new(sage_id_t texid, struct sage_frame_t tot);
+extern sage_sprite_t *
+sage_sprite_new(sage_id_t           texid, 
+                struct sage_frame_t tot);
 
-extern sage_sprite_t *sage_sprite_copy(const sage_sprite_t *ctx);
+extern sage_sprite_t *
+sage_sprite_copy(const sage_sprite_t *ctx);
 
-extern void sage_sprite_free(sage_sprite_t **ctx);
+extern void 
+sage_sprite_free(sage_sprite_t **ctx);
 
-extern sage_id_t sage_sprite_id(const sage_sprite_t *ctx);
+extern sage_id_t 
+sage_sprite_id(const sage_sprite_t *ctx);
 
-extern struct sage_area_t sage_sprite_area(const sage_sprite_t *ctx);
+extern struct sage_area_t 
+sage_sprite_area(const sage_sprite_t *ctx);
 
-extern struct sage_area_t sage_sprite_area_frame(const sage_sprite_t *ctx);
+extern struct sage_area_t 
+sage_sprite_area_frame(const sage_sprite_t *ctx);
 
-extern void sage_sprite_frame(sage_sprite_t *ctx, struct sage_frame_t frm);
+extern void 
+sage_sprite_frame(sage_sprite_t       **ctx, 
+                  struct sage_frame_t frm);
 
-extern struct sage_frame_t sage_sprite_frames(sage_sprite_t *ctx);
+extern struct sage_frame_t 
+sage_sprite_frames(const sage_sprite_t *ctx);
 
-extern void sage_sprite_clip(sage_sprite_t *ctx, struct sage_point_t nw,
-    struct sage_area_t clip);
+extern size_t
+sage_sprite_refcount(const sage_sprite_t *ctx);
 
-extern void sage_sprite_scale(sage_sprite_t *ctx, struct sage_area_t proj);
+extern void 
+sage_sprite_clip(sage_sprite_t       **ctx, 
+                 struct sage_point_t nw,
+                 struct sage_area_t  clip);
 
-extern void sage_sprite_reset(sage_sprite_t *ctx);
+extern void 
+sage_sprite_scale(sage_sprite_t      **ctx, 
+                  struct sage_area_t proj);
 
-extern void sage_sprite_draw(sage_sprite_t *ctx, struct sage_point_t dst);
+extern void 
+sage_sprite_reset(sage_sprite_t **ctx);
+
+extern void 
+sage_sprite_draw(const sage_sprite_t *ctx, 
+                 struct sage_point_t dst);
 
 
 typedef struct sage_entity_t sage_entity_t;
