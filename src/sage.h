@@ -1,3 +1,13 @@
+/******************************************************************************
+ *                           ____   __    ___  ____ 
+ *                          / ___) / _\  / __)(  __)
+ *                          \___ \/    \( (_ \ ) _) 
+ *                          (____/\_/\_/ \___/(____)
+ *
+ * This is the src/sage.h header file, and it is a part of the Schemable? Game
+ * Engine (SAGE) Library. It declares the public API of the SAGE Library.
+ ******************************************************************************/
+
 #if (!defined SCHEME_ASSISTED_GAME_ENGINE)
 #   define SCHEME_ASSISTED_GAME_ENGINE
 
@@ -911,15 +921,8 @@ typedef struct sage_entity_t sage_entity_t;
 
 
 /**
- * Struct: sage_entity_vtable_t
- *      V-table of callback functions for sage_entity_t.
- *
- * Scope: Entity
- *
- * Fields:
- *      update - update callback
- *      draw   - draw callback
- *      free   - free callback
+ *      The sage_entity_vtable_t structure holds the v-table of callback
+ *      functions for a sage_entity_t instance. There are three callback
  **/
 struct sage_entity_vtable_t {
     void (*update) (sage_entity_t *ctx);
