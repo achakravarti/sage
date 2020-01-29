@@ -694,14 +694,17 @@ enum sage_keyboard_state_t {
 };
 
 
-extern void sage_keyboard_start(void);
+extern void 
+sage_keyboard_start(void);
 
-extern void sage_keyboard_stop(void);
+extern void 
+sage_keyboard_stop(void);
 
-extern SAGE_HOT enum sage_keyboard_state_t sage_keyboard_state(
-    enum sage_keyboard_key_t key);
+extern SAGE_HOT enum sage_keyboard_state_t 
+sage_keyboard_state(enum sage_keyboard_key_t key);
 
-extern SAGE_HOT void sage_keyboard_input(void);
+extern SAGE_HOT void 
+sage_keyboard_state_update(void);
 
 
 /** EVENT **/

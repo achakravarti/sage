@@ -27,7 +27,7 @@ extern SAGE_HOT void sage_event_run(void)
 
         case SDL_KEYUP:
         case SDL_KEYDOWN:
-            sage_keyboard_input ();
+            sage_keyboard_state_update();
             break;
 
         default:

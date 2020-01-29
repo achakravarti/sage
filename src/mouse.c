@@ -28,9 +28,10 @@
 
 /*
  * The mouse singleton reifies the mouse attached to the computer on which the
- * SAGE Library is running. We can safely assume that the host computer has only
- * one mouse attached to it. The mouse singleton holds the current state of each
- * mouse button, and the current position vector of the cursor.
+ * SAGE Library is running. The mouse singleton holds the current state of each
+ * mouse button, and the current position vector of the cursor. The mouse
+ * singleton assumes that there is only one connected mouse since the SDL2 API
+ * does not yet support multiple mouse devices.
  */
 static thread_local struct {
     enum sage_mouse_state_t states[SAGE_MOUSE_BUTTON_COUNT];

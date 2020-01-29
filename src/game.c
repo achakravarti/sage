@@ -11,7 +11,7 @@ static thread_local struct {
 static void 
 listen(void)
 {
-    while (SDL_PollEvent (&game->event)) {
+    while (SDL_PollEvent(&game->event)) {
         switch (game->event.type) {
             case SDL_QUIT:
                 game->run = false;
@@ -19,7 +19,7 @@ listen(void)
 
             case SDL_KEYUP:
             case SDL_KEYDOWN:
-                sage_keyboard_input ();
+                sage_keyboard_state_update();
                 break;
 
             case SDL_MOUSEBUTTONUP:
@@ -74,15 +74,15 @@ extern void sage_game_run(void)
     // TODO: problem with hues needs to be fixed
     sage_colour_t *black = sage_colour_new_hue (SAGE_HUE_BLACK);
 
-    while (sage_likely (game->run)) {
-        listen ();
-        sage_arena_update ();
+    while (sage_likely(game->run)) {
+        listen();
+        sage_arena_update();
 
-        sage_screen_clear (black);
-        sage_arena_draw ();
-        sage_screen_render ();
+        sage_screen_clear(black);
+        sage_arena_draw();
+        sage_screen_render();
     }
 
-    sage_colour_free (black);
+    sage_colour_free(black);
 }
 
