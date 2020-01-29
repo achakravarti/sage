@@ -59,6 +59,12 @@ update_default(sage_entity_t *ctx)
 }
 
 
+/*
+ *      The sage_entity_new() function is responsible for creating a new 
+ *      sage_entity_t instance. See the comments for the corresponding prototype
+ *      in the src/sage.h header file for further details.
+ *
+ */
 extern sage_entity_t *
 sage_entity_new(sage_id_t                         cls, 
                 sage_id_t                         texid,
@@ -83,12 +89,6 @@ sage_entity_new(sage_id_t                         cls,
 extern sage_entity_t *
 sage_entity_copy(const sage_entity_t *ctx)
 {
-    /*sage_assert(ctx);
-    sage_entity_t *cp = sage_entity_new(ctx->cls, sage_sprite_id(ctx->spr),
-                                        sage_sprite_frames(ctx->spr), 
-                                        &ctx->vt);
-    return cp;*/
-
     sage_assert(ctx);
     sage_entity_t *cp = (sage_entity_t *) ctx;
     cp->nref++;
