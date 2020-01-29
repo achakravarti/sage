@@ -4,9 +4,20 @@
  *                          \___ \/    \( (_ \ ) _) 
  *                          (____/\_/\_/ \___/(____)
  *
- * This is the src/sage.h header file, and it is a part of the Schemable? Game
- * Engine (SAGE) Library. It declares the public API of the SAGE Library.
+ * Copyright (c) 2020 Abhishek Chakravarti <abhishek@taranjali.org>.
+ *
+ * This code is released under the MIT License. See the accompanying
+ * sage/LICENSE.md file or <http://opensource.org/licenses/MIT> for complete 
+ * licensing details.
+ *
+ * BY CONTINUING TO USE AND/OR DISTRIBUTE THIS FILE, YOU ACKNOWLEDGE THAT YOU
+ * HAVE UNDERSTOOD THESE LICENSE TERMS AND ACCEPT THEM.
+ *
+ * This is the sage/src/sage.h header file, and it is a part of the Schemable? 
+ * Game Engine (SAGE) Library. It declares the public API of the SAGE Library,
+ * and is its only header file.
  ******************************************************************************/
+
 
 #if (!defined SCHEME_ASSISTED_GAME_ENGINE)
 #   define SCHEME_ASSISTED_GAME_ENGINE
