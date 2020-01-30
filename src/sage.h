@@ -435,8 +435,11 @@ sage_vector_new(float x, float y);
 extern sage_vector_t *
 sage_vector_new_zero(void);
 
-extern sage_vector_t *
+extern const sage_vector_t *
 sage_vector_copy(const sage_vector_t *src);
+
+extern sage_vector_t *
+sage_vector_copy_deep(const sage_vector_t *src);
 
 extern void
 sage_vector_free(sage_vector_t **ctx);
@@ -1042,7 +1045,7 @@ sage_entity_id_set(sage_entity_t **ctx,
 extern size_t
 sage_entity_refcount(const sage_entity_t *ctx);
 
-extern sage_vector_t *
+extern const sage_vector_t *
 sage_entity_vector(const sage_entity_t *ctx);
 
 extern void 

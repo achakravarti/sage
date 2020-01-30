@@ -27,7 +27,7 @@ cow(sage_entity_t **ctx)
                                         sage_sprite_frames(hnd->spr), &hnd->vt);
    
     sage_vector_free(&cp->vec); 
-    cp->vec = sage_vector_copy(hnd->vec);
+    cp->vec = sage_vector_copy_deep(hnd->vec);
 
     return cp;
 }
@@ -153,7 +153,7 @@ sage_entity_refcount(const sage_entity_t *ctx)
 }
 
 
-extern sage_vector_t *
+extern const sage_vector_t *
 sage_entity_vector(const sage_entity_t *ctx)
 {
     sage_assert(ctx);
@@ -169,7 +169,7 @@ sage_entity_vector_set(sage_entity_t       **ctx,
     sage_entity_t *hnd = cow(ctx);
 
     sage_vector_free(&hnd->vec);
-    hnd->vec = sage_vector_copy(vec);
+    hnd->vec = sage_vector_copy_deep(vec);
 }
 
 
@@ -191,7 +191,7 @@ sage_entity_focused(const sage_entity_t *ctx)
     struct sage_area_t frame = sage_sprite_area_frame(ctx->spr);
     sage_vector_t *add = sage_vector_new((float) frame.w, (float) frame.h);
 
-    sage_vector_t *se = sage_vector_copy(ctx->vec);
+    sage_vector_t *se = sage_vector_copy_deep(ctx->vec);
     sage_vector_add(se, add);
 
     const sage_vector_t *aim = sage_mouse_vector();

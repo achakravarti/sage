@@ -42,9 +42,18 @@ sage_vector_new_zero(void)
 }
 
 
-extern sage_vector_t *
+extern const sage_vector_t *
 sage_vector_copy(const sage_vector_t *src)
 {
+    sage_assert(src);
+    return src;
+}
+
+
+extern sage_vector_t *
+sage_vector_copy_deep(const sage_vector_t *src)
+{
+    sage_assert(src);
     return sage_vector_new (src->x, src->y);
 }
 
