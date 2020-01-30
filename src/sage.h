@@ -468,6 +468,21 @@ sage_vector_norm(sage_vector_t *ctx);
 extern enum sage_compare_t 
 sage_vector_cmp(const sage_vector_t *lhs, const sage_vector_t *rhs);
 
+extern bool
+sage_vector_lt(const sage_vector_t *ctx, const sage_vector_t *rhs);
+
+extern bool
+sage_vector_lteq(const sage_vector_t *ctx, const sage_vector_t *rhs);
+
+extern bool
+sage_vector_eq(const sage_vector_t *ctx, const sage_vector_t *rhs);
+
+extern bool
+sage_vector_gteq(const sage_vector_t *ctx, const sage_vector_t *rhs);
+
+extern bool
+sage_vector_gt(const sage_vector_t *ctx, const sage_vector_t *rhs);
+
 extern void 
 sage_vector_add(sage_vector_t *ctx, const sage_vector_t *add);
 
@@ -1037,6 +1052,9 @@ sage_entity_vector_set(sage_entity_t       **ctx,
 extern void 
 sage_entity_vector_move(sage_entity_t       **ctx, 
                         const sage_vector_t *vel);
+
+extern bool
+sage_entity_focused(const sage_entity_t *ctx);
 
 extern void 
 sage_entity_frame(sage_entity_t       **ctx, 

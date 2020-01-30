@@ -183,6 +183,27 @@ sage_entity_vector_move(sage_entity_t       **ctx,
 }
 
 
+extern bool
+sage_entity_focused(const sage_entity_t *ctx)
+{
+    sage_assert(ctx);
+
+    struct sage_area_t frame = sage_sprite_area_frame(ctx->spr);
+    sage_vector_t *add = sage_vector_new((float) frame.w, (float) frame.h);
+
+    sage_vector_t *se = sage_vector_copy(ctx->vec);
+    sage_vector_add(se, add);
+
+    const sage_vector_t *aim = sage_mouse_vector();
+    bool focused = sage_vector_gteq(aim, ctx->vec) && sage_vector_lteq(aim, se);
+
+    sage_vector_free(&add);
+    sage_vector_free(&se);
+
+    return focused;
+}
+
+
 extern void 
 sage_entity_frame(sage_entity_t       **ctx, 
                   struct sage_frame_t frm)

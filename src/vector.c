@@ -129,6 +129,40 @@ sage_vector_cmp(const sage_vector_t *ctx, const sage_vector_t *rhs)
 }
 
 
+extern bool
+sage_vector_lt(const sage_vector_t *ctx, const sage_vector_t *rhs)
+{
+    return sage_vector_cmp(ctx, rhs) == SAGE_COMPARE_LT;
+}
+
+
+extern bool
+sage_vector_lteq(const sage_vector_t *ctx, const sage_vector_t *rhs)
+{
+    return !sage_vector_gt(ctx, rhs);
+}
+
+
+extern bool
+sage_vector_eq(const sage_vector_t *ctx, const sage_vector_t *rhs)
+{
+    return sage_vector_cmp(ctx, rhs) == SAGE_COMPARE_EQ;
+}
+
+
+extern bool
+sage_vector_gteq(const sage_vector_t *ctx, const sage_vector_t *rhs)
+{
+    return !sage_vector_lt(ctx, rhs);
+}
+
+extern bool
+sage_vector_gt(const sage_vector_t *ctx, const sage_vector_t *rhs)
+{
+    return sage_vector_cmp(ctx, rhs) == SAGE_COMPARE_GT;
+}
+
+
 extern void 
 sage_vector_add(sage_vector_t *ctx, const sage_vector_t *add)
 {
