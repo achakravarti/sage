@@ -126,11 +126,11 @@ sage_sprite_clip(sage_sprite_t       **ctx,
                  struct sage_point_t nw,
                  struct sage_area_t  clip)
 {
-    sage_assert(ctx);
+    sage_assert (ctx);
     sage_sprite_t *hnd = cow(ctx);
 
-    hnd->clip.x = nw.x;
-    hnd->clip.y = nw.y;
+    hnd->clip.x = (int) nw.x;
+    hnd->clip.y = (int) nw.y;
     hnd->clip.w = clip.w;
     hnd->clip.h = clip.h;
 }
@@ -169,8 +169,10 @@ sage_sprite_draw(const sage_sprite_t *ctx,
     sage_assert(ctx);
 
     struct sage_area_t frm = sage_sprite_area_frame(ctx);
-    struct sage_point_t nw = {.x = frm.w * (ctx->cur.c - 1) + ctx->clip.x,
-                              .y = frm.h * (ctx->cur.r - 1) + ctx->clip.y};
+    struct sage_point_t nw = {.x = (float) (frm.w * (ctx->cur.c - 1) 
+                                            + ctx->clip.x),
+                              .y = (float) (frm.h * (ctx->cur.r - 1) 
+                                            + ctx->clip.y)};
     struct sage_area_t clip = {.w = ctx->clip.w, .h = ctx->clip.h};
 
     sage_sprite_t *hnd = (sage_sprite_t *) ctx;

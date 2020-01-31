@@ -203,8 +203,8 @@ extern void sage_heap_free(void **bfr);
 
 
 struct sage_point_t {
-    int16_t x;
-    int16_t y;
+    float x;
+    float y;
 };
 
 

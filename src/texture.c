@@ -119,8 +119,8 @@ extern void sage_texture_clip(sage_texture_t **ctx, struct sage_point_t nw,
     sage_assert (ctx);
     sage_texture_t *hnd = util_cow (ctx);
 
-    hnd->clip.x = nw.x;
-    hnd->clip.y = nw.y;
+    hnd->clip.x = (int) nw.x;
+    hnd->clip.y = (int) nw.y;
     hnd->clip.w = clip.w;
     hnd->clip.h = clip.h;
 }
@@ -157,7 +157,7 @@ extern SAGE_HOT void sage_texture_draw(const sage_texture_t *ctx,
     sage_assert (ctx);
     sage_assert (ctx->tex);
 
-    SDL_Rect to = {.x = dst.x, .y = dst.y, .w = ctx->proj.w, .h = ctx->proj.h};
+    SDL_Rect to = {.x = (int) dst.x, .y = (int) dst.y, .w = ctx->proj.w, .h = ctx->proj.h};
     SDL_RenderCopy (sage_screen_brush (), ctx->tex, &ctx->clip, &to);
 }
 

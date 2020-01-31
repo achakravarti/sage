@@ -194,16 +194,15 @@ sage_vector_y_set(sage_vector_t *ctx,
 
 /*
  * The sage_vector_point() inteface function gets the coordinates of a given
- * vector instance represented as a point structure. Note that we lose the
- * precision of the coordinates when we do this converstion. TODO: consider
- * setting the fields of sage_point_t to float insstead of int16_t.
+ * vector instance represented as a point structure. We choose to return the
+ * point structure by value instead of reference since it's only 64 bits wide.
  */
 extern struct sage_point_t
 sage_vector_point(const sage_vector_t *ctx)
 {
     sage_assert (ctx);
+    struct sage_point_t pt = {.x = ctx->x, .y = ctx->y};
 
-    struct sage_point_t pt = {.x = (int16_t) ctx->x, .y = (int16_t) ctx->y};
     return pt;
 }
 
