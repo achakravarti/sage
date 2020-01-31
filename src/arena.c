@@ -36,7 +36,7 @@ sage_arena_stop(void)
 }
 
 
-extern sage_entity_t *
+extern const sage_entity_t *
 sage_arena_entity(size_t idx)
 {
     return sage_entity_copy (players->lst [idx]);
@@ -46,8 +46,8 @@ sage_arena_entity(size_t idx)
 extern void
 sage_arena_entity_set(size_t idx, const sage_entity_t *ent)
 {
-    sage_entity_free (&players->lst [idx]);
-    players->lst [idx] = sage_entity_copy (ent);
+    sage_entity_free(&players->lst[idx]);
+    players->lst[idx] = sage_entity_copy_deep(ent);
 }
 
 
@@ -62,8 +62,8 @@ sage_arena_push(const sage_entity_t *ent)
         sage_require (players->lst = realloc (players->lst, sz));
     }
 
-    players->lst [players->len] = sage_entity_copy (ent);
-    sage_entity_id_set (&players->lst [players->len], players->len);
+    players->lst[players->len] = sage_entity_copy_deep(ent);
+    sage_entity_id_set(players->lst [players->len], players->len);
 
     return players->len++;
 }
@@ -82,7 +82,7 @@ extern void
 sage_arena_update(void)
 {
     for (register size_t i = 0; i < players->len; i++)
-        sage_entity_update (&players->lst [i]);
+        sage_entity_update (players->lst [i]);
 }
 
 

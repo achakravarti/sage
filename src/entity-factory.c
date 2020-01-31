@@ -7,10 +7,11 @@
 static thread_local sage_id_map_t *map = NULL;
 
 
+// TODO: implement map_copy_deep() and map_copy()
 static inline void *
 map_copy(const void *ent)
 {
-    return sage_entity_copy ((const sage_entity_t *) ent);
+    return sage_entity_copy_deep((const sage_entity_t *) ent);
 }
 
 
