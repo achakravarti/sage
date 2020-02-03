@@ -32,11 +32,11 @@
 /*
  * The sage_vector_t struct was forward declared in the sage/src/sage.h header
  * file. Here we're defining the struct with its attributes. This struct holds
- * the x and y coordinates.
+ * the x and y coordinates that represent a vector.
  */
 struct sage_vector_t {
-    float x;
-    float y;
+    float x; /* x coordinate */
+    float y; /* y coordinate */
 };
 
 

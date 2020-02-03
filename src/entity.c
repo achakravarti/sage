@@ -1,72 +1,90 @@
-#include <string.h>
+/******************************************************************************
+ *                           ____   __    ___  ____ 
+ *                          / ___) / _\  / __)(  __)
+ *                          \___ \/    \( (_ \ ) _) 
+ *                          (____/\_/\_/ \___/(____)
+ *
+ * Schemable? Game Engine (SAGE) Library
+ * Copyright (c) 2020 Abhishek Chakravarti <abhishek@taranjali.org>.
+ *
+ * This code is released under the MIT License. See the accompanying
+ * sage/LICENSE.md file or <http://opensource.org/licenses/MIT> for complete 
+ * licensing details.
+ *
+ * BY CONTINUING TO USE AND/OR DISTRIBUTE THIS FILE, YOU ACKNOWLEDGE THAT YOU
+ * HAVE UNDERSTOOD THESE LICENSE TERMS AND ACCEPT THEM.
+ *
+ * This is the sage/src/vector.c source file; it implements the entity API of 
+ * the SAGE Library.
+ ******************************************************************************/
+
+
+/*
+ * The sage/src/sage.h header file contains the declaration of the API of the
+ * SAGE Library.
+ */
 #include "sage.h"
 
 
-/* define the sage_entity_t struct which was forward-declared in src/sage.h */
+/*
+ * The sage_entity_t struct was forward declared in the sage/src/sage.h header
+ * file. We're defining the struct here with its attributes. 
+ *
+ * The entity class is a unique identifier for the specific type of entity; all
+ * entities of the same type have the same class. The arena ID of the entity is 
+ * a unique identifier allocated to an entity instance by the arena in which 
+ * it has been spawned; the arena ID is mutable depending on the context. 
+ *
+ * The position vector holds the current position of the entity. The sprite 
+ * attribute holds the sprite sheet used for animating the entity. The v-table 
+ * attribute holds the callback functions that are used to polymorphically alter
+ * the behaviour of each class of entity.
+ */
 struct sage_entity_t {
     sage_id_t                   cls;  /* entity class         */
     sage_id_t                   id;   /* arena ID             */
     sage_vector_t               *vec; /* position vector      */
     sage_sprite_t               *spr; /* sprite               */
     struct sage_entity_vtable_t vt;   /* v-table of callbacks */
-    //size_t                      nref; /* reference count      */
 };
 
 
 /*
-static sage_entity_t *
-cow(sage_entity_t **ctx)
-{
-    sage_entity_t *hnd;
-    sage_assert(ctx && (hnd = *ctx) && hnd->nref >= 1);
-
-    if (hnd->nref == 1)
-        return hnd;
-
-    hnd->nref--;
-    sage_entity_t *cp = sage_entity_new(hnd->cls, sage_sprite_id(hnd->spr),
-                                        sage_sprite_frames(hnd->spr), &hnd->vt);
-   
-    sage_vector_free(&cp->vec); 
-    cp->vec = sage_vector_copy_deep(hnd->vec);
-
-    return cp;
-}
-*/
-
-
-extern sage_entity_t *
-sage_entity_copy_deep(const sage_entity_t *ctx)
-{
-    sage_assert (ctx);
-    sage_entity_t *cp = sage_entity_new(ctx->cls, sage_sprite_id(ctx->spr),
-                                        sage_sprite_frames(ctx->spr), &ctx->vt);
-    cp->vec = sage_vector_copy_deep(ctx->vec);
-
-    return cp;
-}
-
-
-static void 
+ * The draw_default() helper function is the default draw callback for entity
+ * instances. This is the default draw function that is called for an entity in
+ * case it has not been initialised with a draw callback. This function simply
+ * draws the current frame of entity's sprite sheet at the current position of
+ * the entity, provided that the entity is visible on the screen.
+ */
+static inline void 
 draw_default(const sage_entity_t *ctx)
 {
     sage_assert (ctx);
-
-    if (sage_likely(sage_vector_visible(ctx->vec)))
+    if (sage_likely (sage_vector_visible(ctx->vec)))
         sage_sprite_draw(ctx->spr, sage_vector_point(ctx->vec));
 }
 
 
-/* define the default free callback function for entity instances */
-static void 
+/*
+ * The free_default() helper function is the default free callback for entity
+ * instances. This function doesn't do anything, but has been provided in order
+ * to make a performance gain that mitigates the necessity of having to check
+ * whether a free callback has been provided at each call to sage_entity_free().
+ */
+static inline void 
 free_default(sage_entity_t *ctx)
 {
     (void) ctx;
 }
 
 
-/* define the default update callback function for entity instances */
-static void 
+/*
+ * The update_default() helper function is the default update callback for
+ * entity instances. Just as in the case of the free_default() helper function,
+ * this function has been provided in order to improve performance, even though
+ * it does nothing.
+ */
+static inline void 
 update_default(sage_entity_t *ctx)
 {
     (void) ctx;
@@ -74,10 +92,12 @@ update_default(sage_entity_t *ctx)
 
 
 /*
- *      The sage_entity_new() function is responsible for creating a new 
- *      sage_entity_t instance. See the comments for the corresponding prototype
- *      in the src/sage.h header file for further details.
- *
+ * The sage_entity_new() interface function creates a new instance of an entity.
+ * We initialise the class, sprite, and v-table attributes of the entity through
+ * the arguments supplied, and the position vector and arena ID attributes to
+ * their default values. In case the v-table is not provided, or if any of the
+ * callback functions in the v-table are not defined, then the default callback
+ * functions (defined above) are used.
  */
 extern sage_entity_t *
 sage_entity_new(sage_id_t                         cls, 
@@ -90,64 +110,110 @@ sage_entity_new(sage_id_t                         cls,
     ctx->id = (sage_id_t) 0;
     ctx->vec = sage_vector_new_zero();
     ctx->spr = sage_sprite_new(texid, frm);
-    //ctx->nref = 1;
-    
-    ctx->vt.update = vt->update ? vt->update : &update_default;
-    ctx->vt.draw = vt->draw ? vt->draw : &draw_default;
-    ctx->vt.free = vt->free ? vt->free : &free_default;
+   
+    if (sage_likely (vt)) { 
+        ctx->vt.update = vt->update ? vt->update : &update_default;
+        ctx->vt.draw = vt->draw ? vt->draw : &draw_default;
+        ctx->vt.free = vt->free ? vt->free : &free_default;
+    } else {
+        ctx->vt.update = &update_default;
+        ctx->vt.draw = &draw_default;
+        ctx->vt.free = &free_default;
+    }
 
     return ctx;
 }
 
 
+/*
+ * The sage_entity_copy() interface function creates a shallow copy of an
+ * entity. We simply return a const pointer to the contextual instance.
+ */
 extern const sage_entity_t *
 sage_entity_copy(const sage_entity_t *ctx)
 {
     sage_assert(ctx);
-    //sage_entity_t *cp = (sage_entity_t *) ctx;
-    //cp->nref++;
-
     return ctx;
 }
 
 
+/*
+ * The sage_entity_copy_deep() interface function creates a deep copy of an
+ * entity. We create a new entity instance with the same attributes as the
+ * contextual instance, and return the handle to the newly created entity.
+ */
+extern sage_entity_t *
+sage_entity_copy_deep(const sage_entity_t *ctx)
+{
+    sage_assert (ctx);
+    sage_entity_t *cp = sage_entity_new(ctx->cls, sage_sprite_id(ctx->spr),
+                                        sage_sprite_frames(ctx->spr), &ctx->vt);
+    cp->vec = sage_vector_copy_deep(ctx->vec);
+
+    return cp;
+}
+
+
+/*
+ * The sage_entity_free() interface function releases the heap memory allocated
+ * to an entity. We first run the free callback in the entity's v-table, and
+ * then release the dynamically allocated attributes before releasing the entity
+ * itself.
+ */
 extern void 
 sage_entity_free(sage_entity_t **ctx)
 {
     sage_entity_t *hnd;
 
     if (sage_likely(ctx && (hnd = *ctx))) {
+        hnd->vt.free(hnd);
         sage_vector_free(&hnd->vec);
         sage_sprite_free(&hnd->spr);
-        hnd->vt.free(hnd);
         sage_heap_free((void **) ctx);
     }
 }
 
 
+/*
+ * The sage_entity_size() interface function gets the current size of an entity.
+ * We need this function because sage_entity_t is an abstract data type, and so
+ * can't be dereferenced by client code.
+ */
 extern size_t 
 sage_entity_size(void)
 {
-    return sizeof(struct sage_entity_t);
+    return sizeof (struct sage_entity_t);
 }
 
 
+/*
+ * The sage_entity_class() interface function gets the class of an entity. The
+ * class is held in the cls attribute of the entity.
+ */
 extern sage_id_t 
 sage_entity_class(const sage_entity_t *ctx)
 {
-    sage_assert(ctx);
+    sage_assert (ctx);
     return ctx->cls;
 }
 
 
+/*
+ * The sage_entity_id() interface function gets the arena ID of an entity. The
+ * arena ID is held in the id attribute of the entity.
+ */
 extern sage_id_t 
 sage_entity_id(const sage_entity_t *ctx)
 {
-    sage_assert(ctx);
+    sage_assert (ctx);
     return ctx->id;
 }
 
 
+/*
+ * The sage_entity_id_set() interface function sets the ID of an entity. We do
+ * so by updating the id attribute of the entity.
+ */
 extern void 
 sage_entity_id_set(sage_entity_t *ctx, 
                    sage_id_t     id)
@@ -157,6 +223,11 @@ sage_entity_id_set(sage_entity_t *ctx,
 }
 
 
+/*
+ * The sage_entity_vector() interface function gets the current position vector
+ * of an entity. The current position is held in the vec attribute of the
+ * entity.
+ */
 extern const sage_vector_t *
 sage_entity_vector(const sage_entity_t *ctx)
 {
@@ -165,6 +236,11 @@ sage_entity_vector(const sage_entity_t *ctx)
 }
 
 
+/*
+ * The sage_entity_vector_set() interface function sets the current position
+ * vector of an entity. We do so by updating the vec attribute of the entity
+ * through a deep copy.
+ */
 extern void 
 sage_entity_vector_set(sage_entity_t       *ctx, 
                        const sage_vector_t *vec)
@@ -175,6 +251,11 @@ sage_entity_vector_set(sage_entity_t       *ctx,
 }
 
 
+/*
+ * The sage_entity_vector_move() interface function moves the current entity by
+ * a given velocity vector. We do so by adding the velocity vector to the
+ * current position of the entity.
+ */
 extern void 
 sage_entity_vector_move(sage_entity_t       *ctx, 
                         const sage_vector_t *vel)
@@ -184,6 +265,14 @@ sage_entity_vector_move(sage_entity_t       *ctx,
 }
 
 
+/*
+ * The sage_entity_focused() interface function checks whether an entity has the
+ * current mouse focus. We know that the mouse is focused within the entity if
+ * the current position of the mouse lies between the current NW and SE points
+ * of the entity. The NW point is obtained from the current position vector of
+ * the entity, and SE point is computed accordingly based on the dimensions of
+ * the current sprite frame. TODO: account for alpha channel pixels
+ */
 extern bool
 sage_entity_focused(const sage_entity_t *ctx)
 {
@@ -194,17 +283,20 @@ sage_entity_focused(const sage_entity_t *ctx)
 
     sage_vector_t *se = sage_vector_copy_deep(ctx->vec);
     sage_vector_add(se, add);
+    sage_vector_free(&add);
 
     const sage_vector_t *aim = sage_mouse_vector();
     bool focused = sage_vector_gteq(aim, ctx->vec) && sage_vector_lteq(aim, se);
-
-    sage_vector_free(&add);
     sage_vector_free(&se);
 
     return focused;
 }
 
 
+/*
+ * The sage_entity_frame() interface function sets the current sprite frame of
+ * an entity. We do so by updating the spr field of the entity.
+ */
 extern void 
 sage_entity_frame(sage_entity_t       *ctx, 
                   struct sage_frame_t frm)
@@ -214,6 +306,10 @@ sage_entity_frame(sage_entity_t       *ctx,
 }
 
 
+/*
+ * The sage_entity_update() interface function updates the state of an entity.
+ * We do so by calling the update callback function in the entity's v-table.
+ */
 extern void 
 sage_entity_update(sage_entity_t *ctx)
 {
@@ -222,10 +318,24 @@ sage_entity_update(sage_entity_t *ctx)
 }
 
 
+/*
+ * The sage_entity_draw() interface function draws an entity. We do so by
+ * calling the draw callback function in the entity's v-table.
+ */
 extern void 
 sage_entity_draw(const sage_entity_t *ctx)
 {
     sage_assert(ctx);
     ctx->vt.draw(ctx);
 }
+
+
+/******************************************************************************
+ *                                   __.-._
+ *                                   '-._"7'
+ *                                    /'.-c
+ *                                    |  /T
+ *                                   _)_/LI
+ *
+ ******************************************************************************/
 
