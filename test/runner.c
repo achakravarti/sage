@@ -26,11 +26,9 @@ static void
 entity_register(void)
 {
     struct sage_frame_t frm = {.r = 1, .c = 1};
-    struct sage_entity_vtable_t vt = {.update = NULL, .free = NULL, 
-        .draw = NULL};
-    sage_entity_t *ent = sage_entity_new (ENT_SAMPLE, TEX_SAMPLE, frm, &vt);
-    sage_entity_factory_register (ent);
-    sage_entity_free (&ent);
+    sage_entity_t *ent = sage_entity_new_default(ENT_SAMPLE, TEX_SAMPLE, frm);
+    sage_entity_factory_register(ent);
+    sage_entity_free(&ent);
 }
 
 

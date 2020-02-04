@@ -1023,6 +1023,11 @@ sage_entity_new(sage_id_t                         cls,
                 struct sage_frame_t               frm, 
                 const struct sage_entity_vtable_t *vt);
 
+extern sage_entity_t *
+sage_entity_new_default(sage_id_t           cls,
+                        sage_id_t           texid,
+                        struct sage_frame_t frm);
+
 extern const sage_entity_t *
 sage_entity_copy(const sage_entity_t *src);
 

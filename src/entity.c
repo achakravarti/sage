@@ -95,9 +95,8 @@ update_default(sage_entity_t *ctx)
  * The sage_entity_new() interface function creates a new instance of an entity.
  * We initialise the class, sprite, and v-table attributes of the entity through
  * the arguments supplied, and the position vector and arena ID attributes to
- * their default values. In case the v-table is not provided, or if any of the
- * callback functions in the v-table are not defined, then the default callback
- * functions (defined above) are used.
+ * their default values. If any of the callback functions in the v-table are not
+ * defined, then the default callback functions (defined above) are used.
  */
 extern sage_entity_t *
 sage_entity_new(sage_id_t                         cls, 
@@ -110,18 +109,31 @@ sage_entity_new(sage_id_t                         cls,
     ctx->id = (sage_id_t) 0;
     ctx->vec = sage_vector_new_zero();
     ctx->spr = sage_sprite_new(texid, frm);
-   
-    if (sage_likely (vt)) { 
-        ctx->vt.update = vt->update ? vt->update : &update_default;
-        ctx->vt.draw = vt->draw ? vt->draw : &draw_default;
-        ctx->vt.free = vt->free ? vt->free : &free_default;
-    } else {
-        ctx->vt.update = &update_default;
-        ctx->vt.draw = &draw_default;
-        ctx->vt.free = &free_default;
-    }
+  
+    sage_assert (vt); 
+    ctx->vt.update = vt->update ? vt->update : &update_default;
+    ctx->vt.draw = vt->draw ? vt->draw : &draw_default;
+    ctx->vt.free = vt->free ? vt->free : &free_default;
 
     return ctx;
+}
+
+
+/*
+ * The sage_entity_new_default() interface function overrides sage_entity_new(),
+ * creating a default entity instance. The only difference between this function
+ * and sage_entity_new() is that this function sets the v-table attributes to
+ * the default callback functions.
+ */
+extern sage_entity_t *
+sage_entity_new_default(sage_id_t           cls,
+                        sage_id_t           texid,
+                        struct sage_frame_t frm)
+{
+    struct sage_entity_vtable_t vt = {.update = &update_default, 
+                                      .draw = &draw_default, 
+                                      .free = &free_default};
+    return sage_entity_new(cls, texid, frm, &vt);
 }
 
 
