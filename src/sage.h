@@ -988,6 +988,41 @@ sage_sprite_draw(const sage_sprite_t *ctx,
                  struct sage_point_t dst);
 
 
+typedef struct sage_payload_t sage_payload_t;
+
+struct sage_payload_vtable_t {
+    void *(*copy_deep)(const void *data);
+    void (*free)      (void **data);
+};
+
+extern sage_payload_t *
+sage_payload_new(const void                         *data,
+                 size_t                             sz,
+                 const struct sage_payload_vtable_t *vt);
+
+extern const sage_payload_t *
+sage_payload_copy(const sage_payload_t *ctx);
+
+extern sage_payload_t *
+sage_payload_copy_deep(const sage_payload_t *ctx);
+
+extern void 
+sage_payload_free(sage_payload_t **ctx);
+
+extern size_t
+sage_payload_size(void);
+
+extern size_t 
+sage_payload_size_data(const sage_payload_t *ctx);
+
+extern const void *
+sage_payload_data(const sage_payload_t *ctx);
+
+extern void 
+sage_payload_data_set(sage_payload_t *ctx,
+                      const void     *data);
+
+
 typedef struct sage_entity_t sage_entity_t;
 
 
@@ -999,6 +1034,18 @@ struct sage_entity_vtable_t {
     void (*update) (sage_entity_t *ctx);
     void (*draw)   (const sage_entity_t *ctx);
     void (*free)   (sage_entity_t *ctx);
+};
+
+
+struct sage_entity_payload_t {
+    void   *data;
+    size_t sz;
+    void   *(*copy_deep)(struct sage_entity_payload_t *ctx);
+    void   (*free)      (struct sage_entity_payload_t **ctx);
+    void   (*update)    (struct sage_entity_payload_t *ctx, 
+                         sage_entity_t                *base);
+    void   (*draw)      (const struct sage_entity_payload_t *ctx, 
+                         const sage_entity_t                *base);
 };
 
 
