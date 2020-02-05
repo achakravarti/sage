@@ -38,14 +38,16 @@
  * The position vector holds the current position of the entity. The sprite 
  * attribute holds the sprite sheet used for animating the entity. The v-table 
  * attribute holds the callback functions that are used to polymorphically alter
- * the behaviour of each class of entity.
+ * the behaviour of each class of entity in relation to the custom data payload
+ * attribute.
  */
 struct sage_entity_t {
-    sage_id_t                   cls;  /* entity class         */
-    sage_id_t                   id;   /* arena ID             */
-    sage_vector_t               *vec; /* position vector      */
-    sage_sprite_t               *spr; /* sprite               */
-    struct sage_entity_vtable_t vt;   /* v-table of callbacks */
+    sage_id_t                   cls;    /* entity class         */
+    sage_id_t                   id;     /* arena ID             */
+    sage_vector_t               *vec;   /* position vector      */
+    sage_sprite_t               *spr;   /* sprite               */
+    sage_payload_t              *cdata; /* custom data payload  */
+    struct sage_entity_vtable_t vt;     /* v-table of callbacks */
 };
 
 
@@ -66,19 +68,6 @@ draw_default(const sage_entity_t *ctx)
 
 
 /*
- * The free_default() helper function is the default free callback for entity
- * instances. This function doesn't do anything, but has been provided in order
- * to make a performance gain that mitigates the necessity of having to check
- * whether a free callback has been provided at each call to sage_entity_free().
- */
-static inline void 
-free_default(sage_entity_t *ctx)
-{
-    (void) ctx;
-}
-
-
-/*
  * The update_default() helper function is the default update callback for
  * entity instances. Just as in the case of the free_default() helper function,
  * this function has been provided in order to improve performance, even though
@@ -93,15 +82,17 @@ update_default(sage_entity_t *ctx)
 
 /*
  * The sage_entity_new() interface function creates a new instance of an entity.
- * We initialise the class, sprite, and v-table attributes of the entity through
- * the arguments supplied, and the position vector and arena ID attributes to
- * their default values. If any of the callback functions in the v-table are not
- * defined, then the default callback functions (defined above) are used.
+ * We initialise the class, sprite, custom data payload and v-table attributes
+ * of the entity through the arguments supplied, and the position vector and
+ * arena ID attributes to their default values. If any of the callback functions
+ * in the v-table are not defined, then the default callback functions (defined 
+ * above) are used.
  */
 extern sage_entity_t *
 sage_entity_new(sage_id_t                         cls, 
                 sage_id_t                         texid,
                 struct sage_frame_t               frm, 
+                const sage_payload_t              *cdata,
                 const struct sage_entity_vtable_t *vt)
 {
     sage_entity_t *ctx = sage_heap_new(sizeof *ctx);
@@ -109,11 +100,11 @@ sage_entity_new(sage_id_t                         cls,
     ctx->id = (sage_id_t) 0;
     ctx->vec = sage_vector_new_zero();
     ctx->spr = sage_sprite_new(texid, frm);
+    ctx->cdata = sage_payload_copy_deep(cdata);
   
     sage_assert (vt); 
     ctx->vt.update = vt->update ? vt->update : &update_default;
     ctx->vt.draw = vt->draw ? vt->draw : &draw_default;
-    ctx->vt.free = vt->free ? vt->free : &free_default;
 
     return ctx;
 }
@@ -123,17 +114,24 @@ sage_entity_new(sage_id_t                         cls,
  * The sage_entity_new_default() interface function overrides sage_entity_new(),
  * creating a default entity instance. The only difference between this function
  * and sage_entity_new() is that this function sets the v-table attributes to
- * the default callback functions.
+ * the default callback functions, and the custom data payload to null.
  */
 extern sage_entity_t *
 sage_entity_new_default(sage_id_t           cls,
                         sage_id_t           texid,
                         struct sage_frame_t frm)
 {
-    struct sage_entity_vtable_t vt = {.update = &update_default, 
-                                      .draw = &draw_default, 
-                                      .free = &free_default};
-    return sage_entity_new(cls, texid, frm, &vt);
+    sage_entity_t *ctx = sage_heap_new(sizeof *ctx);
+    ctx->cls = cls;
+    ctx->id = (sage_id_t) 0;
+    ctx->vec = sage_vector_new_zero();
+    ctx->spr = sage_sprite_new(texid, frm);
+    ctx->cdata = NULL;
+
+    ctx->vt.update = &update_default;
+    ctx->vt.draw = &draw_default;
+
+    return ctx;
 }
 
 
@@ -157,10 +155,17 @@ sage_entity_copy(const sage_entity_t *ctx)
 extern sage_entity_t *
 sage_entity_copy_deep(const sage_entity_t *ctx)
 {
-    sage_assert (ctx);
-    sage_entity_t *cp = sage_entity_new(ctx->cls, sage_sprite_id(ctx->spr),
-                                        sage_sprite_frames(ctx->spr), &ctx->vt);
+    sage_entity_t *cp = sage_heap_new(sizeof *ctx);
+
+    cp->cls = ctx->cls;
+    cp->id = ctx->id;
     cp->vec = sage_vector_copy_deep(ctx->vec);
+    cp->spr = sage_sprite_copy(ctx->spr);
+    cp->cdata = sage_likely (ctx->cdata) ? sage_payload_copy_deep(ctx->cdata)
+                                       : NULL;
+
+    cp->vt.update = ctx->vt.update;
+    cp->vt.draw = ctx->vt.draw;
 
     return cp;
 }
@@ -168,17 +173,16 @@ sage_entity_copy_deep(const sage_entity_t *ctx)
 
 /*
  * The sage_entity_free() interface function releases the heap memory allocated
- * to an entity. We first run the free callback in the entity's v-table, and
- * then release the dynamically allocated attributes before releasing the entity
- * itself.
+ * to an entity. We first free the custom data payload, and then free the base
+ * attributes before releasing the entity itself.
  */
 extern void 
 sage_entity_free(sage_entity_t **ctx)
 {
     sage_entity_t *hnd;
 
-    if (sage_likely(ctx && (hnd = *ctx))) {
-        hnd->vt.free(hnd);
+    if (sage_likely (ctx && (hnd = *ctx))) {
+        sage_payload_free(&hnd->cdata);
         sage_vector_free(&hnd->vec);
         sage_sprite_free(&hnd->spr);
         sage_heap_free((void **) ctx);

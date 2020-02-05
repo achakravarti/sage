@@ -46,10 +46,12 @@ sage_payload_copy_deep(const sage_payload_t *ctx)
 extern void 
 sage_payload_free(sage_payload_t **ctx)
 {
-    sage_assert (ctx && *ctx);
-    sage_payload_t *hnd = *ctx;
-    hnd->vt.free(&hnd->data);
-    sage_heap_free((void **) ctx);
+    sage_payload_t *hnd;
+
+    if (sage_likely (ctx && (hnd = *ctx))) {
+        hnd->vt.free(&hnd->data);
+        sage_heap_free((void **) ctx);
+    }
 }
 
 

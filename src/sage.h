@@ -1033,19 +1033,6 @@ typedef struct sage_entity_t sage_entity_t;
 struct sage_entity_vtable_t {
     void (*update) (sage_entity_t *ctx);
     void (*draw)   (const sage_entity_t *ctx);
-    void (*free)   (sage_entity_t *ctx);
-};
-
-
-struct sage_entity_payload_t {
-    void   *data;
-    size_t sz;
-    void   *(*copy_deep)(struct sage_entity_payload_t *ctx);
-    void   (*free)      (struct sage_entity_payload_t **ctx);
-    void   (*update)    (struct sage_entity_payload_t *ctx, 
-                         sage_entity_t                *base);
-    void   (*draw)      (const struct sage_entity_payload_t *ctx, 
-                         const sage_entity_t                *base);
 };
 
 
@@ -1068,6 +1055,7 @@ extern sage_entity_t *
 sage_entity_new(sage_id_t                         cls, 
                 sage_id_t                         texid,
                 struct sage_frame_t               frm, 
+                const sage_payload_t              *cust,
                 const struct sage_entity_vtable_t *vt);
 
 extern sage_entity_t *
