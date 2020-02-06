@@ -1096,6 +1096,9 @@ extern void
 sage_entity_vector_move(sage_entity_t       *ctx, 
                         const sage_vector_t *vel);
 
+extern const sage_payload_t *
+sage_entity_payload(const sage_entity_t *ctx);
+
 extern bool
 sage_entity_focused(const sage_entity_t *ctx);
 
@@ -1121,6 +1124,51 @@ sage_entity_factory_register(const sage_entity_t *ent);
 
 extern sage_entity_t *
 sage_entity_factory_spawn(sage_id_t id);
+
+
+typedef struct sage_state_t sage_state_t;
+
+struct sage_state_vtable_t {
+    void (*start)  (sage_state_t *ctx);
+    void (*stop)   (sage_state_t *ctx);
+    void (*update) (sage_state_t *ctx);
+    void (*draw)   (const sage_state_t *ctx);
+};
+
+extern sage_state_t *
+sage_state_new(sage_id_t                        id,
+               sage_payload_t                   *cdata,
+               const struct sage_state_vtable_t *vt);
+
+extern const sage_state_t *
+sage_state_copy(const sage_state_t *ctx);
+
+extern sage_state_t *
+sage_state_copy_deep(const sage_state_t *ctx);
+
+extern void
+sage_state_free(sage_state_t **ctx);
+
+extern size_t
+sage_state_size(void);
+
+extern sage_id_t
+sage_state_id(const sage_state_t *ctx);
+
+extern const sage_payload_t *
+sage_state_payload(const sage_state_t *ctx);
+
+extern void 
+sage_state_start(sage_state_t *ctx);
+
+extern void 
+sage_state_stop(sage_state_t *ctx);
+
+extern void 
+sage_state_update(sage_state_t *ctx);
+
+extern void 
+sage_state_draw(const sage_state_t *ctx);
 
 
 extern void 

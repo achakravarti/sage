@@ -142,7 +142,7 @@ sage_entity_new_default(sage_id_t           cls,
 extern const sage_entity_t *
 sage_entity_copy(const sage_entity_t *ctx)
 {
-    sage_assert(ctx);
+    sage_assert (ctx);
     return ctx;
 }
 
@@ -162,7 +162,7 @@ sage_entity_copy_deep(const sage_entity_t *ctx)
     cp->vec = sage_vector_copy_deep(ctx->vec);
     cp->spr = sage_sprite_copy(ctx->spr);
     cp->cdata = sage_likely (ctx->cdata) ? sage_payload_copy_deep(ctx->cdata)
-                                       : NULL;
+                                         : NULL;
 
     cp->vt.update = ctx->vt.update;
     cp->vt.draw = ctx->vt.draw;
@@ -278,6 +278,18 @@ sage_entity_vector_move(sage_entity_t       *ctx,
 {
     sage_assert (ctx && vel);
     sage_vector_add(ctx->vec, vel);
+}
+
+
+/*
+ * The sage_entity_payload() interface function gets a handle to the payload of
+ * an entity instance. We return a shallow copy of the custom data attribute.
+ */
+extern const sage_payload_t *
+sage_entity_payload(const sage_entity_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx->cdata;
 }
 
 
