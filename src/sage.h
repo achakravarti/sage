@@ -199,6 +199,10 @@ do {                                                                    \
 
 extern void *sage_heap_new(size_t sz);
 
+extern void *
+sage_heap_resize(void   *ptr,
+                 size_t sz);
+
 extern void sage_heap_free(void **bfr);
 
 
@@ -1124,6 +1128,67 @@ sage_entity_factory_register(const sage_entity_t *ent);
 
 extern sage_entity_t *
 sage_entity_factory_spawn(sage_id_t id);
+
+
+
+
+typedef struct sage_entity_list_t sage_entity_list_t;
+
+
+extern sage_entity_list_t *
+sage_entity_list_new(void);
+
+
+extern const sage_entity_list_t *
+sage_entity_list_copy(const sage_entity_list_t *ctx);
+
+
+extern sage_entity_list_t *
+sage_entity_list_copy_deep(const sage_entity_list_t *ctx);
+
+
+extern void
+sage_entity_list_free(sage_entity_list_t **ctx);
+
+
+extern size_t
+sage_entity_list_length(const sage_entity_list_t *ctx);
+
+
+extern size_t
+sage_entity_list_capacity(const sage_entity_list_t *ctx);
+
+
+extern const sage_entity_t *
+sage_entity_list_get(const sage_entity_list_t *ctx,
+                     size_t                   idx);
+
+
+extern void
+sage_entity_list_set(sage_entity_list_t  *ctx,
+                     size_t              idx,
+                     const sage_entity_t *ent);
+
+
+extern void
+sage_entity_list_push(sage_entity_list_t *ctx,
+                      sage_id_t          cls,
+                      sage_id_t          id);
+
+
+extern void
+sage_entity_list_pop(sage_entity_list_t *ctx,
+                     sage_id_t          id);
+
+
+extern void
+sage_entity_list_update(sage_entity_list_t *ctx);
+
+
+extern void
+sage_entity_list_draw(const sage_entity_list_t *ctx);
+
+
 
 
 typedef struct sage_state_t sage_state_t;
