@@ -1220,6 +1220,9 @@ sage_state_size(void);
 extern sage_id_t
 sage_state_id(const sage_state_t *ctx);
 
+extern const sage_entity_list_t *
+sage_state_entities(const sage_state_t *ctx);
+
 extern const sage_payload_t *
 sage_state_payload(const sage_state_t *ctx);
 
