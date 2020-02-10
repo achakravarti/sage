@@ -779,7 +779,7 @@ extern void *
 sage_id_map_value(sage_id_map_t *ctx, sage_id_t key);
 
 extern void
-sage_id_map_value_set(sage_id_map_t *ctx, sage_id_t key, const void *val);
+sage_id_map_value_set(sage_id_map_t *ctx, sage_id_t key, void *val);
 
 
 /**
@@ -937,7 +937,8 @@ extern void
 sage_texture_factory_stop(void);
 
 extern void
-sage_texture_factory_register(const sage_texture_t *tex);
+sage_texture_factory_register(sage_id_t  id,
+                              const char *path);
 
 extern sage_texture_t *
 sage_texture_factory_spawn(sage_id_t id);
@@ -959,7 +960,7 @@ sage_sprite_new(sage_id_t           texid,
                 struct sage_frame_t tot);
 
 extern sage_sprite_t *
-sage_sprite_copy(const sage_sprite_t *ctx);
+sage_sprite_copy_deep(const sage_sprite_t *ctx);
 
 extern void 
 sage_sprite_free(sage_sprite_t **ctx);
@@ -974,26 +975,23 @@ extern struct sage_area_t
 sage_sprite_area_frame(const sage_sprite_t *ctx);
 
 extern void 
-sage_sprite_frame(sage_sprite_t       **ctx, 
+sage_sprite_frame(sage_sprite_t       *ctx, 
                   struct sage_frame_t frm);
 
 extern struct sage_frame_t 
 sage_sprite_frames(const sage_sprite_t *ctx);
 
-extern size_t
-sage_sprite_refcount(const sage_sprite_t *ctx);
-
 extern void 
-sage_sprite_clip(sage_sprite_t       **ctx, 
+sage_sprite_clip(sage_sprite_t       *ctx, 
                  struct sage_point_t nw,
                  struct sage_area_t  clip);
 
 extern void 
-sage_sprite_scale(sage_sprite_t      **ctx, 
+sage_sprite_scale(sage_sprite_t      *ctx, 
                   struct sage_area_t proj);
 
 extern void 
-sage_sprite_reset(sage_sprite_t **ctx);
+sage_sprite_reset(sage_sprite_t *ctx);
 
 extern void 
 sage_sprite_draw(const sage_sprite_t *ctx, 
@@ -1132,7 +1130,8 @@ extern void
 sage_entity_factory_stop(void);
 
 extern void 
-sage_entity_factory_register(const sage_entity_t *ent);
+sage_entity_factory_register(sage_id_t cls,
+                             sage_id_t texid);
 
 extern sage_entity_t *
 sage_entity_factory_spawn(sage_id_t id);

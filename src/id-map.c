@@ -103,7 +103,7 @@ sage_id_map_value(sage_id_map_t *ctx, sage_id_t key)
 
 
 extern void
-sage_id_map_value_set(sage_id_map_t *ctx, sage_id_t key, const void *val)
+sage_id_map_value_set(sage_id_map_t *ctx, sage_id_t key, void *val)
 {
     size_t hash = sage_id_map_hash (ctx, key);
     struct node_t *buck = ctx->buck [hash];
@@ -112,7 +112,7 @@ sage_id_map_value_set(sage_id_map_t *ctx, sage_id_t key, const void *val)
     while (itr) {
         if (itr->key == key) {
             ctx->vt.free (&itr->val);
-            itr->val = ctx->vt.copy (val);
+            itr->val = val;
             return;
         }
 
@@ -121,7 +121,7 @@ sage_id_map_value_set(sage_id_map_t *ctx, sage_id_t key, const void *val)
 
     struct node_t *add = sage_heap_new (sizeof *add);
     add->key = key;
-    add->val = ctx->vt.copy (val);
+    add->val = val;
     add->next = buck;
     ctx->buck [hash] = add;
 }

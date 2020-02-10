@@ -16,19 +16,14 @@ enum {
 static void
 texture_register(void)
 {
-    sage_texture_t *tex = sage_texture_new ("test/res/sample.png", TEX_SAMPLE);
-    sage_texture_factory_register (tex);
-    sage_texture_free (&tex);
+    sage_texture_factory_register(TEX_SAMPLE, "test/res/sample.png");
 }
 
 
 static void
 entity_register(void)
 {
-    struct sage_frame_t frm = {.r = 1, .c = 1};
-    sage_entity_t *ent = sage_entity_new_default(ENT_SAMPLE, TEX_SAMPLE, frm);
-    sage_entity_factory_register(ent);
-    sage_entity_free(&ent);
+    sage_entity_factory_register(ENT_SAMPLE, TEX_SAMPLE);
 }
 
 

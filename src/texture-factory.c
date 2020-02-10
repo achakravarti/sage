@@ -40,9 +40,10 @@ sage_texture_factory_stop(void)
 
 
 extern void
-sage_texture_factory_register(const sage_texture_t *tex)
+sage_texture_factory_register(sage_id_t  id,
+                              const char *path)
 {
-    sage_id_map_value_set(map, sage_texture_id (tex), tex);
+    sage_id_map_value_set(map, id, sage_texture_new(path, id));
 }
 
 

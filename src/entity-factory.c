@@ -1,4 +1,4 @@
-#include "sage.h"
+#include "./sage.h"
 
 
 #define MAP_BUCKETS ((size_t) 16)
@@ -40,9 +40,12 @@ sage_entity_factory_stop(void)
 
 
 extern void 
-sage_entity_factory_register(const sage_entity_t *ent)
+sage_entity_factory_register(sage_id_t cls,
+                             sage_id_t texid)
+                             
 {
-    sage_id_map_value_set (map, sage_entity_class (ent), ent);
+    struct sage_frame_t frm = {.r = 1, .c = 1};
+    sage_id_map_value_set(map, cls, sage_entity_new_default(cls, texid, frm));
 }
 
 
