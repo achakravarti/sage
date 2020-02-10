@@ -51,6 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# Temporary test runner
-sage-runner
+# Build artefacts
+bld/
 
