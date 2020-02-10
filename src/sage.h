@@ -1168,12 +1168,12 @@ sage_entity_list_capacity(const sage_entity_list_t *ctx);
 
 extern const sage_entity_t *
 sage_entity_list_get(const sage_entity_list_t *ctx,
-                     size_t                   idx);
+                     sage_id_t                id);
 
 
 extern void
 sage_entity_list_set(sage_entity_list_t  *ctx,
-                     size_t              idx,
+                     sage_id_t           id,
                      const sage_entity_t *ent);
 
 
@@ -1227,8 +1227,23 @@ sage_state_size(void);
 extern sage_id_t
 sage_state_id(const sage_state_t *ctx);
 
-extern const sage_entity_list_t *
-sage_state_entities(const sage_state_t *ctx);
+extern const sage_entity_t *
+sage_state_entity(const sage_state_t *ctx,
+                  sage_id_t          id);
+
+extern void
+sage_state_entity_set(sage_state_t       *ctx,
+                     sage_id_t           id,
+                     const sage_entity_t *ent);
+
+extern void
+sage_state_entity_push(sage_state_t *ctx,
+                       sage_id_t    cls,
+                       sage_id_t    id);
+
+extern void
+sage_state_entity_pop(sage_state_t *ctx,
+                      sage_id_t    id);
 
 extern const sage_payload_t *
 sage_state_payload(const sage_state_t *ctx);

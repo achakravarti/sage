@@ -79,20 +79,40 @@ sage_entity_list_capacity(const sage_entity_list_t *ctx)
 
 extern const sage_entity_t *
 sage_entity_list_get(const sage_entity_list_t *ctx,
-                     size_t                   idx)
+                     sage_id_t                id)
 {
-    sage_assert (ctx && idx);
-    return ctx->bfr[idx];
+    sage_assert (ctx && id);
+    register size_t i;
+    for (i = 0; i < ctx->len; i++) {
+        if (sage_entity_id(ctx->bfr[i]) == id)
+            return ctx->bfr[i];
+    }
+
+    /* entity not found */
+    sage_assert (i < ctx->len);
+    return NULL;
 }
 
 
 extern void
 sage_entity_list_set(sage_entity_list_t  *ctx,
-                     size_t              idx,
+                     sage_id_t           id,
                      const sage_entity_t *ent)
 {
-    sage_assert (ctx && idx && ent);
-    ctx->bfr[idx] = sage_entity_copy_deep(ent);
+    sage_assert (ctx && id && ent);
+    register size_t i;
+    for (i = 0; i < ctx->len; i++) {
+        if (sage_entity_id(ctx->bfr[i]) == id) {
+            sage_entity_free(&ctx->bfr[i]);
+            ctx->bfr[i] = sage_entity_copy_deep(ent);
+            sage_entity_id_set(ctx->bfr[i], id);
+
+            return;
+        }
+    }
+
+    /* entity not found */
+    sage_assert (i < ctx->len);
 }
 
 

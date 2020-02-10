@@ -102,12 +102,42 @@ sage_state_id(const sage_state_t *ctx)
     return ctx->id;
 }
 
-
-extern const sage_entity_list_t *
-sage_state_entities(const sage_state_t *ctx)
+    
+extern const sage_entity_t *
+sage_state_entity(const sage_state_t *ctx,
+                  sage_id_t          id)
 {
     sage_assert (ctx);
-    return sage_entity_list_copy(ctx->ents);
+    return sage_entity_list_get(ctx->ents, id);
+}
+
+
+extern void
+sage_state_entity_set(sage_state_t       *ctx,
+                     sage_id_t           id,
+                     const sage_entity_t *ent)
+{
+    sage_assert (ctx);
+    sage_entity_list_set(ctx->ents, id, ent);
+}
+
+
+extern void
+sage_state_entity_push(sage_state_t *ctx,
+                       sage_id_t    cls,
+                       sage_id_t    id)
+{
+    sage_assert (ctx);
+    sage_entity_list_push(ctx->ents, cls, id);
+}
+
+
+extern void
+sage_state_entity_pop(sage_state_t *ctx,
+                      sage_id_t    id)
+{
+    sage_assert (ctx);
+    sage_entity_list_pop(ctx->ents, id);
 }
 
 
