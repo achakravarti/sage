@@ -58,5 +58,10 @@ clean:
 run: $(TEST_BIN)
 	./$(TEST_BIN)
 
+check: $(TEST_BIN)
+	valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all \
+		 --track-origins=yes --log-file=$(DIR_BLD)/valgrind.log  \
+		 $(TEST_BIN)
+
 .PHONY: all clean run
 

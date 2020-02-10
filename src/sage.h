@@ -799,8 +799,13 @@ typedef struct sage_texture_t sage_texture_t;
  * @see sage_texture_copy()
  * @see sage_texture_free()
  */
-extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path, 
-    sage_id_t id);
+extern SAGE_HOT sage_texture_t *
+sage_texture_new(const char *path, 
+                 sage_id_t  id);
+
+
+extern const sage_texture_t *
+sage_texture_copy(const sage_texture_t *ctx);
 
 
 /**
@@ -813,7 +818,8 @@ extern SAGE_HOT sage_texture_t *sage_texture_new(const char *path,
  * @see sage_texture_new()
  * @see sage_texture_free()
  */
-extern SAGE_HOT sage_texture_t *sage_texture_copy(const sage_texture_t *ctx);
+extern SAGE_HOT sage_texture_t *
+sage_texture_copy_deep(const sage_texture_t *ctx);
 
 
 /**
@@ -826,7 +832,8 @@ extern SAGE_HOT sage_texture_t *sage_texture_copy(const sage_texture_t *ctx);
  * @see sage_texture_new()
  * @see sage_texture_copy()
  */
-extern void sage_texture_free(sage_texture_t **ctx);
+extern void 
+sage_texture_free(sage_texture_t **ctx);
 
 
 /**
@@ -834,15 +841,8 @@ extern void sage_texture_free(sage_texture_t **ctx);
  *
  * @return The size of a texture instance.
  */
-extern size_t sage_texture_size(void);
-
-
-/**
- * Gets the reference count of a texture instance.
- *
- * @return The reference count of a texture instance.
- */
-extern size_t sage_texture_refcount(const sage_texture_t *ctx);
+extern size_t 
+sage_texture_size(void);
 
 
 /**
@@ -852,7 +852,8 @@ extern size_t sage_texture_refcount(const sage_texture_t *ctx);
  *
  * @return The ID of @p ctx.
  */
-extern sage_id_t sage_texture_id(const sage_texture_t *ctx);
+extern sage_id_t 
+sage_texture_id(const sage_texture_t *ctx);
 
 
 /**
@@ -862,7 +863,8 @@ extern sage_id_t sage_texture_id(const sage_texture_t *ctx);
  *
  * @return The area of @p ctx.
  */
-extern SAGE_HOT struct sage_area_t sage_texture_area(const sage_texture_t *ctx);
+extern SAGE_HOT struct sage_area_t 
+sage_texture_area(const sage_texture_t *ctx);
 
 
 /**
@@ -876,8 +878,10 @@ extern SAGE_HOT struct sage_area_t sage_texture_area(const sage_texture_t *ctx);
  * @see sage_texture_reset()
  * @see sage_texture_draw()
  */
-extern void sage_texture_clip(sage_texture_t **ctx, struct sage_point_t nw,
-    struct sage_area_t clip);
+extern void 
+sage_texture_clip(sage_texture_t      *ctx, 
+                  struct sage_point_t nw,
+                  struct sage_area_t  clip);
 
 
 /**
@@ -890,7 +894,9 @@ extern void sage_texture_clip(sage_texture_t **ctx, struct sage_point_t nw,
  * @see sage_texture_reset()
  * @see sage_texture_draw()
  */
-extern void sage_texture_scale(sage_texture_t **ctx, struct sage_area_t proj);
+extern void 
+sage_texture_scale(sage_texture_t     *ctx, 
+                   struct sage_area_t proj);
 
 
 /**
@@ -902,7 +908,8 @@ extern void sage_texture_scale(sage_texture_t **ctx, struct sage_area_t proj);
  * @see sage_texture_scale()
  * @see sage_texture_draw()
  */
-extern void sage_texture_reset(sage_texture_t **ctx);
+extern void 
+sage_texture_reset(sage_texture_t *ctx);
 
 
 /**
@@ -915,8 +922,9 @@ extern void sage_texture_reset(sage_texture_t **ctx);
  * @see sage_texture_scale()
  * @see sage_texture_reset()
  */
-extern SAGE_HOT void sage_texture_draw(const sage_texture_t *ctx, 
-    struct sage_point_t dst);
+extern SAGE_HOT void 
+sage_texture_draw(const sage_texture_t *ctx, 
+                  struct sage_point_t  dst);
 
 
 /** TEXTURE FACTORY **/

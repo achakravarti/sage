@@ -176,8 +176,8 @@ sage_sprite_draw(const sage_sprite_t *ctx,
     struct sage_area_t clip = {.w = ctx->clip.w, .h = ctx->clip.h};
 
     sage_sprite_t *hnd = (sage_sprite_t *) ctx;
-    sage_texture_clip(&hnd->tex, nw, clip);
-    sage_texture_scale(&hnd->tex, ctx->proj);
+    sage_texture_clip(hnd->tex, nw, clip);
+    sage_texture_scale(hnd->tex, ctx->proj);
     sage_texture_draw(ctx->tex, dst);
 }
 

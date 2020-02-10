@@ -7,10 +7,11 @@
 static thread_local sage_id_map_t *map = NULL;
 
 
+// TODO: implement map_copy_deep() and map_copy()
 static inline void *
 map_copy(const void *tex)
 {
-    return sage_texture_copy ((const sage_texture_t *) tex);
+    return sage_texture_copy_deep((const sage_texture_t *) tex);
 }
 
 
@@ -41,7 +42,7 @@ sage_texture_factory_stop(void)
 extern void
 sage_texture_factory_register(const sage_texture_t *tex)
 {
-    sage_id_map_value_set (map, sage_texture_id (tex), tex);
+    sage_id_map_value_set(map, sage_texture_id (tex), tex);
 }
 
 
