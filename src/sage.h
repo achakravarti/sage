@@ -1261,6 +1261,29 @@ extern void
 sage_state_draw(const sage_state_t *ctx);
 
 
+
+extern void
+sage_stage_init(void);
+
+extern void
+sage_stage_exit(void);
+
+extern void
+sage_stage_segue(sage_state_t *scn);
+
+extern void
+sage_stage_interval(sage_state_t *scn);
+
+extern void
+sage_stage_restore(void);
+
+extern void
+sage_stage_update(void);
+
+extern void
+sage_stage_draw(void);
+
+
 extern void 
 sage_arena_start(void);
 
