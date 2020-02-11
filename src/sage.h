@@ -1198,67 +1198,67 @@ sage_entity_list_draw(const sage_entity_list_t *ctx);
 
 
 
-typedef struct sage_state_t sage_state_t;
+typedef struct sage_scene_t sage_scene_t;
 
-struct sage_state_vtable_t {
-    void (*start)  (sage_state_t *ctx);
-    void (*stop)   (sage_state_t *ctx);
-    void (*update) (sage_state_t *ctx);
-    void (*draw)   (const sage_state_t *ctx);
+struct sage_scene_vtable_t {
+    void (*start)  (sage_scene_t *ctx);
+    void (*stop)   (sage_scene_t *ctx);
+    void (*update) (sage_scene_t *ctx);
+    void (*draw)   (const sage_scene_t *ctx);
 };
 
-extern sage_state_t *
-sage_state_new(sage_id_t                        id,
+extern sage_scene_t *
+sage_scene_new(sage_id_t                        id,
                sage_payload_t                   *cdata,
-               const struct sage_state_vtable_t *vt);
+               const struct sage_scene_vtable_t *vt);
 
-extern const sage_state_t *
-sage_state_copy(const sage_state_t *ctx);
+extern const sage_scene_t *
+sage_scene_copy(const sage_scene_t *ctx);
 
-extern sage_state_t *
-sage_state_copy_deep(const sage_state_t *ctx);
+extern sage_scene_t *
+sage_scene_copy_deep(const sage_scene_t *ctx);
 
 extern void
-sage_state_free(sage_state_t **ctx);
+sage_scene_free(sage_scene_t **ctx);
 
 extern size_t
-sage_state_size(void);
+sage_scene_size(void);
 
 extern sage_id_t
-sage_state_id(const sage_state_t *ctx);
+sage_scene_id(const sage_scene_t *ctx);
 
 extern const sage_entity_t *
-sage_state_entity(const sage_state_t *ctx,
+sage_scene_entity(const sage_scene_t *ctx,
                   sage_id_t          id);
 
 extern void
-sage_state_entity_set(sage_state_t       *ctx,
+sage_scene_entity_set(sage_scene_t       *ctx,
                      sage_id_t           id,
                      const sage_entity_t *ent);
 
 extern void
-sage_state_entity_push(sage_state_t *ctx,
+sage_scene_entity_push(sage_scene_t *ctx,
                        sage_id_t    cls,
                        sage_id_t    id);
 
 extern void
-sage_state_entity_pop(sage_state_t *ctx,
+sage_scene_entity_pop(sage_scene_t *ctx,
                       sage_id_t    id);
 
 extern const sage_payload_t *
-sage_state_payload(const sage_state_t *ctx);
+sage_scene_payload(const sage_scene_t *ctx);
 
 extern void 
-sage_state_start(sage_state_t *ctx);
+sage_scene_start(sage_scene_t *ctx);
 
 extern void 
-sage_state_stop(sage_state_t *ctx);
+sage_scene_stop(sage_scene_t *ctx);
 
 extern void 
-sage_state_update(sage_state_t *ctx);
+sage_scene_update(sage_scene_t *ctx);
 
 extern void 
-sage_state_draw(const sage_state_t *ctx);
+sage_scene_draw(const sage_scene_t *ctx);
 
 
 
@@ -1269,10 +1269,10 @@ extern void
 sage_stage_exit(void);
 
 extern void
-sage_stage_segue(sage_state_t *scn);
+sage_stage_segue(sage_scene_t *scn);
 
 extern void
-sage_stage_interval(sage_state_t *scn);
+sage_stage_interval(sage_scene_t *scn);
 
 extern void
 sage_stage_restore(void);

@@ -2,7 +2,7 @@
 
 
 struct node_t {
-    sage_state_t        *scn;
+    sage_scene_t        *scn;
     struct node_t *nxt;
     struct node_t *prv;
 };
@@ -16,7 +16,7 @@ static thread_local struct {
 
 
 static struct node_t *
-node_new(sage_state_t *scn)
+node_new(sage_scene_t *scn)
 {
     struct node_t *ctx = sage_heap_new(sizeof *ctx);
 
@@ -31,13 +31,13 @@ node_new(sage_state_t *scn)
 static inline void
 node_free(struct node_t **ctx)
 {
-    sage_state_free(&(*ctx)->scn);
+    sage_scene_free(&(*ctx)->scn);
     sage_heap_free((void **) ctx);
 }
 
 
 static void
-list_push(sage_state_t *scn)
+list_push(sage_scene_t *scn)
 {
     struct node_t *node = node_new(scn);
 
@@ -96,26 +96,26 @@ sage_stage_exit(void)
 
 
 extern void
-sage_stage_segue(sage_state_t *scn)
+sage_stage_segue(sage_scene_t *scn)
 {
     sage_assert (list);
     if (list->tail) {
-        sage_assert (sage_state_id(scn) != sage_state_id(list->tail->scn));
-        sage_state_stop(list->tail->scn);
+        sage_assert (sage_scene_id(scn) != sage_scene_id(list->tail->scn));
+        sage_scene_stop(list->tail->scn);
         list_pop();
     }
 
     list_push(scn);
-    sage_state_start(scn);
+    sage_scene_start(scn);
 }
 
 
 extern void
-sage_stage_interval(sage_state_t *scn)
+sage_stage_interval(sage_scene_t *scn)
 {
     sage_assert (list && list->tail && scn);
     list_push(scn);
-    sage_state_start(scn);
+    sage_scene_start(scn);
 }
 
 
@@ -123,7 +123,7 @@ extern void
 sage_stage_restore(void)
 {
     sage_assert (list && list->tail && list->tail != list->head);
-    sage_state_stop(list->tail->scn);
+    sage_scene_stop(list->tail->scn);
     list_pop();
 }
 
@@ -132,7 +132,7 @@ extern void
 sage_stage_update(void)
 {
     sage_assert (list && list->tail);
-    sage_state_update(list->tail->scn);
+    sage_scene_update(list->tail->scn);
 }
 
 
@@ -140,6 +140,6 @@ extern void
 sage_stage_draw(void)
 {
     sage_assert (list && list->tail);
-    sage_state_draw(list->tail->scn);
+    sage_scene_draw(list->tail->scn);
 }
 
