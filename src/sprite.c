@@ -16,7 +16,6 @@ sage_sprite_new(sage_id_t           texid,
                 struct sage_frame_t tot)
 {
     sage_sprite_t *ctx = sage_heap_new(sizeof *ctx);
-    //ctx->nref = 1;
 
     ctx->tex = sage_texture_factory_spawn(texid);
     ctx->tot = tot;
@@ -26,8 +25,16 @@ sage_sprite_new(sage_id_t           texid,
 }
 
 
+extern inline sage_sprite_t *
+sage_sprite_move(sage_sprite_t *ctx);
+
+
+extern inline const sage_sprite_t *
+sage_sprite_link(const sage_sprite_t *ctx);
+
+
 extern sage_sprite_t *
-sage_sprite_copy_deep(const sage_sprite_t *ctx)
+sage_sprite_copy(const sage_sprite_t *ctx)
 {
     sage_assert(ctx);
     sage_sprite_t *cp = sage_sprite_new(sage_texture_id(ctx->tex), ctx->tot);

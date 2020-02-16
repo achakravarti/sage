@@ -959,8 +959,22 @@ extern sage_sprite_t *
 sage_sprite_new(sage_id_t           texid, 
                 struct sage_frame_t tot);
 
+inline sage_sprite_t *
+sage_sprite_move(sage_sprite_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
+
+inline const sage_sprite_t *
+sage_sprite_link(const sage_sprite_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
+
 extern sage_sprite_t *
-sage_sprite_copy_deep(const sage_sprite_t *ctx);
+sage_sprite_copy(const sage_sprite_t *ctx);
 
 extern void 
 sage_sprite_free(sage_sprite_t **ctx);

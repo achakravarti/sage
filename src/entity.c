@@ -160,7 +160,7 @@ sage_entity_copy_deep(const sage_entity_t *ctx)
     cp->cls = ctx->cls;
     cp->id = ctx->id;
     cp->vec = sage_vector_copy_deep(ctx->vec);
-    cp->spr = sage_sprite_copy_deep(ctx->spr);
+    cp->spr = sage_sprite_copy(ctx->spr);
     cp->cdata = sage_likely (ctx->cdata) ? sage_payload_copy_deep(ctx->cdata)
                                          : NULL;
 
