@@ -1212,11 +1212,23 @@ sage_scene_new(sage_id_t                        id,
                sage_payload_t                   *cdata,
                const struct sage_scene_vtable_t *vt);
 
-extern const sage_scene_t *
-sage_scene_copy(const sage_scene_t *ctx);
+inline sage_scene_t *
+sage_scene_move(sage_scene_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
+
+
+inline const sage_scene_t *
+sage_scene_link(const sage_scene_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
 
 extern sage_scene_t *
-sage_scene_copy_deep(const sage_scene_t *ctx);
+sage_scene_copy(const sage_scene_t *ctx);
 
 extern void
 sage_scene_free(sage_scene_t **ctx);

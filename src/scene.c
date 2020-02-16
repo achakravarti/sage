@@ -56,16 +56,16 @@ sage_scene_new(sage_id_t                        id,
 }
 
 
-extern const sage_scene_t *
-sage_scene_copy(const sage_scene_t *ctx)
-{
-    sage_assert (ctx);
-    return ctx;
-}
+extern inline sage_scene_t *
+sage_scene_move(sage_scene_t *ctx);
+
+
+extern inline const sage_scene_t *
+sage_scene_link(const sage_scene_t *ctx);
 
 
 extern sage_scene_t *
-sage_scene_copy_deep(const sage_scene_t *ctx)
+sage_scene_copy(const sage_scene_t *ctx)
 {
     sage_assert (ctx);
     sage_scene_t *cp = sage_scene_new(ctx->id, ctx->cdata, &ctx->vt);
