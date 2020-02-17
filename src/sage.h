@@ -1087,11 +1087,25 @@ sage_entity_new_default(sage_id_t           cls,
                         sage_id_t           texid,
                         struct sage_frame_t frm);
 
-extern const sage_entity_t *
-sage_entity_copy(const sage_entity_t *src);
+
+inline sage_entity_t *
+sage_entity_move(sage_entity_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
+
+
+inline const sage_entity_t *
+sage_entity_link(const sage_entity_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
+
 
 extern sage_entity_t *
-sage_entity_copy_deep(const sage_entity_t *ctx);
+sage_entity_copy(const sage_entity_t *ctx);
 
 extern void 
 sage_entity_free(sage_entity_t **ctx);

@@ -135,16 +135,12 @@ sage_entity_new_default(sage_id_t           cls,
 }
 
 
-/*
- * The sage_entity_copy() interface function creates a shallow copy of an
- * entity. We simply return a const pointer to the contextual instance.
- */
-extern const sage_entity_t *
-sage_entity_copy(const sage_entity_t *ctx)
-{
-    sage_assert (ctx);
-    return ctx;
-}
+extern inline sage_entity_t *
+sage_entity_move(sage_entity_t *ctx);
+
+
+extern inline const sage_entity_t *
+sage_entity_link(const sage_entity_t *ctx);
 
 
 /*
@@ -153,7 +149,7 @@ sage_entity_copy(const sage_entity_t *ctx)
  * contextual instance, and return the handle to the newly created entity.
  */
 extern sage_entity_t *
-sage_entity_copy_deep(const sage_entity_t *ctx)
+sage_entity_copy(const sage_entity_t *ctx)
 {
     sage_entity_t *cp = sage_heap_new(sizeof *ctx);
 

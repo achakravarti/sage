@@ -47,7 +47,7 @@ extern void
 sage_arena_entity_set(size_t idx, const sage_entity_t *ent)
 {
     sage_entity_free(&players->lst[idx]);
-    players->lst[idx] = sage_entity_copy_deep(ent);
+    players->lst[idx] = sage_entity_copy(ent);
 }
 
 
@@ -62,7 +62,7 @@ sage_arena_push(const sage_entity_t *ent)
         sage_require (players->lst = realloc (players->lst, sz));
     }
 
-    players->lst[players->len] = sage_entity_copy_deep(ent);
+    players->lst[players->len] = sage_entity_copy(ent);
     sage_entity_id_set(players->lst [players->len], players->len);
 
     return players->len++;

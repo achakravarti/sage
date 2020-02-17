@@ -104,7 +104,7 @@ sage_entity_list_set(sage_entity_list_t  *ctx,
     for (i = 0; i < ctx->len; i++) {
         if (sage_entity_id(ctx->bfr[i]) == id) {
             sage_entity_free(&ctx->bfr[i]);
-            ctx->bfr[i] = sage_entity_copy_deep(ent);
+            ctx->bfr[i] = sage_entity_copy(ent);
             sage_entity_id_set(ctx->bfr[i], id);
 
             return;
