@@ -100,7 +100,7 @@ sage_entity_new(sage_id_t                         cls,
     ctx->id = (sage_id_t) 0;
     ctx->vec = sage_vector_new_zero();
     ctx->spr = sage_sprite_new(texid, frm);
-    ctx->cdata = sage_payload_copy_deep(cdata);
+    ctx->cdata = sage_payload_copy(cdata);
   
     sage_assert (vt); 
     ctx->vt.update = vt->update ? vt->update : &update_default;
@@ -157,8 +157,7 @@ sage_entity_copy(const sage_entity_t *ctx)
     cp->id = ctx->id;
     cp->vec = sage_vector_copy_deep(ctx->vec);
     cp->spr = sage_sprite_copy(ctx->spr);
-    cp->cdata = sage_likely (ctx->cdata) ? sage_payload_copy_deep(ctx->cdata)
-                                         : NULL;
+    cp->cdata = sage_likely (ctx->cdata) ? sage_payload_copy(ctx->cdata) : NULL;
 
     cp->vt.update = ctx->vt.update;
     cp->vt.draw = ctx->vt.draw;

@@ -73,22 +73,22 @@ sage_payload_new(const void                         *data,
  * payload instance. We do so by returning a constant pointer to the contextual
  * payload instance.
  */
-extern const sage_payload_t *
-sage_payload_copy(const sage_payload_t *ctx)
-{
-    sage_assert (ctx);
-    return ctx;
-}
+extern inline const sage_payload_t *
+sage_payload_link(const sage_payload_t *ctx);
+
+
+extern inline sage_payload_t *
+sage_payload_move(sage_payload_t *ctx);
 
 
 /*
- * The sage_payload_copy_deep() interface function creates a deep copy of a
- * given payload instance. We do so by creating a new payload instance with the
- * same attributes as the contextual instance, and then returning the newly
- * created instance.
+ * The sage_payload_copy() interface function creates a deep copy of a given
+ * payload instance. We do so by creating a new payload instance with the same
+ * attributes as the contextual instance, and then returning the newly created
+ * instance.
  */
 extern sage_payload_t *
-sage_payload_copy_deep(const sage_payload_t *ctx)
+sage_payload_copy(const sage_payload_t *ctx)
 {
     sage_assert (ctx);
     return sage_payload_new(ctx->data, ctx->sz, &ctx->vt);

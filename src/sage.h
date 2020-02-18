@@ -1024,11 +1024,22 @@ sage_payload_new(const void                         *data,
                  size_t                             sz,
                  const struct sage_payload_vtable_t *vt);
 
-extern const sage_payload_t *
-sage_payload_copy(const sage_payload_t *ctx);
+inline const sage_payload_t *
+sage_payload_link(const sage_payload_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
+
+inline sage_payload_t *
+sage_payload_move(sage_payload_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
 
 extern sage_payload_t *
-sage_payload_copy_deep(const sage_payload_t *ctx);
+sage_payload_copy(const sage_payload_t *ctx);
 
 extern void 
 sage_payload_free(sage_payload_t **ctx);

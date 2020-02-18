@@ -44,7 +44,7 @@ sage_scene_new(sage_id_t                        id,
 
     ctx->id = id;
     ctx->ents = sage_entity_list_new();
-    ctx->cdata = sage_payload_copy_deep(cdata);
+    ctx->cdata = sage_payload_copy(cdata);
 
     sage_assert (vt);
     ctx->vt.start = sage_likely (vt->start) ? vt->start : start_default;
