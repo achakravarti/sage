@@ -155,7 +155,7 @@ sage_entity_copy(const sage_entity_t *ctx)
 
     cp->cls = ctx->cls;
     cp->id = ctx->id;
-    cp->vec = sage_vector_copy_deep(ctx->vec);
+    cp->vec = sage_vector_copy(ctx->vec);
     cp->spr = sage_sprite_copy(ctx->spr);
     cp->cdata = sage_likely (ctx->cdata) ? sage_payload_copy(ctx->cdata) : NULL;
 
@@ -243,7 +243,7 @@ extern const sage_vector_t *
 sage_entity_vector(const sage_entity_t *ctx)
 {
     sage_assert (ctx);
-    return sage_vector_copy(ctx->vec);
+    return sage_vector_link(ctx->vec);
 }
 
 
@@ -258,7 +258,7 @@ sage_entity_vector_set(sage_entity_t       *ctx,
 {
     sage_assert (ctx && vec);
     sage_vector_free(&ctx->vec);
-    ctx->vec = sage_vector_copy_deep(vec);
+    ctx->vec = sage_vector_copy(vec);
 }
 
 
@@ -304,7 +304,7 @@ sage_entity_focused(const sage_entity_t *ctx)
     struct sage_area_t frame = sage_sprite_area_frame(ctx->spr);
     sage_vector_t *add = sage_vector_new((float) frame.w, (float) frame.h);
 
-    sage_vector_t *se = sage_vector_copy_deep(ctx->vec);
+    sage_vector_t *se = sage_vector_copy(ctx->vec);
     sage_vector_add(se, add);
     sage_vector_free(&add);
 

@@ -102,27 +102,21 @@ sage_vector_new_zero(void)
 }
 
 
-/*
- * The sage_vector_copy() interface function creates a shallow copy of a vector
- * instance. We ensure that we return a const pointer to the vector instance so
- * that a compiler warning is issued in case this pointer is accidentally
- * changed.
- */
-extern const sage_vector_t *
-sage_vector_copy(const sage_vector_t *src)
-{
-    sage_assert (src);
-    return src;
-}
+extern inline sage_vector_t *
+sage_vector_move(sage_vector_t *ctx);
+
+
+extern inline const sage_vector_t *
+sage_vector_link(const sage_vector_t *ctx);
 
 
 /*
- * The sage_vector_copy_deep() interface function creates a deep copy of a
- * vector instance. We use sage_vector_new() to force the creation of a new
- * instance with the same attributes as the instance being copied.
+ * The sage_vector_copy() interface function creates a deep copy of a vector
+ * instance. We use sage_vector_new() to force the creation of a new instance
+ * with the same attributes as the instance being copied.
  */
 extern sage_vector_t *
-sage_vector_copy_deep(const sage_vector_t *src)
+sage_vector_copy(const sage_vector_t *src)
 {
     sage_assert (src);
     return sage_vector_new(src->x, src->y);

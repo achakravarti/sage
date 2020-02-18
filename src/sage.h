@@ -439,11 +439,22 @@ sage_vector_new(float x, float y);
 extern sage_vector_t *
 sage_vector_new_zero(void);
 
-extern const sage_vector_t *
-sage_vector_copy(const sage_vector_t *src);
+inline sage_vector_t *
+sage_vector_move(sage_vector_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
+
+inline const sage_vector_t *
+sage_vector_link(const sage_vector_t *ctx)
+{
+    sage_assert (ctx);
+    return ctx;
+}
 
 extern sage_vector_t *
-sage_vector_copy_deep(const sage_vector_t *src);
+sage_vector_copy(const sage_vector_t *src);
 
 extern void
 sage_vector_free(sage_vector_t **ctx);
