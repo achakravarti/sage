@@ -1188,7 +1188,6 @@ sage_entity_factory_spawn(sage_id_t id);
 
 
 
-
 typedef struct sage_entity_list_t sage_entity_list_t;
 
 
@@ -1247,7 +1246,6 @@ sage_entity_list_draw(const sage_entity_list_t *ctx);
 
 
 
-
 typedef struct sage_scene_t sage_scene_t;
 
 struct sage_scene_vtable_t {
@@ -1256,6 +1254,7 @@ struct sage_scene_vtable_t {
     void (*update) (sage_scene_t *ctx);
     void (*draw)   (const sage_scene_t *ctx);
 };
+
 
 extern sage_scene_t *
 sage_scene_new(sage_id_t                        id,
@@ -1294,9 +1293,9 @@ sage_scene_entity(const sage_scene_t *ctx,
                   sage_id_t          id);
 
 extern void
-sage_scene_entity_set(sage_scene_t       *ctx,
-                     sage_id_t           id,
-                     const sage_entity_t *ent);
+sage_scene_entity_set(sage_scene_t *ctx,
+                     sage_id_t     id,
+                     sage_entity_t *ent);
 
 extern void
 sage_scene_entity_push(sage_scene_t *ctx,

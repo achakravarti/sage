@@ -51,7 +51,7 @@ sage_entity_list_free(sage_entity_list_t **ctx)
 {
     sage_entity_list_t *hnd;
 
-    if sage_likely (ctx && (hnd = *ctx)) {
+    if (sage_likely (ctx && (hnd = *ctx))) {
         for (register size_t i = 0; i < hnd->cap; i++)
             sage_entity_free(&hnd->bfr[i]);
 
