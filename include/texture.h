@@ -2,6 +2,10 @@
 #define SAGE_TEXTURE_H
 
 
+#include "compiler.h"
+#include "id-map.h"
+
+
 /**
  * A hardware-accelerated texture.
  */
@@ -24,22 +28,8 @@ sage_texture_new(const char *path,
                  sage_id_t  id);
 
 
-extern const sage_texture_t *
+extern sage_texture_t *
 sage_texture_copy(const sage_texture_t *ctx);
-
-
-/**
- * Copies a texture.
- *
- * @param ctx Contextual exture instance to copy.
- *
- * @return The copy of @p ctx.
- *
- * @see sage_texture_new()
- * @see sage_texture_free()
- */
-extern SAGE_HOT sage_texture_t *
-sage_texture_copy_deep(const sage_texture_t *ctx);
 
 
 /**
@@ -99,7 +89,7 @@ sage_texture_area(const sage_texture_t *ctx);
  * @see sage_texture_draw()
  */
 extern void 
-sage_texture_clip(sage_texture_t      *ctx, 
+sage_texture_clip(sage_texture_t      **ctx, 
                   struct sage_point_t nw,
                   struct sage_area_t  clip);
 
@@ -115,7 +105,7 @@ sage_texture_clip(sage_texture_t      *ctx,
  * @see sage_texture_draw()
  */
 extern void 
-sage_texture_scale(sage_texture_t     *ctx, 
+sage_texture_scale(sage_texture_t     **ctx, 
                    struct sage_area_t proj);
 
 
@@ -129,7 +119,7 @@ sage_texture_scale(sage_texture_t     *ctx,
  * @see sage_texture_draw()
  */
 extern void 
-sage_texture_reset(sage_texture_t *ctx);
+sage_texture_reset(sage_texture_t **ctx);
 
 
 /**

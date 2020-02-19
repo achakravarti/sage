@@ -11,7 +11,7 @@ static thread_local sage_id_map_t *map = NULL;
 static inline void *
 map_copy(const void *tex)
 {
-    return sage_texture_copy_deep((const sage_texture_t *) tex);
+    return sage_texture_copy((const sage_texture_t *) tex);
 }
 
 
