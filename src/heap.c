@@ -1,4 +1,4 @@
-#include "sage.h"
+#include "../include/api.h"
 
 
 extern void *sage_heap_new(size_t sz)

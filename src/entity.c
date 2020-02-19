@@ -14,16 +14,16 @@
  * BY CONTINUING TO USE AND/OR DISTRIBUTE THIS FILE, YOU ACKNOWLEDGE THAT YOU
  * HAVE UNDERSTOOD THESE LICENSE TERMS AND ACCEPT THEM.
  *
- * This is the sage/src/vector.c source file; it implements the entity API of 
+ * This is the sage/src/entity.c source file; it implements the entity API of 
  * the SAGE Library.
  ******************************************************************************/
 
 
 /*
- * The sage/src/sage.h header file contains the declaration of the API of the
+ * The sage/include/api.h header file contains the declaration of the API of the
  * SAGE Library.
  */
-#include "sage.h"
+#include "../include/api.h"
 
 
 /*

@@ -1,6 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "./sage.h"
+#include "../include/api.h"
 
 
 static thread_local struct {

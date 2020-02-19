@@ -21,10 +21,10 @@
 
 /*
  * The SDL2/SDL.h header file contains the declaration of the SDL2 API, and the
- * sage/src/sage.h header file contains the declaration of the SAGE API.
+ * sage/include/api.h header file contains the declaration of the SAGE API.
  */
 #include <SDL2/SDL.h>
-#include "./sage.h"
+#include "../include/api.h"
 
 
 /*

@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include "sage.h"
+#include "../include/api.h"
 
 
 static thread_local bool event_init = false;

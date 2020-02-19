@@ -1,4 +1,4 @@
-#include "sage.h"
+#include "../include/api.h"
 
 
 struct sage_colour_t {

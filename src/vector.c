@@ -20,7 +20,7 @@
 
 
 /*
- * The sage/src/sage.h header file contains the declaration of the API of the
+ * The sage/include/api.h header file contains the declaration of the API of the
  * SAGE Library. The standard float.h and math.h header files are required for
  * floating point computations.
  */

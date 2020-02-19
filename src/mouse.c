@@ -20,10 +20,10 @@
 
 
 /*
- * The sage/src/sage.h header file contains the declaration of the API of the
+ * The sage/include/api.h header file contains the declaration of the API of the
  * SAGE Library.
  */
-#include "./sage.h"
+#include "../include/api.h"
 
 
 /*

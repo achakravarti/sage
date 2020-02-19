@@ -1,6 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "./sage.h"
+#include "../include/api.h"
 
 
     /* define the sage_texture_t struct */
