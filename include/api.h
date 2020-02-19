@@ -25,9 +25,10 @@
 
 
 #include "compiler.h"
-#include "exception.h"
 #include "primitives.h"
+#include "exception.h"
 #include "heap.h"
+#include "object.h"
 #include "color.h"
 #include "vector.h"
 #include "screen.h"
