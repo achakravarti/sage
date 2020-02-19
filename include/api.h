@@ -23,34 +23,10 @@
 #   define SCHEME_ASSISTED_GAME_ENGINE
 
 
-#include <stdbool.h>
-#include <inttypes.h>
-#include <threads.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-
-struct sage_point_t {
-    float x;
-    float y;
-};
-
-
-struct sage_area_t {
-    uint16_t h;
-    uint16_t w;
-};
-
-
-enum sage_compare_t {
-    SAGE_COMPARE_LT = -1,
-    SAGE_COMPARE_EQ = 0,
-    SAGE_COMPARE_GT = 1
-};
-
 
 #include "compiler.h"
 #include "exception.h"
+#include "primitives.h"
 #include "heap.h"
 #include "color.h"
 #include "vector.h"

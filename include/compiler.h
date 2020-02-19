@@ -1,7 +1,6 @@
 #ifndef SAGE_COMPILER_H
 #define SAGE_COMPILER_H
 
-
 #define SAGE_COMPILER_GCC (0)
 #define SAGE_COMPILER_CLANG (1)
 

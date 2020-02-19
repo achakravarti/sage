@@ -1,5 +1,8 @@
+
 #ifndef SAGE_ID_MAP_H
 #define SAGE_ID_MAP_H
+
+#include <stddef.h> /* for size_t */
 
 typedef size_t sage_id_t;
 

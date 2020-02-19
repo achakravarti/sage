@@ -1,6 +1,12 @@
 #ifndef SAGE_SCENE_H
 #define SAGE_SCENE_H
 
+#include "primitives.h"
+#include "exception.h"
+#include "id-map.h"
+#include "entity.h"
+#include "payload.h"
+
 typedef struct sage_scene_t sage_scene_t;
 
 struct sage_scene_vtable_t {

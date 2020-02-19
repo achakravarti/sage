@@ -1,3 +1,6 @@
+#ifndef SAGE_STAGE_H
+#define SAGE_STAGE_H
+
 
 extern void
 sage_stage_init(void);
@@ -19,4 +22,7 @@ sage_stage_update(void);
 
 extern void
 sage_stage_draw(void);
+
+
+#endif /* SAGE_STAGE_H */
 

@@ -1,6 +1,8 @@
 #ifndef SAGE_MOUSE_H
 #define SAGE_MOUSE_H
 
+#include "vector.h"
+
 /** MOUSE **/
 
 enum sage_mouse_button_t {

@@ -1,6 +1,9 @@
 #ifndef SAGE_VECTOR_H
 #define SAGE_VECTOR_H
 
+#include "primitives.h" /* bool */
+#include "exception.h" /* sage_assert */
+
 
 /** VECTOR **/
 

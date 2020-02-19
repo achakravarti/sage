@@ -1,6 +1,10 @@
 #ifndef SAGE_EXCEPTION_H
 #define SAGE_EXCEPTION_H
 
+#include <stdio.h> /* for printf() */
+#include <stdlib.h> /* for abort() and exit() */
+#include "compiler.h" /* for sage_unlikely() */
+
 
 #if !(defined NDEBUG)
 #   define sage_assert(c)                                                \

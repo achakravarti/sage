@@ -26,7 +26,7 @@
  */
 #include <float.h>
 #include <math.h>
-#include "sage.h"
+#include "../include/api.h"
 
 
 /*

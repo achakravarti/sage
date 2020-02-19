@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include "../src/sage.h"
+#include "../include/api.h"
 
 
 enum {

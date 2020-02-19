@@ -1,7 +1,8 @@
-#include <stddef.h>
 
 #ifndef SAGE_HEAP_H
 #define SAGE_HEAP_H
+
+#include "primitives.h"
 
 #define sage_heap_init()
 

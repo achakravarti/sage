@@ -1,6 +1,9 @@
 #ifndef SAGE_ARENA_H
 #define SAGE_ARENA_H
 
+#include <stddef.h>
+#include "entity.h"
+
 extern void 
 sage_arena_start(void);
 
