@@ -1,3 +1,5 @@
+#ifndef SAGE_SPRITE_H
+#define SAGE_SPRITE_H
 
 /** SPRITE **/
 
@@ -66,4 +68,6 @@ extern void
 sage_sprite_draw(const sage_sprite_t *ctx, 
                  struct sage_point_t dst);
 
+
+#endif /* SAGE_SPRITE_H */
 

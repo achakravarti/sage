@@ -1,3 +1,5 @@
+#ifndef SAGE_MOUSE_H
+#define SAGE_MOUSE_H
 
 /** MOUSE **/
 
@@ -38,4 +40,5 @@ extern void
 sage_mouse_vector_update(float x, float y);
 
 
+#endif /* SAGE_MOUSE_H */
 

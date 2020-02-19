@@ -1,3 +1,6 @@
+#ifndef SAGE_ENTITY_H
+#define SAGE_ENTITY_H
+
 
 typedef struct sage_entity_t sage_entity_t;
 
@@ -115,3 +118,6 @@ sage_entity_factory_register(sage_id_t cls,
 
 extern sage_entity_t *
 sage_entity_factory_spawn(sage_id_t id);
+
+#endif /* SAGE_ENTITY_H */
+

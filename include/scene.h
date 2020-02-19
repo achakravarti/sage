@@ -1,3 +1,5 @@
+#ifndef SAGE_SCENE_H
+#define SAGE_SCENE_H
 
 typedef struct sage_scene_t sage_scene_t;
 
@@ -73,3 +75,6 @@ sage_scene_update(sage_scene_t *ctx);
 
 extern void 
 sage_scene_draw(const sage_scene_t *ctx);
+
+#endif /* SAGE_SCENE_H */
+

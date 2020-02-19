@@ -1,5 +1,8 @@
 /** SCREEN **/
 
+#ifndef SAGE_SCREEN_H
+#define SAGE_SCREEN_H
+
 
 struct sage_viewport_t {
     struct sage_point_t point;
@@ -27,4 +30,6 @@ sage_screen_viewport_set(const struct sage_viewport_t *vp);
 
 extern SAGE_HOT void sage_screen_render(void);
 
+
+#endif /* SAGE_SCREEN_H */
 

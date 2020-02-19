@@ -1,3 +1,6 @@
+#ifndef SAGE_VECTOR_H
+#define SAGE_VECTOR_H
+
 
 /** VECTOR **/
 
@@ -83,4 +86,6 @@ sage_vector_mul(sage_vector_t *ctx, float mul);
 extern void 
 sage_vector_div(sage_vector_t *ctx, const float div);
 
+
+#endif /* SAGE_VECTOR_H */
 

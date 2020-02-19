@@ -30,11 +30,6 @@
 #include <stdlib.h>
 
 
-#if defined __cplusplus
-    extern "C" {
-#endif
-
-
 struct sage_point_t {
     float x;
     float y;
@@ -72,10 +67,6 @@ enum sage_compare_t {
 #include "stage.h"
 #include "arena.h"
 #include "game.h"
-
-#if defined __cplusplus
-    } /* extern "C" */
-#endif
 
 #endif /* SCHEME_ASSISTED_GAME_ENGINE */
 

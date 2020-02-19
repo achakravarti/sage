@@ -1,3 +1,6 @@
+#ifndef SAGE_TEXTURE_H
+#define SAGE_TEXTURE_H
+
 
 /**
  * A hardware-accelerated texture.
@@ -159,3 +162,6 @@ sage_texture_factory_register(sage_id_t  id,
 
 extern sage_texture_t *
 sage_texture_factory_spawn(sage_id_t id);
+
+#endif /* SAGE_TEXTURE_H */
+

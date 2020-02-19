@@ -1,3 +1,6 @@
+#ifndef SAGE_COMPILER_H
+#define SAGE_COMPILER_H
+
 
 #define SAGE_COMPILER_GCC (0)
 #define SAGE_COMPILER_CLANG (1)
@@ -130,5 +133,5 @@
 #   warning "sage_unlikely() has no effect on non GCC-compatible compilers"
 #endif
 
-
+#endif /* SAGE_COMPILER_H */
 

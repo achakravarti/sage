@@ -1,3 +1,5 @@
+#ifndef SAGE_ARENA_H
+#define SAGE_ARENA_H
 
 extern void 
 sage_arena_start(void);
@@ -22,4 +24,6 @@ sage_arena_update(void);
 
 extern void 
 sage_arena_draw(void);
+
+#endif /* SAGE_ARENA_H */
 

@@ -1,3 +1,5 @@
+#ifndef SAGE_COLOR_H
+#define SAGE_COLOR_H
 
 /* https://htmlcolorcodes.com/color-names/ */
 enum sage_hue_t {
@@ -201,4 +203,6 @@ sage_colour_alpha(const sage_colour_t *ctx);
 
 extern void
 sage_colour_alpha_set(sage_colour_t *ctx, uint8_t alpha);
+
+#endif /* SAGE_COLOR_H */
 

@@ -1,3 +1,5 @@
+#ifndef SAGE_PAYLOAD_H
+#define SAGE_PAYLOAD_H
 
 typedef struct sage_payload_t sage_payload_t;
 
@@ -45,4 +47,5 @@ sage_payload_data_set(sage_payload_t *ctx,
                       const void     *data);
 
 
+#endif /* SAGE_PAYLOAD_H */
 

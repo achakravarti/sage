@@ -42,7 +42,7 @@ listen(void)
 extern void sage_game_start(void)
 {
     if (sage_likely(!game)) {
-        sage_heap_start();
+        sage_heap_init();
 
         game = sage_heap_new(sizeof *game);
         game->run = true;
@@ -65,7 +65,7 @@ extern void sage_game_stop(void)
     sage_mouse_stop();
 
     sage_heap_free((void **) &game);
-    sage_heap_stop();
+    sage_heap_exit();
 }
 
 

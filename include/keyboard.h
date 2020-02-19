@@ -1,3 +1,6 @@
+#ifndef SAGE_KEYBOARD_H
+#define SAGE_KEYBOARD_H
+
 
 /** KEYBOARD **/
 
@@ -154,4 +157,6 @@ sage_keyboard_state(enum sage_keyboard_key_t key);
 
 extern SAGE_HOT void 
 sage_keyboard_state_update(void);
+
+#endif /* SAGE_KEYBOARD_H */
 

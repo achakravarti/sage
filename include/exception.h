@@ -1,3 +1,6 @@
+#ifndef SAGE_EXCEPTION_H
+#define SAGE_EXCEPTION_H
+
 
 #if !(defined NDEBUG)
 #   define sage_assert(c)                                                \
@@ -21,4 +24,7 @@ do {                                                                    \
         exit (EXIT_FAILURE);                                            \
     }                                                                   \
 } while (0)
+
+
+#endif /* SAGE_EXCEPTION_H */
 
