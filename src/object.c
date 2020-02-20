@@ -1,39 +1,40 @@
 #include "../include/api.h"
 
 
-struct __sage_object_t {
-    struct sage_object_vtable_t vt;
-    sage_id_t                   oid;
-    sage_id_t                   iid;
-    size_t                      nref;
-    void                        *cdata;
+struct sage_object {
+    struct sage_object_vtable vt;
+    sage_id id;
+    size_t nref;
+    void *cdata;
 };
 
 
-static void copy_on_write(sage_object_t *ctx)
+static void copy_on_write(sage_object **ctx)
 {
     sage_assert (ctx);
     sage_assert (*ctx);
 
-    sage_object_t hnd = *ctx;
+    sage_object *hnd = *ctx;
+
     if (hnd->nref > 1) {
-        sage_object_free(ctx);
-        *ctx = sage_object_new(hnd->oid, hnd->iid, hnd->vt.copy(hnd->cdata),
+        sage_object *cp = sage_object_new(hnd->id, hnd->vt.copy(hnd->cdata),
                 &hnd->vt);
+        sage_object_free(ctx);
+        *ctx = cp;
     }
 }
 
 
-extern sage_object_t sage_object_new(const sage_id_t oid, const sage_id_t iid, 
-        void *cdata, const struct sage_object_vtable_t *vt)
+extern sage_object *sage_object_new(sage_id id, void *cdata,
+        const struct sage_object_vtable *vt)
 {
     sage_assert (vt);
     sage_assert (vt->copy);
+    sage_assert (vt->free);
 
-    sage_object_t ctx = sage_heap_new(sizeof *ctx);
+    sage_object *ctx = sage_heap_new(sizeof *ctx);
 
-    ctx->oid = oid;
-    ctx->iid = iid;
+    ctx->id = sage_id_copy(id);
     ctx->nref = 1;
     ctx->cdata = cdata;
 
@@ -44,57 +45,49 @@ extern sage_object_t sage_object_new(const sage_id_t oid, const sage_id_t iid,
 }
 
 
-extern sage_object_t sage_object_copy(const sage_object_t ctx)
+extern sage_object *sage_object_copy(const sage_object *ctx)
 {
     sage_assert (ctx);
 
-    sage_object_t cp = (sage_object_t) ctx;
+    sage_object *cp = (sage_object *) ctx;
     cp->nref++;
 
     return cp;
 }
 
 
-extern void sage_object_free(sage_object_t *ctx)
+extern void sage_object_free(sage_object **ctx)
 {
-    sage_object_t hnd;
+    sage_object *hnd;
 
     if (sage_likely (ctx && (hnd = *ctx))) {
-        if (!--hnd->nref && hnd->vt.free)
-            hnd->vt.free(hnd->cdata);
+        if (!--hnd->nref) {
+            hnd->vt.free(&hnd->cdata);
+            sage_heap_free((void **) ctx);
+        }
     }
-
-    *ctx = NULL;
 }
 
 
-extern sage_id_t sage_object_oid(const sage_object_t ctx)
+extern sage_id sage_object_id(const sage_object *ctx)
 {
     sage_assert (ctx);
 
-    return ctx->oid;
+    return sage_id_copy(ctx->id);
 }
 
 
-extern sage_id_t sage_object_iid(const sage_object_t ctx)
-{
-    sage_assert (ctx);
-
-    return ctx->iid;
-}
-
-
-extern void sage_object_iid_set(sage_object_t *ctx, const sage_id_t iid)
+extern void sage_object_id_set(sage_object **ctx, sage_id id)
 {
     sage_assert (ctx);
     sage_assert (*ctx);
 
     copy_on_write(ctx);
-    (*ctx)->iid = iid;
+    (*ctx)->id = sage_id_copy(id);
 }
 
 
-extern const void *sage_object_cdata(const sage_object_t ctx)
+extern const void *sage_object_cdata(const sage_object *ctx)
 {
     sage_assert (ctx);
 
@@ -102,7 +95,7 @@ extern const void *sage_object_cdata(const sage_object_t ctx)
 }
 
 
-extern void *sage_object_cdata_rw(sage_object_t *ctx)
+extern void *sage_object_cdata_mutate(sage_object **ctx)
 {
     sage_assert (ctx);
     sage_assert (*ctx);

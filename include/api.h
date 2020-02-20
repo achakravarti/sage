@@ -29,6 +29,7 @@
 #include "exception.h"
 #include "heap.h"
 #include "object.h"
+#include "string.h"
 #include "color.h"
 #include "vector.h"
 #include "screen.h"

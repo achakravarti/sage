@@ -3,34 +3,31 @@
 
 
 #include "primitives.h"
-#include "id-map.h"
+#include "id.h"
 
 
-struct sage_object_vtable_t {
+struct sage_object_vtable {
     void *(*copy)(const void *ctx);
-    void  (*free)(void *ctx);
+    void (*free)(void **ctx);
 };
 
 
-typedef struct __sage_object_t *sage_object_t;
+typedef struct sage_object sage_object;
 
+extern sage_object *sage_object_new(sage_id id, void *cdata, 
+        const struct sage_object_vtable *vt);
 
-extern sage_object_t sage_object_new(const sage_id_t oid, const sage_id_t iid, 
-    void *cdata, const struct sage_object_vtable_t *vt);
+extern sage_object *sage_object_copy(const sage_object *ctx);
 
-extern sage_object_t sage_object_copy(const sage_object_t ctx);
+extern void sage_object_free(sage_object **ctx);
 
-extern void sage_object_free(sage_object_t *ctx);
+extern sage_id sage_object_id(const sage_object *ctx);
 
-extern sage_id_t sage_object_oid(const sage_object_t ctx);
+extern void sage_object_id_set(sage_object **ctx, sage_id id);
 
-extern sage_id_t sage_object_iid(const sage_object_t ctx);
+extern const void *sage_object_cdata(const sage_object *ctx);
 
-extern void sage_object_iid_set(sage_object_t *ctx, const sage_id_t iid);
-
-extern const void *sage_object_cdata(const sage_object_t ctx);
-
-extern void *sage_object_cdata_rw(sage_object_t *ctx);
+extern void *sage_object_cdata_mutate(sage_object **ctx);
 
 
 #endif /* SAGE_OBJECT_H */
