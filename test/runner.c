@@ -46,7 +46,7 @@ main(int argc, char *argv[])
 
     sage_game_run ();
     sage_game_stop ();
-   
+
     return 0;
 }
 

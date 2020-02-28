@@ -1,6 +1,10 @@
 #ifndef SAGE_SPRITE_H
 #define SAGE_SPRITE_H
 
+#include "primitives.h"
+#include "exception.h"
+#include "id-map.h"
+
 /** SPRITE **/
 
 

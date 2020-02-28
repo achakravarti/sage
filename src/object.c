@@ -69,19 +69,22 @@ extern void sage_object_free(sage_object **ctx)
 }
 
 
+extern size_t sage_object_size(void)
+{
+    return sizeof (struct sage_object);
+}
+
+
 extern sage_id sage_object_id(const sage_object *ctx)
 {
     sage_assert (ctx);
-
     return sage_id_copy(ctx->id);
 }
 
 
 extern void sage_object_id_set(sage_object **ctx, sage_id id)
 {
-    sage_assert (ctx);
-    sage_assert (*ctx);
-
+    sage_assert (ctx && *ctx);
     copy_on_write(ctx);
     (*ctx)->id = sage_id_copy(id);
 }
@@ -90,7 +93,6 @@ extern void sage_object_id_set(sage_object **ctx, sage_id id)
 extern const void *sage_object_cdata(const sage_object *ctx)
 {
     sage_assert (ctx);
-
     return ctx->cdata;
 }
 

@@ -61,26 +61,16 @@ extern sage_tex *sage_tex_new(sage_id id, const char *path)
 }
 
 
-extern sage_tex *sage_tex_copy(const sage_tex *ctx)
-{
-    sage_assert (ctx);
-
-    return sage_object_copy(ctx);
-}
+extern inline sage_tex *sage_tex_copy(const sage_tex *ctx);
 
 
-extern void sage_tex_free(sage_tex **ctx)
-{
-    sage_object_free(ctx);
-}
+extern inline void sage_tex_free(sage_tex **ctx);
 
 
-extern sage_id sage_tex_id(const sage_tex *ctx)
-{
-    sage_assert (ctx);
+extern inline size_t sage_tex_size(void);
 
-    return sage_object_id(ctx);
-}
+
+extern inline sage_id sage_tex_id(const sage_tex *ctx);
 
 
 extern struct sage_area_t sage_tex_area(const sage_tex *ctx)
