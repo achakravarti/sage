@@ -24,7 +24,7 @@
  * sage/include/api.h header file contains the declaration of the SAGE API.
  */
 #include <SDL2/SDL.h>
-#include "../include/api.h"
+#include "hid.h"
 
 
 /*

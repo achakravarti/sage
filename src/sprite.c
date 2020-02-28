@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include "../include/api.h"
+#include "graphics.h"
 
 
 struct sage_sprite_t {

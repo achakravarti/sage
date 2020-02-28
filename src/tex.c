@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string.h>
-#include "../include/api.h"
+#include "graphics.h"
 
 
 struct cdata {
