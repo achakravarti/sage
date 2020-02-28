@@ -38,6 +38,7 @@
 #include "event.h"
 #include "id-map.h"
 #include "texture.h"
+#include "tex.h"
 #include "sprite.h"
 #include "payload.h"
 #include "entity.h"
