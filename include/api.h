@@ -24,14 +24,16 @@
 
 
 
-#include "compiler.h"
-#include "primitives.h"
-#include "exception.h"
-#include "heap.h"
-#include "object.h"
+#include "../src/utility.h"
+//#include "compiler.h"
+//#include "primitives.h"
+//#include "exception.h"
+//#include "heap.h"
+//#include "object.h"
+//#include "vector.h"
+
 #include "string.h"
 #include "color.h"
-#include "vector.h"
 #include "screen.h"
 #include "mouse.h"
 #include "keyboard.h"

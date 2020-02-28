@@ -101,11 +101,10 @@ sage_mouse_state_update(enum sage_mouse_button_t btn,
  * saves on having to make another copy on the heap. TODO: return a lazy copy
  * once copy on write is implemented in the vector interface.
  */
-extern const sage_vector_t *
-sage_mouse_vector(void)
+extern sage_vector_t *sage_mouse_vector(void)
 {
     sage_assert(mouse.pos);
-    return mouse.pos;
+    return sage_vector_copy(mouse.pos);
 }
 
 
@@ -119,8 +118,8 @@ extern void
 sage_mouse_vector_update(float x, float y)
 {
     sage_assert(mouse.pos);
-    sage_vector_x_set(mouse.pos, x);
-    sage_vector_y_set(mouse.pos, y);
+    sage_vector_x_set(&mouse.pos, x);
+    sage_vector_y_set(&mouse.pos, y);
 }
 
 

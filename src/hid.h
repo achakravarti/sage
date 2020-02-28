@@ -215,7 +215,7 @@ extern void
 sage_mouse_state_update(enum sage_mouse_button_t btn,
                         enum sage_mouse_state_t  state);
 
-extern const sage_vector_t *
+extern sage_vector_t *
 sage_mouse_vector(void);
 
 extern void

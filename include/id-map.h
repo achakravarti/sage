@@ -2,6 +2,7 @@
 #ifndef SAGE_ID_MAP_H
 #define SAGE_ID_MAP_H
 
+#if 0
 #include <stddef.h> /* for size_t */
 
 typedef size_t sage_id_t;
@@ -42,6 +43,7 @@ sage_id_map_value(sage_id_map_t *ctx, sage_id_t key);
 
 extern void
 sage_id_map_value_set(sage_id_map_t *ctx, sage_id_t key, void *val);
+#endif
 
 #endif /* SAGE_ID_MAP_H */
 

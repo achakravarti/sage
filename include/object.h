@@ -1,7 +1,7 @@
 #ifndef SAGE_OBJECT_H
 #define SAGE_OBJECT_H
 
-
+#if 0
 #include "primitives.h"
 #include "id.h"
 
@@ -30,6 +30,7 @@ extern void sage_object_id_set(sage_object **ctx, sage_id id);
 extern const void *sage_object_cdata(const sage_object *ctx);
 
 extern void *sage_object_cdata_mutate(sage_object **ctx);
+#endif
 
 
 #endif /* SAGE_OBJECT_H */

@@ -1,6 +1,7 @@
 #ifndef SAGE_VECTOR_H
 #define SAGE_VECTOR_H
 
+#if 0
 #include "primitives.h" /* bool */
 #include "exception.h" /* sage_assert */
 
@@ -88,7 +89,7 @@ sage_vector_mul(sage_vector_t *ctx, float mul);
 
 extern void 
 sage_vector_div(sage_vector_t *ctx, const float div);
-
+#endif
 
 #endif /* SAGE_VECTOR_H */
 

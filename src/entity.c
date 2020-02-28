@@ -23,7 +23,10 @@
  * The sage/include/api.h header file contains the declaration of the API of the
  * SAGE Library.
  */
-#include "../include/api.h"
+#include "utility.h"
+#include "graphics.h"
+#include "hid.h"
+#include "../include/entity.h"
 
 
 /*
@@ -243,7 +246,7 @@ extern const sage_vector_t *
 sage_entity_vector(const sage_entity_t *ctx)
 {
     sage_assert (ctx);
-    return sage_vector_link(ctx->vec);
+    return sage_vector_copy(ctx->vec);
 }
 
 
@@ -272,7 +275,7 @@ sage_entity_vector_move(sage_entity_t       *ctx,
                         const sage_vector_t *vel)
 {
     sage_assert (ctx && vel);
-    sage_vector_add(ctx->vec, vel);
+    sage_vector_add(&ctx->vec, vel);
 }
 
 
@@ -305,11 +308,13 @@ sage_entity_focused(const sage_entity_t *ctx)
     sage_vector_t *add = sage_vector_new((float) frame.w, (float) frame.h);
 
     sage_vector_t *se = sage_vector_copy(ctx->vec);
-    sage_vector_add(se, add);
+    sage_vector_add(&se, add);
     sage_vector_free(&add);
 
-    const sage_vector_t *aim = sage_mouse_vector();
+    sage_vector_t *aim = sage_mouse_vector();
     bool focused = sage_vector_gteq(aim, ctx->vec) && sage_vector_lteq(aim, se);
+
+    sage_vector_free(&aim);
     sage_vector_free(&se);
 
     return focused;

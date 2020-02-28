@@ -1,7 +1,7 @@
 #ifndef SAGE_ID_H
 #define SAGE_ID_H
 
-
+#if 0
 #include "primitives.h"
 
 
@@ -80,7 +80,7 @@ extern uint32_t sage_id_lo(sage_id ctx);
  * See sage/src/id.c for details.
  */
 extern void sage_id_lo_set(sage_id *ctx, uint32_t lo);
-
+#endif
 
 #endif /* SAGE_ID_H */
 
