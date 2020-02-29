@@ -1,8 +1,7 @@
 #ifndef SAGE_PAYLOAD_H
 #define SAGE_PAYLOAD_H
 
-#include "primitives.h"
-#include "exception.h"
+#include "../src/utility.h"
 
 typedef struct sage_payload_t sage_payload_t;
 

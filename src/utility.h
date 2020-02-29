@@ -285,6 +285,23 @@ extern void sage_id_lo_set(sage_id *ctx, uint32_t lo);
 typedef size_t sage_id_t;
 
 
+typedef struct sage_string_t sage_string_t;
+
+extern sage_string_t *sage_string_new(const char *str);
+
+extern sage_string_t *sage_string_copy(const sage_string_t *ctx);
+
+extern void sage_string_free(sage_string_t **ctx);
+
+extern size_t sage_string_len(const sage_string_t *ctx);
+
+extern size_t sage_string_size(const sage_string_t *ctx);
+
+extern size_t sage_string_refcount(const sage_string_t *ctx);
+
+extern const char *sage_string_cstr(const sage_string_t *ctx);
+
+
 struct sage_object_vtable {
     void *(*copy)(const void *ctx);
     void (*free)(void **ctx);

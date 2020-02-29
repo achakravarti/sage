@@ -2,8 +2,9 @@
 #define SAGE_TEXTURE_H
 
 
-#include "compiler.h"
-#include "id-map.h"
+//#include "compiler.h"
+//#include "id-map.h"
+#include "../src/utility.h"
 
 
 /**

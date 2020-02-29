@@ -1,5 +1,5 @@
 #include <string.h>
-#include "../include/api.h"
+#include "utility.h"
 
 
 struct sage_string_t {

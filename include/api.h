@@ -25,20 +25,14 @@
 
 
 #include "../src/utility.h"
-//#include "compiler.h"
-//#include "primitives.h"
-//#include "exception.h"
-//#include "heap.h"
 //#include "object.h"
 //#include "vector.h"
 
-#include "string.h"
 #include "color.h"
 #include "screen.h"
 #include "mouse.h"
 #include "keyboard.h"
 #include "event.h"
-#include "id-map.h"
 #include "texture.h"
 #include "tex.h"
 #include "sprite.h"

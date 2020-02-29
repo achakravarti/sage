@@ -1,9 +1,7 @@
 #ifndef SAGE_SCENE_H
 #define SAGE_SCENE_H
 
-#include "primitives.h"
-#include "exception.h"
-#include "id-map.h"
+#include "../src/utility.h"
 #include "entity.h"
 #include "payload.h"
 

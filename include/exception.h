@@ -1,9 +1,9 @@
 #ifndef SAGE_EXCEPTION_H
 #define SAGE_EXCEPTION_H
 
+#if 0
 #include <stdio.h> /* for printf() */
 #include <stdlib.h> /* for abort() and exit() */
-#include "compiler.h" /* for sage_unlikely() */
 
 
 #if !(defined NDEBUG)
@@ -29,6 +29,7 @@ do {                                                                    \
     }                                                                   \
 } while (0)
 
+#endif
 
 #endif /* SAGE_EXCEPTION_H */
 

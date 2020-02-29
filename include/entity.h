@@ -2,10 +2,8 @@
 #ifndef SAGE_ENTITY_H
 #define SAGE_ENTITY_H
 
-#include "exception.h" /* for sage_assert() */
-#include "id-map.h" /* for sage_id_t */
+#include "../src/utility.h"
 #include "payload.h" /* sage_payload_t */
-#include "vector.h" /* for sage_vector_t */
 
 typedef struct sage_entity_t sage_entity_t;
 
