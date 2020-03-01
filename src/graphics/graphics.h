@@ -23,7 +23,7 @@
 #define SCHEME_ASSISTED_GAME_ENGINE_GRAPHICS_HEADER
 
 
-#include "core/core.h"
+#include "../core/core.h"
 
 
 /* https://htmlcolorcodes.com/color-names/ */

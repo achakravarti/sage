@@ -1,7 +1,7 @@
 //#include "../include/api.h"
 //
 #include "core/core.h"
-#include "graphics.h"
+#include "graphics/graphics.h"
 #include "../include/entity.h"
 
 

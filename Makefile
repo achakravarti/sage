@@ -50,7 +50,7 @@ $(DIR_BLD)/%.o: $(DIR_SRC)/%.c | $(DIR_BLD)
 	$(COMPILE.c) $^ -o $@
 
 $(DIR_BLD):
-	mkdir -p $@ $@/core
+	mkdir -p $@ $@/core $@/graphics
 
 all: $(TEST_BIN)
 
