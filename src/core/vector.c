@@ -26,7 +26,7 @@
  */
 #include <float.h>
 #include <math.h>
-#include "utility.h"
+#include "core.h"
 
 
 /*

@@ -23,7 +23,7 @@
 #define SAGE_HID_API
 
 
-#include "utility.h"
+#include "core/core.h"
 
 
 /** KEYBOARD **/

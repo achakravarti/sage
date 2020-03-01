@@ -2,7 +2,7 @@
 #ifndef SAGE_ENTITY_H
 #define SAGE_ENTITY_H
 
-#include "../src/utility.h"
+#include "../src/core/core.h"
 #include "payload.h" /* sage_payload_t */
 
 typedef struct sage_entity_t sage_entity_t;

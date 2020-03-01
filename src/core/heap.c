@@ -1,4 +1,4 @@
-#include "utility.h"
+#include "core.h"
 
 
 extern void *sage_heap_new(size_t sz)

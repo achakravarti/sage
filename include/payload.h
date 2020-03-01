@@ -1,7 +1,7 @@
 #ifndef SAGE_PAYLOAD_H
 #define SAGE_PAYLOAD_H
 
-#include "../src/utility.h"
+#include "../src/core/core.h"
 
 typedef struct sage_payload_t sage_payload_t;
 

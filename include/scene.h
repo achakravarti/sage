@@ -1,7 +1,7 @@
 #ifndef SAGE_SCENE_H
 #define SAGE_SCENE_H
 
-#include "../src/utility.h"
+#include "../src/core/core.h"
 #include "entity.h"
 #include "payload.h"
 

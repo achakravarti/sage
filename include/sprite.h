@@ -1,7 +1,7 @@
 #ifndef SAGE_SPRITE_H
 #define SAGE_SPRITE_H
 
-#include "../src/utility.h"
+#include "../src/core/core.h"
 
 /** SPRITE **/
 

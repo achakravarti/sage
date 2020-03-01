@@ -1,6 +1,6 @@
 //#include "../include/api.h"
 //
-#include "utility.h"
+#include "core/core.h"
 #include "graphics.h"
 #include "../include/entity.h"
 

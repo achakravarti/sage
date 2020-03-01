@@ -1,5 +1,5 @@
 #include <string.h>
-#include "utility.h"
+#include "core.h"
 
 
 struct node_t {

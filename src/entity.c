@@ -23,7 +23,7 @@
  * The sage/include/api.h header file contains the declaration of the API of the
  * SAGE Library.
  */
-#include "utility.h"
+#include "core/core.h"
 #include "graphics.h"
 #include "hid.h"
 #include "../include/entity.h"
