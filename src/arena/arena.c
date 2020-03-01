@@ -1,8 +1,8 @@
 //#include "../include/api.h"
 //
-#include "core/core.h"
-#include "graphics/graphics.h"
-#include "../include/entity.h"
+#include "../core/core.h"
+#include "../graphics/graphics.h"
+#include "arena.h"
 
 
 static thread_local struct {

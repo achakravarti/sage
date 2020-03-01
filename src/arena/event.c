@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
-#include "../include/api.h"
+#include "../hid/hid.h"
+#include "arena.h"
 
 
 static thread_local bool event_init = false;

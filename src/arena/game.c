@@ -1,5 +1,7 @@
 #include <SDL2/SDL.h>
-#include "../include/api.h"
+#include "../graphics/graphics.h"
+#include "../hid/hid.h"
+#include "arena.h"
 
 
 static thread_local struct {

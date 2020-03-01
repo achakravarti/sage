@@ -48,7 +48,7 @@ $(DIR_BLD)/%.o: $(DIR_SRC)/%.c | $(DIR_BLD)
 	$(COMPILE.c) $^ -o $@
 
 $(DIR_BLD):
-	mkdir -p $@ $@/core $@/graphics $@/hid
+	mkdir -p $@ $@/core $@/graphics $@/hid $@/arena
 
 all: $(TEST_BIN)
 
