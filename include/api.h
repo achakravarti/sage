@@ -36,7 +36,6 @@
 #include "texture.h"
 #include "tex.h"
 #include "sprite.h"
-#include "payload.h"
 #include "entity.h"
 #include "scene.h"
 #include "stage.h"

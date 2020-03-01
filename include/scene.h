@@ -3,7 +3,6 @@
 
 #include "../src/core/core.h"
 #include "entity.h"
-#include "payload.h"
 
 typedef struct sage_scene_t sage_scene_t;
 
