@@ -18,10 +18,8 @@ DIR_TEST = test
 #
 # The list of library source files
 #
-#LIB_SRC = $(sort $(wildcard $(DIR_SRC)/*.c $(DIR_SRC)/core/*.c))
 LIB_SRC = $(sort $(shell find $(DIR_SRC)/ -type f -name '*.c'))
 
-#$(shell find flac/ -type f -name '*.flac')
 #
 # The list of library object files
 #
@@ -50,7 +48,7 @@ $(DIR_BLD)/%.o: $(DIR_SRC)/%.c | $(DIR_BLD)
 	$(COMPILE.c) $^ -o $@
 
 $(DIR_BLD):
-	mkdir -p $@ $@/core $@/graphics
+	mkdir -p $@ $@/core $@/graphics $@/hid
 
 all: $(TEST_BIN)
 
