@@ -328,6 +328,21 @@ extern const void *sage_object_cdata(const sage_object *ctx);
 extern void *sage_object_cdata_mutate(sage_object **ctx);
 
 
+typedef struct sage_object_map sage_object_map;
+
+extern sage_object_map *sage_object_map_new(size_t buck);
+
+extern void sage_object_map_free(sage_object_map **ctx);
+
+extern size_t sage_object_map_hash(const sage_object_map *ctx, sage_id key);
+
+extern sage_object *sage_object_map_value(const sage_object_map *ctx, 
+        sage_id key);
+
+extern void sage_object_map_value_set(sage_object_map *ctx, sage_id key, 
+        const sage_object *val);
+
+
 struct sage_point_t {
     float x;
     float y;
