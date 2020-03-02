@@ -511,6 +511,14 @@ extern void sage_tex_reset(sage_tex **ctx);
 extern void sage_tex_draw(const sage_tex *ctx, struct sage_point_t dst);
 
 
+extern void sage_texture_factory2_init(void);
+
+extern void sage_texture_factory2_exit(void);
+
+extern void sage_texture_factory2_register(sage_id id, const char *path);
+
+extern sage_tex *sage_texture_factory2_clone(sage_id id);
+
 
 #endif /* SCHEME_ASSISTED_GAME_ENGINE_GRAPHICS_HEADER */
 

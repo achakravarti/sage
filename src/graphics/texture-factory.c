@@ -53,3 +53,32 @@ sage_texture_factory_spawn(sage_id_t id)
     return (sage_texture_t *) sage_id_map_value (map, id);
 }
 
+
+static thread_local sage_object_map *map2 = NULL;
+
+
+extern void sage_texture_factory2_init(void)
+{
+    if (sage_likely (!map))
+        map2 = sage_object_map_new(MAP_BUCKETS);
+}
+
+
+extern void sage_texture_factory2_exit(void)
+{
+    sage_object_map_free(&map2);
+}
+
+
+extern void sage_texture_factory2_register(sage_id id, const char *path)
+{
+    sage_object_map_value_set(map2, id, sage_tex_new(id, path));
+}
+
+
+extern sage_tex *sage_texture_factory2_clone(sage_id id)
+{
+    return sage_object_map_value(map2, id);
+}
+
+
