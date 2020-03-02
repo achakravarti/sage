@@ -520,6 +520,49 @@ extern void sage_texture_factory2_register(sage_id id, const char *path);
 extern sage_tex *sage_texture_factory2_clone(sage_id id);
 
 
+typedef sage_object sage_sprite;
+
+extern sage_sprite *sage_sprite2_new(sage_id texid, struct sage_frame_t tot);
+
+inline sage_sprite *sage_sprite2_copy(const sage_sprite *ctx)
+{
+    return sage_object_copy(ctx);
+}
+
+inline void sage_sprite2_free(sage_sprite **ctx)
+{
+    sage_object_free(ctx);
+}
+
+inline size_t sage_sprite2_size(void)
+{
+    return sage_object_size();
+}
+
+inline sage_id sage_sprite2_id(const sage_sprite *ctx)
+{
+    sage_assert (ctx);
+    return sage_object_id(ctx);
+}
+
+extern struct sage_area_t sage_sprite2_area(const sage_sprite *ctx);
+
+extern struct sage_area_t sage_sprite2_area_frame(const sage_sprite *ctx);
+
+extern void sage_sprite2_frame(sage_sprite **ctx, struct sage_frame_t frm);
+
+extern struct sage_frame_t sage_sprite2_frames(const sage_sprite *ctx);
+
+extern void sage_sprite2_clip(sage_sprite **ctx, struct sage_point_t nw,
+        struct sage_area_t clip);
+
+extern void sage_sprite2_scale(sage_sprite **ctx, struct sage_area_t proj);
+
+extern void sage_sprite2_reset(sage_sprite **ctx);
+
+extern void sage_sprite2_draw(const sage_sprite *ctx, struct sage_point_t dst);
+
+
 #endif /* SCHEME_ASSISTED_GAME_ENGINE_GRAPHICS_HEADER */
 
 

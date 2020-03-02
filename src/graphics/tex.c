@@ -88,6 +88,19 @@ extern struct sage_area_t sage_tex_area(const sage_tex *ctx)
 }
 
 
+extern void sage_tex_clip(sage_tex **ctx, struct sage_point_t nw,
+        struct sage_area_t clip)
+{
+    sage_assert (ctx);
+    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    
+    cd->clip.x = (int) nw.x;
+    cd->clip.y = (int) nw.y;
+    cd->clip.w = clip.w;
+    cd->clip.h = clip.h;
+}
+
+
 extern void sage_tex_scale(sage_tex **ctx, struct sage_area_t proj)
 {
     sage_assert (ctx);
