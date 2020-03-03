@@ -17,7 +17,7 @@ enum {
 static void
 texture_register(void)
 {
-    sage_texture_factory2_register(TEX_SAMPLE, "test/res/sample.png");
+    sage_texture_factory_register(TEX_SAMPLE, "test/res/sample.png");
 }
 
 

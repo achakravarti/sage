@@ -256,303 +256,90 @@ sage_screen_viewport_set(const struct sage_viewport_t *vp);
 
 extern SAGE_HOT void sage_screen_render(void);
 
+typedef sage_object sage_texture;
 
-/**
- * A hardware-accelerated texture.
- */
-typedef struct sage_texture_t sage_texture_t;
+extern sage_texture *sage_texture_new(sage_id texid, const char *path);
 
+inline sage_texture *sage_texture_copy(const sage_texture *ctx)
+{
+    sage_assert (ctx);
+    return sage_object_copy(ctx);
+}
 
-/**
- * Creates a new texture.
- *
- * @param path File path of texture image.
- * @param id Texture ID.
- *
- * @return The new texture instance.
- *
- * @see sage_texture_copy()
- * @see sage_texture_free()
- */
-extern SAGE_HOT sage_texture_t *
-sage_texture_new(const char *path, 
-                 sage_id_t  id);
+inline void sage_texture_free(sage_texture **ctx)
+{
+    sage_object_free(ctx);
+}
 
+inline enum sage_object_id sage_texture_objid(const sage_texture *ctx)
+{
+    sage_assert (ctx);
+    return sage_object_id(ctx);
+}
 
-extern sage_texture_t *
-sage_texture_copy(const sage_texture_t *ctx);
+extern sage_id sage_texture_texid(const sage_texture *ctx);
 
+extern struct sage_area_t sage_texture_area(const sage_texture *ctx);
 
-/**
- * Releases a texture.
- *
- * @param ctx Texture to release.
- *
- * @return NULL.
- *
- * @see sage_texture_new()
- * @see sage_texture_copy()
- */
-extern void 
-sage_texture_free(sage_texture_t **ctx);
+extern void sage_texture_clip(sage_texture **ctx, struct sage_point_t nw, 
+        struct sage_area_t clip);
+
+extern void sage_texture_scale(sage_texture **ctx, struct sage_area_t proj);
+
+extern void sage_texture_reset(sage_texture **ctx);
+
+extern void sage_texture_draw(const sage_texture *ctx, struct sage_point_t dst);
 
 
-/**
- * Gets the size in bytes of a texture instance.
- *
- * @return The size of a texture instance.
- */
-extern size_t 
-sage_texture_size(void);
+extern void sage_texture_factory_init(void);
 
+extern void sage_texture_factory_exit(void);
 
-/**
- * Gets the ID of a texture.
- *
- * @param ctx Contextual texture instance.
- *
- * @return The ID of @p ctx.
- */
-extern sage_id_t 
-sage_texture_id(const sage_texture_t *ctx);
+extern void sage_texture_factory_register(sage_id id, const char *path);
 
-
-/**
- * Gets the area of a texture.
- *
- * @param ctx Contextual texture instance.
- *
- * @return The area of @p ctx.
- */
-extern SAGE_HOT struct sage_area_t 
-sage_texture_area(const sage_texture_t *ctx);
-
-
-/**
- * Clips a texture.
- *
- * @param ctx  Contextual texture instance.
- * @param nw   North-west corner coordinates.
- * @param clip Clip area.
- *
- * @see sage_texture_scale()
- * @see sage_texture_reset()
- * @see sage_texture_draw()
- */
-extern void 
-sage_texture_clip(sage_texture_t      **ctx, 
-                  struct sage_point_t nw,
-                  struct sage_area_t  clip);
-
-
-/**
- * Scales a texture.
- *
- * @param ctx  Contextual texture instance.
- * @param proj Projection area.
- *
- * @see sage_texture_clip()
- * @see sage_texture_reset()
- * @see sage_texture_draw()
- */
-extern void 
-sage_texture_scale(sage_texture_t     **ctx, 
-                   struct sage_area_t proj);
-
-
-/**
- * Resets a texture.
- *
- * @param ctx Contextual texture instance.
- *
- * @see sage_texture_clip()
- * @see sage_texture_scale()
- * @see sage_texture_draw()
- */
-extern void 
-sage_texture_reset(sage_texture_t **ctx);
-
-
-/**
- * Draws a texture.
- *
- * @param ctx Contextual texture instance.
- * @param dst Destination coordinates.
- *
- * @see sage_texture_clip()
- * @see sage_texture_scale()
- * @see sage_texture_reset()
- */
-extern SAGE_HOT void 
-sage_texture_draw(const sage_texture_t *ctx, 
-                  struct sage_point_t  dst);
-
-
-/** TEXTURE FACTORY **/
-
-
-extern void
-sage_texture_factory_start(void);
-
-extern void
-sage_texture_factory_stop(void);
-
-extern void
-sage_texture_factory_register(sage_id_t  id,
-                              const char *path);
-
-extern sage_texture_t *
-sage_texture_factory_spawn(sage_id_t id);
-
-
-/** SPRITE **/
-
+extern sage_texture *sage_texture_factory_clone(sage_id id);
 
 struct sage_frame_t {
     uint16_t r;
     uint16_t c;
 };
 
-
-typedef struct sage_sprite_t sage_sprite_t;
-
-extern sage_sprite_t *
-sage_sprite_new(sage_id_t           texid, 
-                struct sage_frame_t tot);
-
-inline sage_sprite_t *
-sage_sprite_move(sage_sprite_t *ctx)
-{
-    sage_assert (ctx);
-    return ctx;
-}
-
-inline const sage_sprite_t *
-sage_sprite_link(const sage_sprite_t *ctx)
-{
-    sage_assert (ctx);
-    return ctx;
-}
-
-extern sage_sprite_t *
-sage_sprite_copy(const sage_sprite_t *ctx);
-
-extern void 
-sage_sprite_free(sage_sprite_t **ctx);
-
-extern sage_id_t 
-sage_sprite_id(const sage_sprite_t *ctx);
-
-extern struct sage_area_t 
-sage_sprite_area(const sage_sprite_t *ctx);
-
-extern struct sage_area_t 
-sage_sprite_area_frame(const sage_sprite_t *ctx);
-
-extern void 
-sage_sprite_frame(sage_sprite_t       *ctx, 
-                  struct sage_frame_t frm);
-
-extern struct sage_frame_t 
-sage_sprite_frames(const sage_sprite_t *ctx);
-
-extern void 
-sage_sprite_clip(sage_sprite_t       *ctx, 
-                 struct sage_point_t nw,
-                 struct sage_area_t  clip);
-
-extern void 
-sage_sprite_scale(sage_sprite_t      *ctx, 
-                  struct sage_area_t proj);
-
-extern void 
-sage_sprite_reset(sage_sprite_t *ctx);
-
-extern void 
-sage_sprite_draw(const sage_sprite_t *ctx, 
-                 struct sage_point_t dst);
-
-
-typedef sage_object sage_tex;
-
-extern sage_tex *sage_tex_new(sage_id texid, const char *path);
-
-inline sage_tex *sage_tex_copy(const sage_tex *ctx)
-{
-    sage_assert (ctx);
-    return sage_object_copy(ctx);
-}
-
-inline void sage_tex_free(sage_tex **ctx)
-{
-    sage_object_free(ctx);
-}
-
-inline enum sage_object_id sage_tex_objid(const sage_tex *ctx)
-{
-    sage_assert (ctx);
-    return sage_object_id(ctx);
-}
-
-extern sage_id sage_tex_texid(const sage_tex *ctx);
-
-extern struct sage_area_t sage_tex_area(const sage_tex *ctx);
-
-extern void sage_tex_clip(sage_tex **ctx, struct sage_point_t nw, 
-        struct sage_area_t clip);
-
-extern void sage_tex_scale(sage_tex **ctx, struct sage_area_t proj);
-
-extern void sage_tex_reset(sage_tex **ctx);
-
-extern void sage_tex_draw(const sage_tex *ctx, struct sage_point_t dst);
-
-
-extern void sage_texture_factory2_init(void);
-
-extern void sage_texture_factory2_exit(void);
-
-extern void sage_texture_factory2_register(sage_id id, const char *path);
-
-extern sage_tex *sage_texture_factory2_clone(sage_id id);
-
-
 typedef sage_object sage_sprite;
 
-extern sage_sprite *sage_sprite2_new(sage_id texid, struct sage_frame_t tot);
+extern sage_sprite *sage_sprite_new(sage_id texid, struct sage_frame_t tot);
 
-inline sage_sprite *sage_sprite2_copy(const sage_sprite *ctx)
+inline sage_sprite *sage_sprite_copy(const sage_sprite *ctx)
 {
     return sage_object_copy(ctx);
 }
 
-inline void sage_sprite2_free(sage_sprite **ctx)
+inline void sage_sprite_free(sage_sprite **ctx)
 {
     sage_object_free(ctx);
 }
 
-inline enum sage_object_id sage_sprite2_objid(const sage_sprite *ctx)
+inline enum sage_object_id sage_sprite_objid(const sage_sprite *ctx)
 {
     sage_assert (ctx);
     return sage_object_id(ctx);
 }
 
-extern struct sage_area_t sage_sprite2_area(const sage_sprite *ctx);
+extern struct sage_area_t sage_sprite_area(const sage_sprite *ctx);
 
-extern struct sage_area_t sage_sprite2_area_frame(const sage_sprite *ctx);
+extern struct sage_area_t sage_sprite_area_frame(const sage_sprite *ctx);
 
-extern void sage_sprite2_frame(sage_sprite **ctx, struct sage_frame_t frm);
+extern void sage_sprite_frame(sage_sprite **ctx, struct sage_frame_t frm);
 
-extern struct sage_frame_t sage_sprite2_frames(const sage_sprite *ctx);
+extern struct sage_frame_t sage_sprite_frames(const sage_sprite *ctx);
 
-extern void sage_sprite2_clip(sage_sprite **ctx, struct sage_point_t nw,
+extern void sage_sprite_clip(sage_sprite **ctx, struct sage_point_t nw,
         struct sage_area_t clip);
 
-extern void sage_sprite2_scale(sage_sprite **ctx, struct sage_area_t proj);
+extern void sage_sprite_scale(sage_sprite **ctx, struct sage_area_t proj);
 
-extern void sage_sprite2_reset(sage_sprite **ctx);
+extern void sage_sprite_reset(sage_sprite **ctx);
 
-extern void sage_sprite2_draw(const sage_sprite *ctx, struct sage_point_t dst);
+extern void sage_sprite_draw(const sage_sprite *ctx, struct sage_point_t dst);
 
 
 #endif /* SCHEME_ASSISTED_GAME_ENGINE_GRAPHICS_HEADER */
