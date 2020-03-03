@@ -26,6 +26,63 @@
 #include "../core/core.h"
 #include "../graphics/graphics.h"
 
+typedef struct sage_object sage_entity;
+
+struct sage_entity_vtable {
+    void (*update)(sage_entity **ctx);
+    void (*draw)(const sage_entity *ctx);
+};
+
+extern sage_entity *_sage_entity_new(sage_id entid, sage_id texid, 
+        struct sage_frame_t frm, const sage_object *payload, 
+        const struct sage_entity_vtable *vt);
+
+extern sage_entity *_sage_entity_new_default(sage_id entid, sage_id texid,
+        struct sage_frame_t frm);
+
+inline sage_entity *_sage_entity_copy(const sage_entity *ctx)
+{
+    sage_assert (ctx);
+    return sage_object_copy(ctx);
+}
+
+inline void _sage_entity_free(sage_entity **ctx)
+{
+    sage_object_free(ctx);
+}
+
+extern sage_id _sage_entity_id(const sage_entity *ctx);
+
+inline enum sage_object_id _sage_entity_id_object_(const sage_entity *ctx)
+{
+    return sage_object_id(ctx);
+}
+
+extern sage_id _sage_entity_id_scene(const sage_entity *ctx);
+
+extern void _sage_entity_id_scene_set(sage_entity **ctx, sage_id id);
+
+extern sage_vector_t *_sage_entity_position(const sage_entity *ctx);
+
+extern void _sage_entity_position_set(sage_entity **ctx, 
+        const sage_vector_t *pos);
+
+extern void _sage_entity_move(sage_entity **ctx, const sage_vector_t *vel);
+
+extern const sage_object *_sage_entity_payload(const sage_entity *ctx);
+
+extern sage_object *_sage_entity_payload_mutable(sage_entity **ctx);
+
+extern bool _sage_entity_focused(const sage_entity *ctx);
+
+extern void _sage_entity_frame(sage_entity **ctx, struct sage_frame_t frm);
+
+extern void _sage_entity_update(sage_entity **ctx);
+
+extern void _sage_entity_draw(const sage_entity *ctx);
+
+/********************************************/
+
 
 typedef struct sage_entity_t sage_entity_t;
 
