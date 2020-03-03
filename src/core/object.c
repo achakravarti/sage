@@ -3,7 +3,7 @@
 
 struct sage_object {
     struct sage_object_vtable vt;
-    sage_id id;
+    enum sage_object_id id;
     size_t nref;
     void *cdata;
 };
@@ -25,7 +25,7 @@ static void copy_on_write(sage_object **ctx)
 }
 
 
-extern sage_object *sage_object_new(sage_id id, void *cdata,
+extern sage_object *sage_object_new(enum sage_object_id id, void *cdata,
         const struct sage_object_vtable *vt)
 {
     sage_assert (vt);
@@ -34,7 +34,7 @@ extern sage_object *sage_object_new(sage_id id, void *cdata,
 
     sage_object *ctx = sage_heap_new(sizeof *ctx);
 
-    ctx->id = sage_id_copy(id);
+    ctx->id = id;
     ctx->nref = 1;
     ctx->cdata = cdata;
 
@@ -69,16 +69,10 @@ extern void sage_object_free(sage_object **ctx)
 }
 
 
-extern size_t sage_object_size(void)
-{
-    return sizeof (struct sage_object);
-}
-
-
-extern sage_id sage_object_id(const sage_object *ctx)
+extern enum sage_object_id sage_object_id(const sage_object *ctx)
 {
     sage_assert (ctx);
-    return sage_id_copy(ctx->id);
+    return ctx->id;
 }
 
 

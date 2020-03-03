@@ -475,7 +475,7 @@ sage_sprite_draw(const sage_sprite_t *ctx,
 
 typedef sage_object sage_tex;
 
-extern sage_tex *sage_tex_new(sage_id id, const char *path);
+extern sage_tex *sage_tex_new(sage_id texid, const char *path);
 
 inline sage_tex *sage_tex_copy(const sage_tex *ctx)
 {
@@ -488,16 +488,13 @@ inline void sage_tex_free(sage_tex **ctx)
     sage_object_free(ctx);
 }
 
-inline size_t sage_tex_size(void)
-{
-    return sage_object_size();
-}
-
-inline sage_id sage_tex_id(const sage_tex *ctx)
+inline enum sage_object_id sage_tex_objid(const sage_tex *ctx)
 {
     sage_assert (ctx);
     return sage_object_id(ctx);
 }
+
+extern sage_id sage_tex_texid(const sage_tex *ctx);
 
 extern struct sage_area_t sage_tex_area(const sage_tex *ctx);
 
@@ -534,12 +531,7 @@ inline void sage_sprite2_free(sage_sprite **ctx)
     sage_object_free(ctx);
 }
 
-inline size_t sage_sprite2_size(void)
-{
-    return sage_object_size();
-}
-
-inline sage_id sage_sprite2_id(const sage_sprite *ctx)
+inline enum sage_object_id sage_sprite2_objid(const sage_sprite *ctx)
 {
     sage_assert (ctx);
     return sage_object_id(ctx);

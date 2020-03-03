@@ -190,7 +190,7 @@ static inline struct cdata *cdata_new(sage_id texid, struct sage_frame_t tot)
 static inline void *cdata_copy(const void *ctx)
 {
     const struct cdata *hnd = (const struct cdata *) ctx;
-    struct cdata *cp = cdata_new(sage_tex_id(hnd->tex), hnd->tot);
+    struct cdata *cp = cdata_new(sage_tex_texid(hnd->tex), hnd->tot);
 
     cp->cur = hnd->cur;
     cp->clip = hnd->clip;
@@ -211,7 +211,7 @@ extern sage_sprite *sage_sprite2_new(sage_id texid, struct sage_frame_t tot)
 {
     sage_assert (texid);
     struct sage_object_vtable vt = { .copy = &cdata_copy, .free = &cdata_free };
-    return sage_object_new(sage_id_new_random(), cdata_new(texid, tot), &vt);
+    return sage_object_new(SAGE_OBJECT_ID_SPRITE, cdata_new(texid, tot), &vt);
 }
 
 
@@ -221,10 +221,7 @@ extern inline sage_sprite *sage_sprite2_copy(const sage_sprite *ctx);
 extern inline void sage_sprite2_free(sage_sprite **ctx);
 
 
-extern inline size_t sage_sprite2_size(void);
-
-
-extern inline sage_id sage_sprite2_id(const sage_sprite *ctx);
+extern inline enum sage_object_id sage_sprite2_objid(const sage_sprite *ctx);
 
 
 extern struct sage_area_t sage_sprite2_area(const sage_sprite *ctx)
