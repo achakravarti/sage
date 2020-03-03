@@ -48,7 +48,7 @@ struct sage_entity_t {
     sage_id_t                   cls;    /* entity class         */
     sage_id_t                   id;     /* arena ID             */
     sage_vector_t               *vec;   /* position vector      */
-    sage_sprite_t               *spr;   /* sprite               */
+    sage_sprite                 *spr;   /* sprite               */
     sage_payload_t              *cdata; /* custom data payload  */
     struct sage_entity_vtable_t vt;     /* v-table of callbacks */
 };
@@ -66,7 +66,7 @@ draw_default(const sage_entity_t *ctx)
 {
     sage_assert (ctx);
     if (sage_likely (sage_vector_visible(ctx->vec)))
-        sage_sprite_draw(ctx->spr, sage_vector_point(ctx->vec));
+        sage_sprite2_draw(ctx->spr, sage_vector_point(ctx->vec));
 }
 
 
@@ -102,7 +102,7 @@ sage_entity_new(sage_id_t                         cls,
     ctx->cls = cls;
     ctx->id = (sage_id_t) 0;
     ctx->vec = sage_vector_new_zero();
-    ctx->spr = sage_sprite_new(texid, frm);
+    ctx->spr = sage_sprite2_new(texid, frm);
     ctx->cdata = sage_payload_copy(cdata);
   
     sage_assert (vt); 
@@ -128,7 +128,7 @@ sage_entity_new_default(sage_id_t           cls,
     ctx->cls = cls;
     ctx->id = (sage_id_t) 0;
     ctx->vec = sage_vector_new_zero();
-    ctx->spr = sage_sprite_new(texid, frm);
+    ctx->spr = sage_sprite2_new(texid, frm);
     ctx->cdata = NULL;
 
     ctx->vt.update = &update_default;
@@ -159,7 +159,7 @@ sage_entity_copy(const sage_entity_t *ctx)
     cp->cls = ctx->cls;
     cp->id = ctx->id;
     cp->vec = sage_vector_copy(ctx->vec);
-    cp->spr = sage_sprite_copy(ctx->spr);
+    cp->spr = sage_sprite2_copy(ctx->spr);
     cp->cdata = sage_likely (ctx->cdata) ? sage_payload_copy(ctx->cdata) : NULL;
 
     cp->vt.update = ctx->vt.update;
@@ -182,7 +182,7 @@ sage_entity_free(sage_entity_t **ctx)
     if (sage_likely (ctx && (hnd = *ctx))) {
         sage_payload_free(&hnd->cdata);
         sage_vector_free(&hnd->vec);
-        sage_sprite_free(&hnd->spr);
+        sage_sprite2_free(&hnd->spr);
         sage_heap_free((void **) ctx);
     }
 }
@@ -304,7 +304,7 @@ sage_entity_focused(const sage_entity_t *ctx)
 {
     sage_assert(ctx);
 
-    struct sage_area_t frame = sage_sprite_area_frame(ctx->spr);
+    struct sage_area_t frame = sage_sprite2_area_frame(ctx->spr);
     sage_vector_t *add = sage_vector_new((float) frame.w, (float) frame.h);
 
     sage_vector_t *se = sage_vector_copy(ctx->vec);
@@ -330,7 +330,7 @@ sage_entity_frame(sage_entity_t       *ctx,
                   struct sage_frame_t frm)
 {
     sage_assert (ctx);
-    sage_sprite_frame(ctx->spr, frm);
+    sage_sprite2_frame(&ctx->spr, frm);
 }
 
 

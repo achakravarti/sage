@@ -59,7 +59,7 @@ static thread_local sage_object_map *map2 = NULL;
 
 extern void sage_texture_factory2_init(void)
 {
-    if (sage_likely (!map))
+    if (sage_likely (!map2))
         map2 = sage_object_map_new(MAP_BUCKETS);
 }
 
@@ -72,12 +72,14 @@ extern void sage_texture_factory2_exit(void)
 
 extern void sage_texture_factory2_register(sage_id id, const char *path)
 {
+    sage_assert (id && path && *path);
     sage_object_map_value_set(map2, id, sage_tex_new(id, path));
 }
 
 
 extern sage_tex *sage_texture_factory2_clone(sage_id id)
 {
+    sage_assert (id);
     return sage_object_map_value(map2, id);
 }
 
