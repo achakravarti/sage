@@ -55,3 +55,33 @@ sage_entity_factory_spawn(sage_id_t id)
     return (sage_entity_t *) sage_id_map_value (map, id);
 }
 
+
+static thread_local sage_object_map *_map = NULL;
+
+
+extern void _sage_entity_factory_init(void)
+{
+    if (sage_likely (!_map))
+        _map = sage_object_map_new(MAP_BUCKETS);
+}
+
+
+extern void _sage_entity_factory_exit(void)
+{
+    sage_object_map_free(&_map);
+}
+
+
+extern void _sage_entity_factory_register(const sage_entity *ent)
+{
+    sage_assert (ent);
+    sage_object_map_value_set(_map, _sage_entity_id(ent), _sage_entity_copy(ent));
+}
+
+
+extern sage_entity *_sage_entity_factory_clone(sage_id entid)
+{
+    sage_assert (entid);
+    return sage_object_map_value(_map, entid);
+}
+

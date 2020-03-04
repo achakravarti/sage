@@ -202,6 +202,15 @@ extern sage_entity_t *
 sage_entity_factory_spawn(sage_id_t id);
 
 
+extern void _sage_entity_factory_init(void);
+
+extern void _sage_entity_factory_exit(void);
+
+extern void _sage_entity_factory_register(const sage_entity *ent);
+
+extern sage_entity *_sage_entity_factory_clone(sage_id id);
+
+
 extern void 
 sage_arena_start(void);
 
