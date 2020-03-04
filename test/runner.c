@@ -24,7 +24,10 @@ texture_register(void)
 static void
 entity_register(void)
 {
-    sage_entity_factory_register(ENT_SAMPLE, TEX_SAMPLE);
+    struct sage_frame_t frm = { .r = 1, .c = 1 };
+    sage_entity *ent = sage_entity_new_default(ENT_SAMPLE, TEX_SAMPLE, frm);
+    sage_entity_factory_register(ent);
+    sage_entity_free(&ent);
 }
 
 
@@ -40,7 +43,7 @@ int main(int argc, char *argv[])
     texture_register();
     entity_register();
 
-    sage_entity_t *ent = sage_entity_factory_spawn (ENT_SAMPLE);
+    sage_entity *ent = sage_entity_factory_clone (ENT_SAMPLE);
     (void) sage_arena_push (ent);
     sage_entity_free(&ent);
 

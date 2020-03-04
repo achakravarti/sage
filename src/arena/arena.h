@@ -33,182 +33,64 @@ struct sage_entity_vtable {
     void (*draw)(const sage_entity *ctx);
 };
 
-extern sage_entity *_sage_entity_new(sage_id entid, sage_id texid, 
+extern sage_entity *sage_entity_new(sage_id entid, sage_id texid, 
         struct sage_frame_t frm, const sage_object *payload, 
         const struct sage_entity_vtable *vt);
 
-extern sage_entity *_sage_entity_new_default(sage_id entid, sage_id texid,
+extern sage_entity *sage_entity_new_default(sage_id entid, sage_id texid,
         struct sage_frame_t frm);
 
-inline sage_entity *_sage_entity_copy(const sage_entity *ctx)
+inline sage_entity *sage_entity_copy(const sage_entity *ctx)
 {
     sage_assert (ctx);
     return sage_object_copy(ctx);
 }
 
-inline void _sage_entity_free(sage_entity **ctx)
+inline void sage_entity_free(sage_entity **ctx)
 {
     sage_object_free(ctx);
 }
 
-extern sage_id _sage_entity_id(const sage_entity *ctx);
+extern sage_id sage_entity_id(const sage_entity *ctx);
 
-inline enum sage_object_id _sage_entity_id_object_(const sage_entity *ctx)
+inline enum sage_object_id sage_entity_id_object_(const sage_entity *ctx)
 {
     return sage_object_id(ctx);
 }
 
-extern sage_id _sage_entity_id_scene(const sage_entity *ctx);
+extern sage_id sage_entity_id_scene(const sage_entity *ctx);
 
-extern void _sage_entity_id_scene_set(sage_entity **ctx, sage_id id);
+extern void sage_entity_id_scene_set(sage_entity **ctx, sage_id id);
 
-extern sage_vector_t *_sage_entity_position(const sage_entity *ctx);
+extern sage_vector_t *sage_entity_position(const sage_entity *ctx);
 
-extern void _sage_entity_position_set(sage_entity **ctx, 
+extern void sage_entity_position_set(sage_entity **ctx, 
         const sage_vector_t *pos);
 
-extern void _sage_entity_move(sage_entity **ctx, const sage_vector_t *vel);
+extern void sage_entity_move(sage_entity **ctx, const sage_vector_t *vel);
 
-extern const sage_object *_sage_entity_payload(const sage_entity *ctx);
+extern const sage_object *sage_entity_payload(const sage_entity *ctx);
 
-extern sage_object *_sage_entity_payload_mutable(sage_entity **ctx);
+extern sage_object *sage_entity_payload_mutable(sage_entity **ctx);
 
-extern bool _sage_entity_focused(const sage_entity *ctx);
+extern bool sage_entity_focused(const sage_entity *ctx);
 
-extern void _sage_entity_frame(sage_entity **ctx, struct sage_frame_t frm);
+extern void sage_entity_frame(sage_entity **ctx, struct sage_frame_t frm);
 
-extern void _sage_entity_update(sage_entity **ctx);
+extern void sage_entity_update(sage_entity **ctx);
 
-extern void _sage_entity_draw(const sage_entity *ctx);
+extern void sage_entity_draw(const sage_entity *ctx);
 
 /********************************************/
 
 
-typedef struct sage_entity_t sage_entity_t;
+extern void sage_entity_factory_init(void);
 
+extern void sage_entity_factory_exit(void);
 
-/**
- *      The sage_entity_vtable_t structure holds the v-table of callback
- *      functions for a sage_entity_t instance. There are three callback
- **/
-struct sage_entity_vtable_t {
-    void (*update) (sage_entity_t *ctx);
-    void (*draw)   (const sage_entity_t *ctx);
-};
+extern void sage_entity_factory_register(const sage_entity *ent);
 
-
-/**
- * Function: sage_entity_new()
- *      Create a new entity instance.
- *
- * Scope: Entity
- *
- * Parameters:
- *      cls   - entity class
- *      texid - texture ID
- *      frm   - frames
- *      vt    - v-table of callbacks
- *
- * Return:
- *      The new entity instance.
- **/
-extern sage_entity_t *
-sage_entity_new(sage_id_t                         cls, 
-                sage_id_t                         texid,
-                struct sage_frame_t               frm, 
-                const sage_payload_t              *cust,
-                const struct sage_entity_vtable_t *vt);
-
-extern sage_entity_t *
-sage_entity_new_default(sage_id_t           cls,
-                        sage_id_t           texid,
-                        struct sage_frame_t frm);
-
-
-inline sage_entity_t *
-sage_entity_move(sage_entity_t *ctx)
-{
-    sage_assert (ctx);
-    return ctx;
-}
-
-
-inline const sage_entity_t *
-sage_entity_link(const sage_entity_t *ctx)
-{
-    sage_assert (ctx);
-    return ctx;
-}
-
-
-extern sage_entity_t *
-sage_entity_copy(const sage_entity_t *ctx);
-
-extern void 
-sage_entity_free(sage_entity_t **ctx);
-
-extern size_t 
-sage_entity_size(void);
-
-extern sage_id_t 
-sage_entity_class(const sage_entity_t *ctx);
-
-extern sage_id_t 
-sage_entity_id(const sage_entity_t *ctx);
-
-extern void 
-sage_entity_id_set(sage_entity_t *ctx,
-                   sage_id_t     id);
-
-extern const sage_vector_t *
-sage_entity_vector(const sage_entity_t *ctx);
-
-extern void 
-sage_entity_vector_set(sage_entity_t       *ctx, 
-                       const sage_vector_t *vec);
-
-extern void 
-sage_entity_vector_move(sage_entity_t       *ctx, 
-                        const sage_vector_t *vel);
-
-extern const sage_payload_t *
-sage_entity_payload(const sage_entity_t *ctx);
-
-extern bool
-sage_entity_focused(const sage_entity_t *ctx);
-
-extern void 
-sage_entity_frame(sage_entity_t       *ctx, 
-                  struct sage_frame_t frm);
-
-extern void 
-sage_entity_update(sage_entity_t *ctx);
-
-extern void 
-sage_entity_draw(const sage_entity_t *ctx);
-
-
-extern void 
-sage_entity_factory_start(void);
-
-extern void 
-sage_entity_factory_stop(void);
-
-extern void 
-sage_entity_factory_register(sage_id_t cls,
-                             sage_id_t texid);
-
-extern sage_entity_t *
-sage_entity_factory_spawn(sage_id_t id);
-
-
-extern void _sage_entity_factory_init(void);
-
-extern void _sage_entity_factory_exit(void);
-
-extern void _sage_entity_factory_register(const sage_entity *ent);
-
-extern sage_entity *_sage_entity_factory_clone(sage_id id);
+extern sage_entity *sage_entity_factory_clone(sage_id id);
 
 
 extern void 
@@ -217,14 +99,14 @@ sage_arena_start(void);
 extern void 
 sage_arena_stop(void);
 
-extern const sage_entity_t *
+extern const sage_entity *
 sage_arena_entity(size_t idx);
 
 extern void
-sage_arena_entity_set(size_t idx, const sage_entity_t *ent);
+sage_arena_entity_set(size_t idx, const sage_entity *ent);
 
 extern size_t
-sage_arena_push(const sage_entity_t *ent);
+sage_arena_push(const sage_entity *ent);
 
 extern void 
 sage_arena_pop(size_t idx);
@@ -278,23 +160,16 @@ sage_scene_size(void);
 extern sage_id_t
 sage_scene_id(const sage_scene_t *ctx);
 
-extern const sage_entity_t *
-sage_scene_entity(const sage_scene_t *ctx,
-                  sage_id_t          id);
+extern const sage_entity *sage_scene_entity(const sage_scene_t *ctx,
+        sage_id_t id);
 
-extern void
-sage_scene_entity_set(sage_scene_t *ctx,
-                     sage_id_t     id,
-                     sage_entity_t *ent);
+extern void sage_scene_entity_set(sage_scene_t *ctx, sage_id id,
+        sage_entity *ent);
 
-extern void
-sage_scene_entity_push(sage_scene_t *ctx,
-                       sage_id_t    cls,
-                       sage_id_t    id);
+extern void sage_scene_entity_push(sage_scene_t *ctx, sage_id entid,
+        sage_id scnid);
 
-extern void
-sage_scene_entity_pop(sage_scene_t *ctx,
-                      sage_id_t    id);
+extern void sage_scene_entity_pop(sage_scene_t *ctx, sage_id id);
 
 extern const sage_payload_t *
 sage_scene_payload(const sage_scene_t *ctx);

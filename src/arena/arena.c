@@ -6,7 +6,7 @@
 
 
 static thread_local struct {
-    sage_entity_t **lst;
+    sage_entity **lst;
     size_t len;
     size_t cap;
 } *players = NULL;
@@ -40,23 +40,20 @@ sage_arena_stop(void)
 }
 
 
-extern const sage_entity_t *
-sage_arena_entity(size_t idx)
+extern const sage_entity *sage_arena_entity(size_t idx)
 {
     return sage_entity_copy (players->lst [idx]);
 }
 
 
-extern void
-sage_arena_entity_set(size_t idx, const sage_entity_t *ent)
+extern void sage_arena_entity_set(size_t idx, const sage_entity *ent)
 {
     sage_entity_free(&players->lst[idx]);
     players->lst[idx] = sage_entity_copy(ent);
 }
 
 
-extern size_t
-sage_arena_push(const sage_entity_t *ent)
+extern size_t sage_arena_push(const sage_entity *ent)
 {
     sage_assert (ent);
 
@@ -67,14 +64,13 @@ sage_arena_push(const sage_entity_t *ent)
     }
 
     players->lst[players->len] = sage_entity_copy(ent);
-    sage_entity_id_set(players->lst [players->len], players->len);
+    sage_entity_id_scene_set(&players->lst [players->len], players->len);
 
     return players->len++;
 }
 
 
-extern void 
-sage_arena_pop(size_t idx)
+extern void sage_arena_pop(size_t idx)
 {
     sage_entity_free (&players->lst [idx]);
     players->lst [idx] = players->lst [players->len];
@@ -82,16 +78,14 @@ sage_arena_pop(size_t idx)
 }
 
 
-extern void 
-sage_arena_update(void)
+extern void sage_arena_update(void)
 {
     for (register size_t i = 0; i < players->len; i++)
-        sage_entity_update (players->lst [i]);
+        sage_entity_update (&players->lst [i]);
 }
 
 
-extern void 
-sage_arena_draw(void)
+extern void sage_arena_draw(void)
 {
     for (register size_t i = 0; i < players->len; i++)
         sage_entity_draw (players->lst [i]);
