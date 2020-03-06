@@ -54,6 +54,7 @@ extern void sage_game_start(void)
         sage_texture_factory_init();
         sage_entity_factory_init();
         sage_arena_start();
+        sage_stage_init();
     }
 }
 
@@ -61,6 +62,7 @@ extern void sage_game_start(void)
 extern void sage_game_stop(void)
 {
     sage_arena_stop();
+    sage_stage_exit();
     sage_entity_factory_exit();
     sage_texture_factory_exit();
     sage_keyboard_stop();
