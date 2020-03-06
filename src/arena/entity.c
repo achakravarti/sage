@@ -32,7 +32,7 @@
 struct cdata {
     sage_id entid;
     sage_id scnid;
-    sage_vector_t *pos;
+    sage_vector *pos;
     sage_sprite *spr;
     sage_object *payload;
     struct sage_entity_vtable vt;
@@ -168,7 +168,7 @@ extern void sage_entity_id_scene_set(sage_entity **ctx, sage_id id)
 }
 
 
-extern sage_vector_t *sage_entity_position(const sage_entity *ctx)
+extern sage_vector *sage_entity_position(const sage_entity *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
@@ -177,7 +177,7 @@ extern sage_vector_t *sage_entity_position(const sage_entity *ctx)
 
 
 extern void sage_entity_position_set(sage_entity **ctx, 
-        const sage_vector_t *pos)
+        const sage_vector *pos)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
@@ -188,7 +188,7 @@ extern void sage_entity_position_set(sage_entity **ctx,
 }
 
 
-extern void sage_entity_move(sage_entity **ctx, const sage_vector_t *vel)
+extern void sage_entity_move(sage_entity **ctx, const sage_vector *vel)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
@@ -220,13 +220,13 @@ extern bool sage_entity_focused(const sage_entity *ctx)
     const struct cdata *cd = sage_object_cdata(ctx);
 
     struct sage_area_t frm = sage_sprite_area_frame(cd->spr);
-    sage_vector_t *add = sage_vector_new((float) frm.w, (float) frm.h);
+    sage_vector *add = sage_vector_new((float) frm.w, (float) frm.h);
 
-    sage_vector_t *se = sage_vector_copy(cd->pos);
+    sage_vector *se = sage_vector_copy(cd->pos);
     sage_vector_add(&se, add);
     sage_vector_free(&add);
 
-    sage_vector_t *aim = sage_mouse_vector();
+    sage_vector *aim = sage_mouse_vector();
     bool focused = sage_vector_gteq(aim, cd->pos) && sage_vector_lteq(aim, se);
 
     sage_vector_free(&aim);

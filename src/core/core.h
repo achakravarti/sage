@@ -365,89 +365,89 @@ struct sage_area_t {
 
 /** VECTOR **/
 
-//typedef struct sage_vector_t sage_vector_t;
-typedef sage_object sage_vector_t;
+//typedef struct sage_vector sage_vector;
+typedef sage_object sage_vector;
 
-extern sage_vector_t *sage_vector_new(float x, float y);
+extern sage_vector *sage_vector_new(float x, float y);
 
-extern sage_vector_t *sage_vector_new_zero(void);
+extern sage_vector *sage_vector_new_zero(void);
 
-inline sage_vector_t *sage_vector_copy(const sage_vector_t *ctx)
+inline sage_vector *sage_vector_copy(const sage_vector *ctx)
 {
     sage_assert (ctx);
     return sage_object_copy(ctx);
 }
 
-inline void sage_vector_free(sage_vector_t **ctx)
+inline void sage_vector_free(sage_vector **ctx)
 {
     sage_object_free(ctx);
 }
 
 
-inline enum sage_object_id sage_vector_objid(const sage_vector_t *ctx)
+inline enum sage_object_id sage_vector_objid(const sage_vector *ctx)
 {
     sage_assert (ctx);
     return sage_object_id(ctx);
 }
 
 
-extern float sage_vector_x(const sage_vector_t *ctx);
+extern float sage_vector_x(const sage_vector *ctx);
 
-extern void sage_vector_x_set(sage_vector_t **ctx, float x);
+extern void sage_vector_x_set(sage_vector **ctx, float x);
 
-extern float sage_vector_y(const sage_vector_t *ctx);
+extern float sage_vector_y(const sage_vector *ctx);
 
-extern void sage_vector_y_set(sage_vector_t **ctx, float y);
+extern void sage_vector_y_set(sage_vector **ctx, float y);
 
-extern struct sage_point_t sage_vector_point(const sage_vector_t *ctx);
+extern struct sage_point_t sage_vector_point(const sage_vector *ctx);
 
-extern float sage_vector_len(const sage_vector_t *ctx);
+extern float sage_vector_len(const sage_vector *ctx);
 
-extern bool sage_vector_visible(const sage_vector_t *ctx);
+extern bool sage_vector_visible(const sage_vector *ctx);
 
-extern void sage_vector_norm(sage_vector_t **ctx);
+extern void sage_vector_norm(sage_vector **ctx);
 
-extern enum sage_compare_t sage_vector_cmp(const sage_vector_t *lhs,
-        const sage_vector_t *rhs);
+extern enum sage_compare_t sage_vector_cmp(const sage_vector *lhs,
+        const sage_vector *rhs);
 
-inline bool sage_vector_lt(const sage_vector_t *ctx, const sage_vector_t *rhs)
+inline bool sage_vector_lt(const sage_vector *ctx, const sage_vector *rhs)
 {
     sage_assert (ctx && rhs);
     return sage_vector_cmp(ctx, rhs) == SAGE_COMPARE_LT;
 }
 
-inline bool sage_vector_eq(const sage_vector_t *ctx, const sage_vector_t *rhs)
+inline bool sage_vector_eq(const sage_vector *ctx, const sage_vector *rhs)
 {
     sage_assert (ctx && rhs);
     return sage_vector_cmp(ctx, rhs) == SAGE_COMPARE_EQ;
 }
 
-inline bool sage_vector_gt(const sage_vector_t *ctx, const sage_vector_t *rhs)
+inline bool sage_vector_gt(const sage_vector *ctx, const sage_vector *rhs)
 {
     sage_assert (ctx && rhs);
     return sage_vector_cmp(ctx, rhs) == SAGE_COMPARE_GT;
 }
 
-inline bool sage_vector_lteq(const sage_vector_t *ctx, const sage_vector_t *rhs)
+inline bool sage_vector_lteq(const sage_vector *ctx, const sage_vector *rhs)
 {
     sage_assert (ctx && rhs);
     return !sage_vector_gt(ctx, rhs);
 }
 
 
-inline bool sage_vector_gteq(const sage_vector_t *ctx, const sage_vector_t *rhs)
+inline bool sage_vector_gteq(const sage_vector *ctx, const sage_vector *rhs)
 {
     sage_assert (ctx && rhs);
     return !sage_vector_lt(ctx, rhs);
 }
 
-extern void sage_vector_add(sage_vector_t **ctx, const sage_vector_t *add);
+extern void sage_vector_add(sage_vector **ctx, const sage_vector *add);
 
-extern void sage_vector_sub(sage_vector_t **ctx, const sage_vector_t *sub);
+extern void sage_vector_sub(sage_vector **ctx, const sage_vector *sub);
 
-extern void sage_vector_mul(sage_vector_t **ctx, float mul);
+extern void sage_vector_mul(sage_vector **ctx, float mul);
 
-extern void sage_vector_div(sage_vector_t **ctx, const float div);
+extern void sage_vector_div(sage_vector **ctx, const float div);
 
 
 struct sage_id_map_vtable_t {

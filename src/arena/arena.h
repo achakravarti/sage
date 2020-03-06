@@ -62,12 +62,12 @@ extern sage_id sage_entity_id_scene(const sage_entity *ctx);
 
 extern void sage_entity_id_scene_set(sage_entity **ctx, sage_id id);
 
-extern sage_vector_t *sage_entity_position(const sage_entity *ctx);
+extern sage_vector *sage_entity_position(const sage_entity *ctx);
 
 extern void sage_entity_position_set(sage_entity **ctx, 
-        const sage_vector_t *pos);
+        const sage_vector *pos);
 
-extern void sage_entity_move(sage_entity **ctx, const sage_vector_t *vel);
+extern void sage_entity_move(sage_entity **ctx, const sage_vector *vel);
 
 extern const sage_object *sage_entity_payload(const sage_entity *ctx);
 

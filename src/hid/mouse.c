@@ -35,7 +35,7 @@
  */
 static thread_local struct {
     enum sage_mouse_state_t states[SAGE_MOUSE_BUTTON_COUNT];
-    sage_vector_t           *pos;
+    sage_vector           *pos;
 } mouse;
 
 
@@ -101,7 +101,7 @@ sage_mouse_state_update(enum sage_mouse_button_t btn,
  * saves on having to make another copy on the heap. TODO: return a lazy copy
  * once copy on write is implemented in the vector interface.
  */
-extern sage_vector_t *sage_mouse_vector(void)
+extern sage_vector *sage_mouse_vector(void)
 {
     sage_assert(mouse.pos);
     return sage_vector_copy(mouse.pos);

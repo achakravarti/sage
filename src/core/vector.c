@@ -30,12 +30,12 @@
 
 
 /*
- * The sage_vector_t struct was forward declared in the sage/src/sage.h header
+ * The sage_vector struct was forward declared in the sage/src/sage.h header
  * file. Here we're defining the struct with its attributes. This struct holds
  * the x and y coordinates that represent a vector.
  */
 #if 0
-struct sage_vector_t {
+struct sage_vector {
     float x; /* x coordinate */
     float y; /* y coordinate */
 };
@@ -106,9 +106,9 @@ static inline bool float_eq(float lhs, float rhs)
  * given set of coordinates. We allocate memory in the heap for the new instance
  * and set its fields appropriately.
  */
-extern sage_vector_t *sage_vector_new(float x, float y)
+extern sage_vector *sage_vector_new(float x, float y)
 {
-    /*sage_vector_t *ctx = sage_heap_new(sizeof *ctx);
+    /*sage_vector *ctx = sage_heap_new(sizeof *ctx);
     ctx->x = x;
     ctx->y = y;*/
 
@@ -122,7 +122,7 @@ extern sage_vector_t *sage_vector_new(float x, float y)
  * centred at the origin. We do so by invoking sage_vector_new() with the origin
  * coordinates.
  */
-extern sage_vector_t *
+extern sage_vector *
 sage_vector_new_zero(void)
 {
     return sage_vector_new(0.0f, 0.0f);
@@ -134,7 +134,7 @@ sage_vector_new_zero(void)
  * instance. We use sage_vector_new() to force the creation of a new instance
  * with the same attributes as the instance being copied.
  */
-extern inline sage_vector_t *sage_vector_copy(const sage_vector_t *ctx);
+extern inline sage_vector *sage_vector_copy(const sage_vector *ctx);
 
 
 /*
@@ -143,17 +143,17 @@ extern inline sage_vector_t *sage_vector_copy(const sage_vector_t *ctx);
  * the instance. We don't make any checks on the instance since it's safe to
  * call sage_heap_free() even with null pointers.
  */
-extern inline void sage_vector_free(sage_vector_t **ctx);
+extern inline void sage_vector_free(sage_vector **ctx);
 
 
-extern inline enum sage_object_id sage_vector_objid(const sage_vector_t *ctx);
+extern inline enum sage_object_id sage_vector_objid(const sage_vector *ctx);
 
 
 /*
  * The sage_vector_x() interface function gets the x coordinate of a given
  * vector instance. The x coordinate is held in the x attribute of the vector.
  */
-extern float sage_vector_x(const sage_vector_t *ctx)
+extern float sage_vector_x(const sage_vector *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
@@ -165,7 +165,7 @@ extern float sage_vector_x(const sage_vector_t *ctx)
  * The sage_vector_x_set() interface function sets the x coordinate of a given
  * vector instance. The x coordinate is held in the x attribute of the vector.
  */
-extern void sage_vector_x_set(sage_vector_t **ctx, float x)
+extern void sage_vector_x_set(sage_vector **ctx, float x)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
@@ -177,7 +177,7 @@ extern void sage_vector_x_set(sage_vector_t **ctx, float x)
  * The sage_vector_y() interface function gets the y coordinate of a given
  * vector instance. The y coordinate is held in the y attribute of the vector.
  */
-extern float sage_vector_y(const sage_vector_t *ctx)
+extern float sage_vector_y(const sage_vector *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
@@ -189,7 +189,7 @@ extern float sage_vector_y(const sage_vector_t *ctx)
  * The sage_vector_y_set() interface function sets the y coordinate of a given
  * vector instance. The y coordinate is held in the y attribute of the vector.
  */
-extern void sage_vector_y_set(sage_vector_t **ctx, float y)
+extern void sage_vector_y_set(sage_vector **ctx, float y)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
@@ -202,7 +202,7 @@ extern void sage_vector_y_set(sage_vector_t **ctx, float y)
  * vector instance represented as a point structure. We choose to return the
  * point structure by value instead of reference since it's only 64 bits wide.
  */
-extern struct sage_point_t sage_vector_point(const sage_vector_t *ctx)
+extern struct sage_point_t sage_vector_point(const sage_vector *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
@@ -218,7 +218,7 @@ extern struct sage_point_t sage_vector_point(const sage_vector_t *ctx)
  * coordinates.
  */
 extern float 
-sage_vector_len(const sage_vector_t *ctx)
+sage_vector_len(const sage_vector *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
@@ -234,7 +234,7 @@ sage_vector_len(const sage_vector_t *ctx)
  * visible if both its x and y coordinates are positive.
  */
 extern bool
-sage_vector_visible(const sage_vector_t *ctx)
+sage_vector_visible(const sage_vector *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
@@ -249,7 +249,7 @@ sage_vector_visible(const sage_vector_t *ctx)
  * check is delegated to the sage_vector_div() interface function.
  */
 extern void 
-sage_vector_norm(sage_vector_t **ctx)
+sage_vector_norm(sage_vector **ctx)
 {
     sage_vector_div(ctx, sage_vector_len(*ctx));
 }
@@ -259,8 +259,8 @@ sage_vector_norm(sage_vector_t **ctx)
  * The sage_vector_cmp() interface function compares two vector instances. The
  * vectors are compared based on their length.
  */
-extern enum sage_compare_t sage_vector_cmp(const sage_vector_t *ctx, 
-        const sage_vector_t *rhs)
+extern enum sage_compare_t sage_vector_cmp(const sage_vector *ctx, 
+        const sage_vector *rhs)
 {
     sage_assert (ctx && rhs);
     float clen = sage_vector_len(ctx), rlen = sage_vector_len(rhs);
@@ -279,8 +279,8 @@ extern enum sage_compare_t sage_vector_cmp(const sage_vector_t *ctx,
  * less than another one. We make the comparison through the sage_vector_cmp()
  * interface function.
  */
-extern inline bool sage_vector_lt(const sage_vector_t *ctx, 
-        const sage_vector_t *rhs);
+extern inline bool sage_vector_lt(const sage_vector *ctx, 
+        const sage_vector *rhs);
 
 
 /*
@@ -288,8 +288,8 @@ extern inline bool sage_vector_lt(const sage_vector_t *ctx,
  * equal to another one. We make the comparison through the sage_vector_cmp()
  * interface function.
  */
-extern inline bool sage_vector_eq(const sage_vector_t *ctx, 
-        const sage_vector_t *rhs);
+extern inline bool sage_vector_eq(const sage_vector *ctx, 
+        const sage_vector *rhs);
 
 
 /*
@@ -297,8 +297,8 @@ extern inline bool sage_vector_eq(const sage_vector_t *ctx,
  * greater than another one. We make the comparison by invoking the
  * sage_vector_cmp() interface function.
  */
-extern inline bool sage_vector_gt(const sage_vector_t *ctx, 
-        const sage_vector_t *rhs);
+extern inline bool sage_vector_gt(const sage_vector *ctx, 
+        const sage_vector *rhs);
 
 
 /*
@@ -306,8 +306,8 @@ extern inline bool sage_vector_gt(const sage_vector_t *ctx,
  * less than or equal to another one. We make the comparison through the
  * sage_vector_cmp() interface function.
  */
-extern inline bool sage_vector_lteq(const sage_vector_t *ctx, 
-        const sage_vector_t *rhs);
+extern inline bool sage_vector_lteq(const sage_vector *ctx, 
+        const sage_vector *rhs);
 
 
 /*
@@ -315,15 +315,15 @@ extern inline bool sage_vector_lteq(const sage_vector_t *ctx,
  * greater than or equal to another one. We make the comparison through the
  * sage_vector_cmp() interface function.
  */
-extern inline bool sage_vector_gteq(const sage_vector_t *ctx, 
-    const sage_vector_t *rhs);
+extern inline bool sage_vector_gteq(const sage_vector *ctx, 
+    const sage_vector *rhs);
 
 
 /*
  * The sage_vector_add() interface function adds a given vector to another one.
  * We add two vectors by adding their individual coordinates.
  */
-extern void sage_vector_add(sage_vector_t **ctx, const sage_vector_t *add)
+extern void sage_vector_add(sage_vector **ctx, const sage_vector *add)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
@@ -339,7 +339,7 @@ extern void sage_vector_add(sage_vector_t **ctx, const sage_vector_t *add)
  * another one. We subtract two vectors by subtracting their individual
  * coordinates.
  */
-extern void sage_vector_sub(sage_vector_t **ctx, const sage_vector_t *sub)
+extern void sage_vector_sub(sage_vector **ctx, const sage_vector *sub)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
@@ -355,7 +355,7 @@ extern void sage_vector_sub(sage_vector_t **ctx, const sage_vector_t *sub)
  * scalar. We multiply a vector with a scalar my multiplying each of its
  * coordinates with the scalar.
  */
-extern void sage_vector_mul(sage_vector_t **ctx, float mul)
+extern void sage_vector_mul(sage_vector **ctx, float mul)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
@@ -371,7 +371,7 @@ extern void sage_vector_mul(sage_vector_t **ctx, float mul)
  * scalar value. We make a requirements check that we are not dividing through
  * by zero.
  */
-extern void sage_vector_div(sage_vector_t **ctx, const float div)
+extern void sage_vector_div(sage_vector **ctx, const float div)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
