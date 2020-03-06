@@ -80,7 +80,7 @@ extern void sage_object_id_set(sage_object **ctx, sage_id id)
 {
     sage_assert (ctx && *ctx);
     copy_on_write(ctx);
-    (*ctx)->id = sage_id_copy(id);
+    (*ctx)->id = id;
 }
 
 
