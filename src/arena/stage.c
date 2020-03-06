@@ -1,24 +1,23 @@
 #include "arena.h"
 
 
-struct node_t {
-    sage_scene_t        *scn;
-    struct node_t *nxt;
-    struct node_t *prv;
+struct node {
+    sage_scene        *scn;
+    struct node *nxt;
+    struct node *prv;
 };
 
 
 
 static thread_local struct {
-    struct node_t *head;
-    struct node_t *tail;
+    struct node *head;
+    struct node *tail;
 } *list = NULL;
 
 
-static struct node_t *
-node_new(sage_scene_t *scn)
+static struct node *node_new(sage_scene *scn)
 {
-    struct node_t *ctx = sage_heap_new(sizeof *ctx);
+    struct node *ctx = sage_heap_new(sizeof *ctx);
 
     sage_assert (scn);
     ctx->scn = scn;
@@ -28,18 +27,16 @@ node_new(sage_scene_t *scn)
 }
 
 
-static inline void
-node_free(struct node_t **ctx)
+static inline void node_free(struct node **ctx)
 {
     sage_scene_free(&(*ctx)->scn);
     sage_heap_free((void **) ctx);
 }
 
 
-static void
-list_push(sage_scene_t *scn)
+static void list_push(sage_scene *scn)
 {
-    struct node_t *node = node_new(scn);
+    struct node *node = node_new(scn);
 
     sage_assert (list);
     if (sage_likely (list->tail)) {
@@ -52,11 +49,10 @@ list_push(sage_scene_t *scn)
 }
 
 
-static void
-list_pop(void)
+static void list_pop(void)
 {
     sage_assert (list && list->tail);
-    struct node_t *pop = list->tail;
+    struct node *pop = list->tail;
 
     if (pop == list->head)
         list->tail = list->head = NULL;
@@ -69,8 +65,7 @@ list_pop(void)
 }
 
 
-extern void
-sage_stage_init(void)
+extern void sage_stage_init(void)
 {
     sage_assert (!list);
     list = sage_heap_new(sizeof *list);
@@ -78,11 +73,10 @@ sage_stage_init(void)
 }
 
 
-extern void
-sage_stage_exit(void)
+extern void sage_stage_exit(void)
 {
     if (sage_likely (list)) {
-        struct node_t *itr = list->head, *tmp;
+        struct node *itr = list->head, *tmp;
 
         while (sage_likely (itr)) {
             tmp = itr;
@@ -95,8 +89,7 @@ sage_stage_exit(void)
 }
 
 
-extern void
-sage_stage_segue(sage_scene_t *scn)
+extern void sage_stage_segue(sage_scene *scn)
 {
     sage_assert (list);
     if (list->tail) {
@@ -110,8 +103,7 @@ sage_stage_segue(sage_scene_t *scn)
 }
 
 
-extern void
-sage_stage_interval(sage_scene_t *scn)
+extern void sage_stage_interval(sage_scene *scn)
 {
     sage_assert (list && list->tail && scn);
     list_push(scn);
@@ -119,8 +111,7 @@ sage_stage_interval(sage_scene_t *scn)
 }
 
 
-extern void
-sage_stage_restore(void)
+extern void sage_stage_restore(void)
 {
     sage_assert (list && list->tail && list->tail != list->head);
     sage_scene_stop(list->tail->scn);
@@ -128,16 +119,14 @@ sage_stage_restore(void)
 }
 
 
-extern void
-sage_stage_update(void)
+extern void sage_stage_update(void)
 {
     sage_assert (list && list->tail);
     sage_scene_update(list->tail->scn);
 }
 
 
-extern void
-sage_stage_draw(void)
+extern void sage_stage_draw(void)
 {
     sage_assert (list && list->tail);
     sage_scene_draw(list->tail->scn);
