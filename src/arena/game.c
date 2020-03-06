@@ -49,8 +49,8 @@ extern void sage_game_start(void)
         game = sage_heap_new(sizeof *game);
         game->run = true;
 
-        sage_mouse_start();
-        sage_keyboard_start();
+        sage_mouse_init();
+        sage_keyboard_init();
         sage_texture_factory_init();
         sage_entity_factory_init();
         sage_arena_start();
@@ -65,8 +65,8 @@ extern void sage_game_stop(void)
     sage_stage_exit();
     sage_entity_factory_exit();
     sage_texture_factory_exit();
-    sage_keyboard_stop();
-    sage_mouse_stop();
+    sage_keyboard_exit();
+    sage_mouse_exit();
 
     sage_heap_free((void **) &game);
     sage_heap_exit();

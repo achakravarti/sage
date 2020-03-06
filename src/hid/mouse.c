@@ -34,8 +34,8 @@
  * does not yet support multiple mouse devices.
  */
 static thread_local struct {
-    enum sage_mouse_state_t states[SAGE_MOUSE_BUTTON_COUNT];
-    sage_vector           *pos;
+    enum sage_mouse_state states[SAGE_MOUSE_BUTTON_COUNT];
+    sage_vector *pos;
 } mouse;
 
 
@@ -43,8 +43,7 @@ static thread_local struct {
  * The sage_mouse_start() interface function initialises the mouse manager. We
  * initialise the fields of the mouse singleton to their default values.
  */
-extern void
-sage_mouse_start(void)
+extern void sage_mouse_init(void)
 {
     for (register size_t i = 0; i < SAGE_MOUSE_BUTTON_COUNT; i++)
         mouse.states[i] = SAGE_MOUSE_STATE_UP;
@@ -59,8 +58,7 @@ sage_mouse_start(void)
  * need to check whether the position vector field has been initialised because
  * it's safe to call sage_vector_free() even with uninitialised instances.
  */
-extern void
-sage_mouse_stop(void)
+extern void sage_mouse_exit(void)
 {
     sage_vector_free(&mouse.pos);
 }
@@ -72,8 +70,7 @@ sage_mouse_stop(void)
  * We indirectly assert that the mouse singleton has been intialised by checking
  * whether its position field has been allocated.
  */
-extern enum sage_mouse_state_t
-sage_mouse_state(enum sage_mouse_button_t btn)
+extern enum sage_mouse_state sage_mouse_state(enum sage_mouse_button btn)
 {
     sage_assert(mouse.pos);
     return mouse.states[btn];
@@ -86,9 +83,8 @@ sage_mouse_state(enum sage_mouse_button_t btn)
  * singleton appropriately after asserting indirectly that the mouse singleton
  * has been initialised.
  */
-extern void
-sage_mouse_state_update(enum sage_mouse_button_t btn,
-                        enum sage_mouse_state_t  state)
+extern void sage_mouse_state_update(enum sage_mouse_button btn,
+        enum sage_mouse_state state)
 {
     sage_assert(mouse.pos);
     mouse.states[btn] = state;
@@ -114,8 +110,7 @@ extern sage_vector *sage_mouse_vector(void)
  * of the mouse singleton, after indirectly asserting that the mouse singleton
  * has been initialised.
  */
-extern void
-sage_mouse_vector_update(float x, float y)
+extern void sage_mouse_vector_update(float x, float y)
 {
     sage_assert(mouse.pos);
     sage_vector_x_set(&mouse.pos, x);

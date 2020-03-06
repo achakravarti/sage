@@ -29,7 +29,7 @@
 /** KEYBOARD **/
 
 
-enum sage_keyboard_key_t {
+enum sage_keyboard_key {
     SAGE_KEYBOARD_KEY_NONE = 0x00,     /* No key pressed */
     SAGE_KEYBOARD_KEY_OVERFLOW = 0x01, /* Too many keys pressed */
 
@@ -164,28 +164,25 @@ enum sage_keyboard_key_t {
 };
 
 
-enum sage_keyboard_state_t {
+enum sage_keyboard_state {
         SAGE_KEYBOARD_STATE_UP = 0,
         SAGE_KEYBOARD_STATE_DOWN
 };
 
 
-extern void 
-sage_keyboard_start(void);
+extern void sage_keyboard_start(void);
 
-extern void 
-sage_keyboard_stop(void);
+extern void sage_keyboard_stop(void);
 
-extern SAGE_HOT enum sage_keyboard_state_t 
-sage_keyboard_state(enum sage_keyboard_key_t key);
+extern SAGE_HOT enum sage_keyboard_state sage_keyboard_state(
+        enum sage_keyboard_key key);
 
-extern SAGE_HOT void 
-sage_keyboard_state_update(void);
+extern SAGE_HOT void sage_keyboard_state_update(void);
 
 
 /** MOUSE **/
 
-enum sage_mouse_button_t {
+enum sage_mouse_button {
     SAGE_MOUSE_BUTTON_LEFT = 0,
     SAGE_MOUSE_BUTTON_MIDDLE,
     SAGE_MOUSE_BUTTON_RIGHT,
@@ -194,7 +191,7 @@ enum sage_mouse_button_t {
 };
 
 
-enum sage_mouse_state_t {
+enum sage_mouse_state {
     SAGE_MOUSE_STATE_UP = 0,
     SAGE_MOUSE_STATE_DOWN,
 
@@ -202,24 +199,18 @@ enum sage_mouse_state_t {
 };
 
 
-extern void
-sage_mouse_start(void);
+extern void sage_mouse_init(void);
 
-extern void
-sage_mouse_stop(void);
+extern void sage_mouse_exit(void);
 
-extern enum sage_mouse_state_t
-sage_mouse_state(enum sage_mouse_button_t btn);
+extern enum sage_mouse_state sage_mouse_state(enum sage_mouse_button btn);
 
-extern void
-sage_mouse_state_update(enum sage_mouse_button_t btn,
-                        enum sage_mouse_state_t  state);
+extern void sage_mouse_state_update(enum sage_mouse_button btn,
+        enum sage_mouse_state state);
 
-extern sage_vector *
-sage_mouse_vector(void);
+extern sage_vector *sage_mouse_vector(void);
 
-extern void
-sage_mouse_vector_update(float x, float y);
+extern void sage_mouse_vector_update(float x, float y);
 
 
 #endif /* SAGE_HID_API */

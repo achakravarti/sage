@@ -43,8 +43,7 @@ static thread_local const uint8_t *states = NULL;
  * keyboard manager has already been intitialised because it's safe to make
  * redundant calls to sage_keyboard_start().
  */
-extern void 
-sage_keyboard_start(void)
+extern void sage_keyboard_init(void)
 {
     sage_keyboard_state_update();
 }
@@ -55,8 +54,7 @@ sage_keyboard_start(void)
  * As of now, it's essentially a dummy function provided for symmetry since it
  * doesn't need to perform any resource cleanup.
  */
-extern void 
-sage_keyboard_stop(void)
+extern void sage_keyboard_exit(void)
 {
     states = NULL;
 }
@@ -67,8 +65,8 @@ sage_keyboard_stop(void)
  * given keyboard key. We simply return the corresponding value in the SDL2 key
  * state array.
  */
-extern SAGE_HOT enum sage_keyboard_state_t 
-sage_keyboard_state(enum sage_keyboard_key_t key)
+extern SAGE_HOT enum sage_keyboard_state sage_keyboard_state(
+        enum sage_keyboard_key key)
 {
     return states[key];
 }
@@ -79,8 +77,7 @@ sage_keyboard_state(enum sage_keyboard_key_t key)
  * state of all keyboard keys. We do this by requesting SDL2 to update its
  * internal key state array.
  */
-extern SAGE_HOT void 
-sage_keyboard_state_update(void)
+extern SAGE_HOT void sage_keyboard_state_update(void)
 {
     sage_require(states = SDL_GetKeyboardState(NULL));
 }
