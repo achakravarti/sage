@@ -84,6 +84,41 @@ extern void sage_entity_draw(const sage_entity *ctx);
 /********************************************/
 
 
+typedef sage_object sage_entity_list;
+
+extern sage_entity_list *sage_entity_list_new(void);
+
+inline sage_entity_list *sage_entity_list_copy(const sage_entity_list *ctx)
+{
+    sage_assert (ctx);
+    return sage_object_copy(ctx);
+}
+
+
+inline void sage_entity_list_free(sage_entity_list **ctx)
+{
+    sage_object_free(ctx);
+}
+
+
+inline enum sage_object_id sage_entity_list_id_object(
+        const sage_entity_list *ctx)
+{
+    sage_assert (ctx);
+    return sage_object_id(ctx);
+}
+
+
+extern void sage_entity_list_push(sage_entity_list **ctx, 
+        const sage_entity *ent);
+
+
+extern void sage_entity_list_pop(sage_entity_list **ctx, sage_id eid);
+
+
+/*****************************************/
+
+
 extern void sage_entity_factory_init(void);
 
 extern void sage_entity_factory_exit(void);
