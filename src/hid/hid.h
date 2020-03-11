@@ -170,9 +170,9 @@ enum sage_keyboard_state {
 };
 
 
-extern void sage_keyboard_start(void);
+extern void sage_keyboard_init(void);
 
-extern void sage_keyboard_stop(void);
+extern void sage_keyboard_exit(void);
 
 extern SAGE_HOT enum sage_keyboard_state sage_keyboard_state(
         enum sage_keyboard_key key);

@@ -94,12 +94,12 @@ extern void sage_stage_segue(sage_scene *scn)
     sage_assert (list);
     if (list->tail) {
         sage_assert (sage_scene_id(scn) != sage_scene_id(list->tail->scn));
-        sage_scene_stop(list->tail->scn);
+        sage_scene_stop(&list->tail->scn);
         list_pop();
     }
 
     list_push(scn);
-    sage_scene_start(scn);
+    sage_scene_start(&scn);
 }
 
 
@@ -107,14 +107,14 @@ extern void sage_stage_interval(sage_scene *scn)
 {
     sage_assert (list && list->tail && scn);
     list_push(scn);
-    sage_scene_start(scn);
+    sage_scene_start(&scn);
 }
 
 
 extern void sage_stage_restore(void)
 {
     sage_assert (list && list->tail && list->tail != list->head);
-    sage_scene_stop(list->tail->scn);
+    sage_scene_stop(&list->tail->scn);
     list_pop();
 }
 
@@ -122,7 +122,7 @@ extern void sage_stage_restore(void)
 extern void sage_stage_update(void)
 {
     sage_assert (list && list->tail);
-    sage_scene_update(list->tail->scn);
+    sage_scene_update(&list->tail->scn);
 }
 
 
