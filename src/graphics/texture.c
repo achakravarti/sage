@@ -98,7 +98,7 @@ extern void sage_texture_clip(sage_texture **ctx, struct sage_point_t nw,
         struct sage_area_t clip)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     
     cd->clip.x = (int) nw.x;
     cd->clip.y = (int) nw.y;
@@ -110,7 +110,7 @@ extern void sage_texture_clip(sage_texture **ctx, struct sage_point_t nw,
 extern void sage_texture_scale(sage_texture **ctx, struct sage_area_t proj)
 {
     sage_assert (ctx);
-    struct cdata *cd = (struct cdata *) sage_object_cdata_mutate(ctx);
+    struct cdata *cd = (struct cdata *) sage_object_cdata_mutable(ctx);
     cd->proj = proj;
 }
 
@@ -118,7 +118,7 @@ extern void sage_texture_scale(sage_texture **ctx, struct sage_area_t proj)
 extern void sage_texture_reset(sage_texture **ctx)
 {
     sage_assert (ctx);
-    struct cdata *cd = (struct cdata *) sage_object_cdata_mutate(ctx);
+    struct cdata *cd = (struct cdata *) sage_object_cdata_mutable(ctx);
 
     cd->clip.x = cd->clip.y = 0;
     sage_assert (cd->tex);

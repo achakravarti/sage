@@ -163,7 +163,7 @@ extern sage_id sage_entity_id_scene(const sage_entity *ctx)
 extern void sage_entity_id_scene_set(sage_entity **ctx, sage_id id)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->scnid = id;
 }
 
@@ -180,7 +180,7 @@ extern void sage_entity_position_set(sage_entity **ctx,
         const sage_vector *pos)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     sage_assert (pos);
     sage_vector_free(&cd->pos);
@@ -191,7 +191,7 @@ extern void sage_entity_position_set(sage_entity **ctx,
 extern void sage_entity_move(sage_entity **ctx, const sage_vector *vel)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     sage_assert (vel);
     sage_vector_add(&cd->pos, vel);
@@ -209,7 +209,7 @@ extern const sage_object *sage_entity_payload(const sage_entity *ctx)
 extern sage_object *sage_entity_payload_mutable(sage_entity **ctx)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     return cd->payload;
 }
 
@@ -239,7 +239,7 @@ extern bool sage_entity_focused(const sage_entity *ctx)
 extern void sage_entity_frame(sage_entity **ctx, struct sage_frame_t frm)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     sage_sprite_frame(&cd->spr, frm);
 }
 
@@ -247,7 +247,7 @@ extern void sage_entity_frame(sage_entity **ctx, struct sage_frame_t frm)
 extern void sage_entity_update(sage_entity **ctx)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->vt.update(ctx);
 }
 

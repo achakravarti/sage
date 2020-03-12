@@ -168,7 +168,7 @@ extern float sage_vector_x(const sage_vector *ctx)
 extern void sage_vector_x_set(sage_vector **ctx, float x)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->x = x;
 }
 
@@ -192,7 +192,7 @@ extern float sage_vector_y(const sage_vector *ctx)
 extern void sage_vector_y_set(sage_vector **ctx, float y)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->y = y;
 }
 
@@ -326,7 +326,7 @@ extern inline bool sage_vector_gteq(const sage_vector *ctx,
 extern void sage_vector_add(sage_vector **ctx, const sage_vector *add)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     sage_assert (add);
     cd->x += sage_vector_x(add);
@@ -342,7 +342,7 @@ extern void sage_vector_add(sage_vector **ctx, const sage_vector *add)
 extern void sage_vector_sub(sage_vector **ctx, const sage_vector *sub)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     
     sage_assert (sub);
     cd->x -= sage_vector_x(sub);
@@ -358,7 +358,7 @@ extern void sage_vector_sub(sage_vector **ctx, const sage_vector *sub)
 extern void sage_vector_mul(sage_vector **ctx, float mul)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     cd->x *= mul;
     cd->y *= mul;
@@ -374,7 +374,7 @@ extern void sage_vector_mul(sage_vector **ctx, float mul)
 extern void sage_vector_div(sage_vector **ctx, const float div)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     sage_require (!float_eq(div, 0.0f));
     cd->x /= div;
@@ -388,6 +388,5 @@ extern void sage_vector_div(sage_vector **ctx, const float div)
  *                                    /'.-c
  *                                    |  /T
  *                                   _)_/LI
- *
  ******************************************************************************/
 

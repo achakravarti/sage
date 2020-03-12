@@ -91,7 +91,7 @@ extern const void *sage_object_cdata(const sage_object *ctx)
 }
 
 
-extern void *sage_object_cdata_mutate(sage_object **ctx)
+extern void *sage_object_cdata_mutable(sage_object **ctx)
 {
     sage_assert (ctx);
     sage_assert (*ctx);

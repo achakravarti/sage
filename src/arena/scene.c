@@ -24,7 +24,7 @@ static inline void stop_default(sage_scene **ctx)
 static inline void update_default(sage_scene **ctx)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     sage_entity *ent;
     for (register size_t i = 1; i <= sage_entity_list_length(cd->ents); i++) {
@@ -141,7 +141,7 @@ extern void sage_scene_entity_set(sage_scene **ctx, sage_id id,
         sage_entity *ent)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     sage_assert (id);
     sage_entity_list_set_key(&cd->ents, id, ent);
@@ -151,7 +151,7 @@ extern void sage_scene_entity_set(sage_scene **ctx, sage_id id,
 extern void sage_scene_entity_push(sage_scene **ctx, sage_id entid, sage_id id)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     
     sage_entity *ent = sage_entity_factory_clone(entid);
     sage_entity_id_scene_set(&ent, id);
@@ -162,7 +162,7 @@ extern void sage_scene_entity_push(sage_scene **ctx, sage_id entid, sage_id id)
 extern void sage_scene_entity_pop(sage_scene **ctx, sage_id id)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     sage_entity_list_pop(&cd->ents, id);
 }
 
@@ -178,7 +178,7 @@ extern sage_object *sage_scene_payload(const sage_scene *ctx)
 extern void sage_scene_start(sage_scene **ctx)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->vt.start(ctx);
 }
 
@@ -186,7 +186,7 @@ extern void sage_scene_start(sage_scene **ctx)
 extern void sage_scene_stop(sage_scene **ctx)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->vt.stop(ctx);
 }
 
@@ -195,7 +195,7 @@ extern void sage_scene_stop(sage_scene **ctx)
 extern void sage_scene_update(sage_scene **ctx)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->vt.update(ctx);
 }
 

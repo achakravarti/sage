@@ -122,7 +122,7 @@ extern void sage_entity_list_set(sage_entity_list **ctx, size_t idx,
         const sage_entity *ent)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     size_t index = idx - 1;
     sage_assert (ent && idx <= cd->len);
@@ -146,7 +146,7 @@ extern void sage_entity_list_push(sage_entity_list **ctx,
         const sage_entity *ent)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     if (sage_unlikely (cd->len == cd->cap)) {
         cd->cap *= 2;
@@ -164,7 +164,7 @@ extern void sage_entity_list_pop(sage_entity_list **ctx, sage_id key)
     size_t idx = sage_entity_list_find(*ctx, key);
     sage_assert (idx);
 
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     sage_entity_free(&cd->lst[--idx]);
     cd->lst[idx] = cd->lst[cd->len];
     cd->lst[cd->len--] = NULL;

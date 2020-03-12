@@ -96,7 +96,7 @@ extern struct sage_area_t sage_sprite_area_frame(const sage_sprite *ctx)
 extern void sage_sprite_frame(sage_sprite **ctx, struct sage_frame_t frm)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->cur = frm;
 }
 
@@ -113,7 +113,7 @@ extern void sage_sprite_clip(sage_sprite **ctx, struct sage_point_t nw,
         struct sage_area_t clip)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     cd->clip.x = (int) nw.x;
     cd->clip.y = (int) nw.y;
@@ -125,7 +125,7 @@ extern void sage_sprite_clip(sage_sprite **ctx, struct sage_point_t nw,
 extern void sage_sprite_scale(sage_sprite **ctx, struct sage_area_t proj)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
     cd->proj = proj;
 }
 
@@ -133,7 +133,7 @@ extern void sage_sprite_scale(sage_sprite **ctx, struct sage_area_t proj)
 extern void sage_sprite_reset(sage_sprite **ctx)
 {
     sage_assert (ctx);
-    struct cdata *cd = sage_object_cdata_mutate(ctx);
+    struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     cd->clip.x = cd->clip.y = 0;
     cd->cur.r = cd->cur.c = 1;
@@ -158,7 +158,7 @@ extern void sage_sprite_draw(const sage_sprite *ctx, struct sage_point_t dst)
     struct sage_area_t clip = { .w = cd->clip.w, .h = cd->clip.h };
 
     sage_sprite *hnd = (sage_sprite *) ctx;
-    struct cdata *cdm = sage_object_cdata_mutate(&hnd);
+    struct cdata *cdm = sage_object_cdata_mutable(&hnd);
 
     sage_texture_clip(&cdm->tex, nw, clip);
     sage_texture_scale(&cdm->tex, cdm->proj);
