@@ -256,36 +256,86 @@ sage_screen_viewport_set(const struct sage_viewport_t *vp);
 
 extern SAGE_HOT void sage_screen_render(void);
 
+
+
+
+/******************************************************************************
+ * TEXTURE
+ */
+
+
 typedef sage_object sage_texture;
 
+
+/*
+ * sage_texture_new() - create new texture.
+ * See sage/src/graphics/texture.c for details.
+ */
 extern sage_texture *sage_texture_new(sage_id texid, const char *path);
 
+
+/*
+ * sage_texture_copy() - copy a texture.
+ */
 inline sage_texture *sage_texture_copy(const sage_texture *ctx)
 {
     sage_assert (ctx);
     return sage_object_copy(ctx);
 }
 
+
+/*
+ * sage_texture_free() - release texture from heap.
+ */
 inline void sage_texture_free(sage_texture **ctx)
 {
     sage_object_free(ctx);
 }
 
+
+/*
+ * sage_texture_id() - get ID of texture.
+ */
 inline sage_id sage_texture_id(const sage_texture *ctx)
 {
     sage_assert (ctx);
     return sage_object_id(ctx);
 }
 
+
+/*
+ * sage_texture_area() - get area of texture.
+ * See sage/src/graphics/texture.c for details.
+ */
 extern struct sage_area_t sage_texture_area(const sage_texture *ctx);
 
+
+/*
+ * sage_texture_clip() - clip texture to an area.
+ * See sage/src/graphics/texture.c for details.
+ */
 extern void sage_texture_clip(sage_texture **ctx, struct sage_point_t nw, 
         struct sage_area_t clip);
 
+
+/*
+ * sage_texture_scale() - scale texture to a projection.
+ * See sage/src/graphics/texture.c for details.
+ */
 extern void sage_texture_scale(sage_texture **ctx, struct sage_area_t proj);
 
+
+/*
+ * sage_texture_reset() - reset texture to original state.
+ * See sage/src/graphics/texture.c for details.
+ */
 extern void sage_texture_reset(sage_texture **ctx);
 
+
+/*
+ * sage_texture_draw() - draw texture to screen.
+ * See sage/src/graphics/texture.c for details.
+ */
 extern void sage_texture_draw(const sage_texture *ctx, struct sage_point_t dst);
 
 
