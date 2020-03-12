@@ -271,13 +271,11 @@ inline void sage_texture_free(sage_texture **ctx)
     sage_object_free(ctx);
 }
 
-inline enum sage_object_id sage_texture_objid(const sage_texture *ctx)
+inline sage_id sage_texture_id(const sage_texture *ctx)
 {
     sage_assert (ctx);
     return sage_object_id(ctx);
 }
-
-extern sage_id sage_texture_texid(const sage_texture *ctx);
 
 extern struct sage_area_t sage_texture_area(const sage_texture *ctx);
 
@@ -318,7 +316,7 @@ inline void sage_sprite_free(sage_sprite **ctx)
     sage_object_free(ctx);
 }
 
-inline enum sage_object_id sage_sprite_objid(const sage_sprite *ctx)
+inline sage_id sage_sprite_id(const sage_sprite *ctx)
 {
     sage_assert (ctx);
     return sage_object_id(ctx);

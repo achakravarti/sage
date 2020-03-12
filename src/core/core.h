@@ -367,7 +367,6 @@ struct sage_area_t {
 
 /** VECTOR **/
 
-//typedef struct sage_vector sage_vector;
 typedef sage_object sage_vector;
 
 extern sage_vector *sage_vector_new(float x, float y);
@@ -383,13 +382,6 @@ inline sage_vector *sage_vector_copy(const sage_vector *ctx)
 inline void sage_vector_free(sage_vector **ctx)
 {
     sage_object_free(ctx);
-}
-
-
-inline enum sage_object_id sage_vector_objid(const sage_vector *ctx)
-{
-    sage_assert (ctx);
-    return sage_object_id(ctx);
 }
 
 

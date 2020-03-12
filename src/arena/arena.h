@@ -51,16 +51,15 @@ inline void sage_entity_free(sage_entity **ctx)
     sage_object_free(ctx);
 }
 
-extern sage_id sage_entity_id(const sage_entity *ctx);
-
-inline enum sage_object_id sage_entity_id_object_(const sage_entity *ctx)
+inline sage_id sage_entity_id(const sage_entity *ctx)
 {
+    sage_assert (ctx);
     return sage_object_id(ctx);
 }
 
-extern sage_id sage_entity_id_scene(const sage_entity *ctx);
+extern sage_id sage_entity_guid(const sage_entity *ctx);
 
-extern void sage_entity_id_scene_set(sage_entity **ctx, sage_id id);
+extern void sage_entity_guid_set(sage_entity **ctx, sage_id guid);
 
 extern sage_vector *sage_entity_position(const sage_entity *ctx);
 
@@ -111,24 +110,24 @@ inline enum sage_object_id sage_entity_list_id_object(
 
 extern size_t sage_entity_list_length(const sage_entity_list *ctx);
 
-extern size_t sage_entity_list_find(const sage_entity_list *ctx, sage_id key);
+extern size_t sage_entity_list_find(const sage_entity_list *ctx, sage_id guid);
 
 extern sage_entity *sage_entity_list_get(const sage_entity_list *ctx, 
         size_t idx);
 
-extern sage_entity *sage_entity_list_get_key(const sage_entity_list *ctx,
-        sage_id key);
+extern sage_entity *sage_entity_list_get_guid(const sage_entity_list *ctx,
+        sage_id guid);
 
 extern void sage_entity_list_set(sage_entity_list **ctx, size_t idx, 
         const sage_entity *ent);
 
-extern void sage_entity_list_set_key(sage_entity_list **ctx, sage_id key,
+extern void sage_entity_list_set_guid(sage_entity_list **ctx, sage_id guid,
         const sage_entity *ent);
 
 extern void sage_entity_list_push(sage_entity_list **ctx, 
         const sage_entity *ent);
 
-extern void sage_entity_list_pop(sage_entity_list **ctx, sage_id eid);
+extern void sage_entity_list_pop(sage_entity_list **ctx, sage_id guid);
 
 
 /*****************************************/
@@ -168,7 +167,6 @@ extern void
 sage_arena_draw(void);
 
 
-//typedef struct sage_scene sage_scene;
 typedef struct sage_object sage_scene;
 
 struct sage_scene_vtable {
@@ -196,23 +194,22 @@ inline void sage_scene_free(sage_scene **ctx)
 }
 
 
-extern sage_id sage_scene_id(const sage_scene *ctx);
-
-
-inline enum sage_object_id sage_scene_id_object(const sage_scene *ctx)
+inline sage_id sage_scene_id(const sage_scene *ctx)
 {
+    sage_assert (ctx);
     return sage_object_id(ctx);
 }
 
 
-extern sage_entity *sage_scene_entity(const sage_scene *ctx, sage_id id);
+extern sage_entity *sage_scene_entity(const sage_scene *ctx, sage_id guid);
 
-extern void sage_scene_entity_set(sage_scene **ctx, sage_id id,
+extern void sage_scene_entity_set(sage_scene **ctx, sage_id guid,
         sage_entity *ent);
 
-extern void sage_scene_entity_push(sage_scene **ctx, sage_id entid, sage_id id);
+extern void sage_scene_entity_push(sage_scene **ctx, sage_id entid, 
+        sage_id guid);
 
-extern void sage_scene_entity_pop(sage_scene **ctx, sage_id id);
+extern void sage_scene_entity_pop(sage_scene **ctx, sage_id guid);
 
 extern sage_object *sage_scene_payload(const sage_scene *ctx);
 

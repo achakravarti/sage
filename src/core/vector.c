@@ -113,7 +113,7 @@ extern sage_vector *sage_vector_new(float x, float y)
     ctx->y = y;*/
 
     struct sage_object_vtable vt = { .copy = &cdata_copy, .free = &cdata_free };
-    return sage_object_new(SAGE_OBJECT_ID_VECTOR, cdata_new(x, y), &vt);
+    return sage_object_new(0, cdata_new(x, y), &vt);
 }
 
 
@@ -144,9 +144,6 @@ extern inline sage_vector *sage_vector_copy(const sage_vector *ctx);
  * call sage_heap_free() even with null pointers.
  */
 extern inline void sage_vector_free(sage_vector **ctx);
-
-
-extern inline enum sage_object_id sage_vector_objid(const sage_vector *ctx);
 
 
 /*

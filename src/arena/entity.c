@@ -30,8 +30,7 @@
 
 
 struct cdata {
-    sage_id entid;
-    sage_id scnid;
+    sage_id guid;
     sage_vector *pos;
     sage_sprite *spr;
     sage_object *payload;
@@ -39,13 +38,13 @@ struct cdata {
 };
 
 
-static inline void update_default2(sage_entity **ctx)
+static inline void update_default(sage_entity **ctx)
 {
     (void) ctx;
 }
 
 
-static inline void draw_default2(const sage_entity *ctx)
+static inline void draw_default(const sage_entity *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
@@ -55,20 +54,18 @@ static inline void draw_default2(const sage_entity *ctx)
 }
 
 
-static struct cdata *cdata_new(sage_id entid, sage_id texid, 
-        struct sage_frame_t frm, const sage_object *payload, 
-        const struct sage_entity_vtable *vt)
+static struct cdata *cdata_new(sage_id texid, struct sage_frame_t frm, 
+        const sage_object *payload, const struct sage_entity_vtable *vt)
 {
     struct cdata *ctx = sage_heap_new(sizeof *ctx);
 
-    ctx->entid = entid;
-    ctx->scnid = (sage_id) 0;
+    ctx->guid = (sage_id) 0;
     ctx->pos = sage_vector_new_zero();
     ctx->spr = sage_sprite_new(texid, frm);
     ctx->payload = sage_likely (payload) ? sage_object_copy(payload) : NULL;
 
-    ctx->vt.update = sage_likely (vt->update) ? vt->update : &update_default2;
-    ctx->vt.draw = sage_likely (vt->draw) ? vt->draw : &draw_default2;
+    ctx->vt.update = sage_likely (vt->update) ? vt->update : &update_default;
+    ctx->vt.draw = sage_likely (vt->draw) ? vt->draw : &draw_default;
 
     return ctx;
 }
@@ -80,8 +77,7 @@ static void *cdata_copy(const void *ctx)
 
     struct cdata *cp = sage_heap_new(sizeof *cp);
 
-    cp->entid = hnd->entid;
-    cp->scnid = hnd->scnid;
+    cp->guid = hnd->guid;
     cp->pos = sage_vector_copy(hnd->pos);
     cp->spr = sage_sprite_copy(hnd->spr);
     cp->payload = sage_likely (hnd->payload) ? sage_object_copy(hnd->payload)
@@ -114,8 +110,7 @@ extern sage_entity *sage_entity_new(sage_id entid, sage_id texid,
     };
     
     sage_assert (entid && texid && vt);
-    return sage_object_new(SAGE_OBJECT_ID_ENTITY, cdata_new(entid, texid, frm,
-            payload, vt), &objvt);
+    return sage_object_new(entid, cdata_new(texid, frm, payload, vt), &objvt);
 }
 
 
@@ -129,8 +124,7 @@ extern sage_entity *sage_entity_new_default(sage_id entid, sage_id texid,
     struct sage_entity_vtable entvt = { .update = NULL, .draw = NULL };
 
     sage_assert (entid && texid);
-    return sage_object_new(SAGE_OBJECT_ID_ENTITY, cdata_new(entid, texid, frm,
-            NULL, &entvt), &objvt);
+    return sage_object_new(entid, cdata_new(texid, frm, NULL, &entvt), &objvt);
 }
 
 
@@ -140,31 +134,22 @@ extern inline sage_entity *sage_entity_copy(const sage_entity *ctx);
 extern inline void sage_entity_free(sage_entity **ctx);
 
 
-extern sage_id sage_entity_id(const sage_entity *ctx)
+extern inline sage_id sage_entity_id(const sage_entity *ctx);
+
+
+extern sage_id sage_entity_guid(const sage_entity *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
-    return cd->entid;
+    return cd->guid;
 }
 
 
-extern inline enum sage_object_id sage_entity_id_object_(
-        const sage_entity *ctx);
-
-
-extern sage_id sage_entity_id_scene(const sage_entity *ctx)
-{
-    sage_assert (ctx);
-    const struct cdata *cd = sage_object_cdata(ctx);
-    return cd->scnid;
-}
-
-
-extern void sage_entity_id_scene_set(sage_entity **ctx, sage_id id)
+extern void sage_entity_guid_set(sage_entity **ctx, sage_id guid)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutable(ctx);
-    cd->scnid = id;
+    cd->guid = guid;
 }
 
 

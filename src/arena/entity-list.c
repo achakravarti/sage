@@ -81,14 +81,14 @@ extern size_t sage_entity_list_length(const sage_entity_list *ctx)
 }
 
 
-extern size_t sage_entity_list_find(const sage_entity_list *ctx, sage_id key)
+extern size_t sage_entity_list_find(const sage_entity_list *ctx, sage_id guid)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
 
-    sage_assert (key);
+    sage_assert (guid);
     for (register size_t i = 0; i < cd->len; i++) {
-        if (sage_entity_id_scene(cd->lst[i]) == key)
+        if (sage_entity_guid(cd->lst[i]) == guid)
             return i + 1;
     }
 
@@ -107,11 +107,11 @@ extern sage_entity *sage_entity_list_get(const sage_entity_list *ctx,
 }
 
 
-extern sage_entity *sage_entity_list_get_key(const sage_entity_list *ctx,
-        sage_id key)
+extern sage_entity *sage_entity_list_get_guid(const sage_entity_list *ctx,
+        sage_id guid)
 {
-    sage_assert (ctx && key);
-    size_t idx = sage_entity_list_find(ctx, key);
+    sage_assert (ctx && guid);
+    size_t idx = sage_entity_list_find(ctx, guid);
     sage_assert (idx);
 
     return sage_entity_list_get(ctx, idx);
@@ -131,11 +131,11 @@ extern void sage_entity_list_set(sage_entity_list **ctx, size_t idx,
 }
 
 
-extern void sage_entity_list_set_key(sage_entity_list **ctx, sage_id key,
+extern void sage_entity_list_set_guid(sage_entity_list **ctx, sage_id guid,
         const sage_entity *ent)
 {
-    sage_assert (ctx && key);
-    size_t idx = sage_entity_list_find(*ctx, key);
+    sage_assert (ctx && guid);
+    size_t idx = sage_entity_list_find(*ctx, guid);
     sage_assert (idx);
 
     sage_entity_list_set(ctx, idx, ent);
@@ -153,15 +153,15 @@ extern void sage_entity_list_push(sage_entity_list **ctx,
         cd->lst = sage_heap_resize(cd->lst, sizeof *cd->lst * cd->cap);
     }
 
-    sage_assert (ent && sage_entity_id_scene(ent));
+    sage_assert (ent && sage_entity_guid(ent));
     cd->lst[cd->len] = sage_entity_copy(ent);
 }
 
 
-extern void sage_entity_list_pop(sage_entity_list **ctx, sage_id key)
+extern void sage_entity_list_pop(sage_entity_list **ctx, sage_id guid)
 {
-    sage_assert (ctx && key);
-    size_t idx = sage_entity_list_find(*ctx, key);
+    sage_assert (ctx && guid);
+    size_t idx = sage_entity_list_find(*ctx, guid);
     sage_assert (idx);
 
     struct cdata *cd = sage_object_cdata_mutable(ctx);

@@ -5,7 +5,6 @@
 
 
 struct cdata {
-    sage_id texid;
     char *path;
     SDL_Texture *tex;
     SDL_Rect clip;
@@ -13,11 +12,9 @@ struct cdata {
 };
 
 
-static inline struct cdata *cdata_new(sage_id texid, const char *path)
+static inline struct cdata *cdata_new(const char *path)
 {
     struct cdata *ctx = sage_heap_new(sizeof *ctx);
-
-    ctx->texid = texid;
 
     size_t len = strlen(path);
     ctx->path = sage_heap_new(len + 1);
@@ -38,7 +35,7 @@ static inline void *cdata_copy(const void *ctx)
 {
     const struct cdata *hnd = (const struct cdata *) ctx;
 
-    struct cdata *cp = cdata_new(hnd->texid, hnd->path);
+    struct cdata *cp = cdata_new(hnd->path);
     cp->clip = hnd->clip;
     cp->proj = hnd->proj;
 
@@ -58,7 +55,7 @@ extern sage_texture *sage_texture_new(sage_id texid, const char *path)
 {
     sage_assert (texid && path && *path);
     struct sage_object_vtable vt = { .copy = &cdata_copy, .free = &cdata_free };
-    return sage_object_new(SAGE_OBJECT_ID_TEXTURE, cdata_new(texid, path), &vt);
+    return sage_object_new(texid, cdata_new(path), &vt);
 }
 
 
@@ -68,15 +65,7 @@ extern inline sage_texture *sage_texture_copy(const sage_texture *ctx);
 extern inline void sage_texture_free(sage_texture **ctx);
 
 
-extern inline enum sage_object_id sage_texture_objid(const sage_texture *ctx);
-
-
-extern sage_id sage_texture_texid(const sage_texture *ctx)
-{
-    sage_assert (ctx);
-    const struct cdata *cd = sage_object_cdata(ctx);
-    return cd->texid;
-}
+extern inline sage_id sage_texture_id(const sage_texture *ctx);
 
 
 extern struct sage_area_t sage_texture_area(const sage_texture *ctx)

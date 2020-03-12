@@ -2,7 +2,6 @@
 
 
 struct cdata {
-    sage_id scnid;
     sage_object *payload;
     sage_entity_list *ents;
     struct sage_scene_vtable vt;
@@ -46,12 +45,11 @@ static inline void draw_default(const sage_scene *ctx)
 
 
 
-static struct cdata *cdata_new(sage_id scnid, sage_object *payload,
+static struct cdata *cdata_new(sage_object *payload,
         const struct sage_scene_vtable *vt)
 {
     struct cdata *ctx = sage_heap_new(sizeof *ctx);
 
-    ctx->scnid = scnid;
     ctx->ents = sage_entity_list_new();
     ctx->payload = sage_likely (payload) ? sage_object_copy(payload) : NULL;
 
@@ -79,7 +77,7 @@ static void *cdata_copy(const void *ctx)
     sage_assert (ctx);
     const struct cdata *hnd = (const struct cdata *) ctx;
 
-    struct cdata *cp = cdata_new(hnd->scnid, hnd->payload, &hnd->vt);
+    struct cdata *cp = cdata_new(hnd->payload, &hnd->vt);
     cp->ents = sage_entity_list_copy(hnd->ents);
 
     return cp;
@@ -100,7 +98,7 @@ static void cdata_free(void **ctx)
 
 
 
-extern sage_scene *sage_scene_new(sage_id scnid, sage_object *payload,
+extern sage_scene *sage_scene_new(sage_id id, sage_object *payload,
         const struct sage_scene_vtable *vt)
 {
     struct sage_object_vtable objvt = {
@@ -108,9 +106,8 @@ extern sage_scene *sage_scene_new(sage_id scnid, sage_object *payload,
         .free = &cdata_free
     };
 
-    sage_assert (scnid);
-    return sage_object_new(SAGE_OBJECT_ID_SCENE, cdata_new(scnid, payload, vt),
-            &objvt);
+    sage_assert (id);
+    return sage_object_new(id, cdata_new(payload, vt), &objvt);
 }
 
 
@@ -120,50 +117,46 @@ extern inline sage_scene *sage_scene_copy(const sage_scene *ctx);
 extern inline void sage_scene_free(sage_scene **ctx);
 
 
-extern sage_id sage_scene_id(const sage_scene *ctx)
-{
-    sage_assert (ctx);
-    const struct cdata *cd = sage_object_cdata(ctx);
-    return cd->scnid;
-}
+extern inline sage_id sage_scene_id(const sage_scene *ctx);
 
     
-extern sage_entity *sage_scene_entity(const sage_scene *ctx, sage_id id)
+extern sage_entity *sage_scene_entity(const sage_scene *ctx, sage_id guid)
 {
     sage_assert (ctx);
     const struct cdata * cd = sage_object_cdata(ctx);
 
-    sage_assert (id);
-    return sage_entity_list_get_key(cd->ents, id);
+    sage_assert (guid);
+    return sage_entity_list_get_guid(cd->ents, guid);
 }
 
-extern void sage_scene_entity_set(sage_scene **ctx, sage_id id, 
+extern void sage_scene_entity_set(sage_scene **ctx, sage_id guid, 
         sage_entity *ent)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutable(ctx);
 
-    sage_assert (id);
-    sage_entity_list_set_key(&cd->ents, id, ent);
+    sage_assert (guid);
+    sage_entity_list_set_guid(&cd->ents, guid, ent);
 }
 
 
-extern void sage_scene_entity_push(sage_scene **ctx, sage_id entid, sage_id id)
+extern void sage_scene_entity_push(sage_scene **ctx, sage_id entid, 
+        sage_id guid)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutable(ctx);
     
     sage_entity *ent = sage_entity_factory_clone(entid);
-    sage_entity_id_scene_set(&ent, id);
+    sage_entity_guid_set(&ent, guid);
     sage_entity_list_push(&cd->ents, ent);
 }
 
 
-extern void sage_scene_entity_pop(sage_scene **ctx, sage_id id)
+extern void sage_scene_entity_pop(sage_scene **ctx, sage_id guid)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutable(ctx);
-    sage_entity_list_pop(&cd->ents, id);
+    sage_entity_list_pop(&cd->ents, guid);
 }
 
 
