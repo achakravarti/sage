@@ -1,81 +1,12 @@
 #include "arena.h"
 
 
-struct list {
-    sage_entity **bfr; /* array buffer of entities */
-    size_t      len;   /* length of list           */
-    size_t      cap;   /* capacity of list         */
-};
-
-
-struct sage_scene {
-    sage_id                  id;
-    struct list              *ents;
-    sage_object             *payload;
-    struct sage_scene_vtable vt;
-};
-
-
 struct cdata {
     sage_id scnid;
     sage_object *payload;
-    struct list *ents;
+    sage_entity_list *ents;
     struct sage_scene_vtable vt;
 };
-
-
-static struct list *list_new(void)
-{
-    struct list *ctx = sage_heap_new(sizeof *ctx);
-    ctx->len = 0;
-    ctx->cap = 4;
-
-    ctx->bfr = sage_heap_new(sizeof *(ctx->bfr) * ctx->cap);
-    for (register size_t i = 0; i < ctx->cap; i++)
-        ctx->bfr[i] = NULL;
-
-    return ctx;
-}
-
-
-static void list_push(struct list *ctx, sage_id entid, sage_id scnid)
-{
-    sage_assert (ctx);
-    if (sage_unlikely (ctx->len == ctx->cap)) {
-        ctx->cap *= 2;
-        ctx->bfr = sage_heap_resize(ctx->bfr, sizeof *ctx->bfr * ctx->cap);
-    }
-
-    ctx->bfr[ctx->len] = sage_entity_factory_clone(entid);
-    sage_entity_id_scene_set(&ctx->bfr[ctx->len], scnid);
-}
-
-
-static struct list *list_copy(const struct list *ctx)
-{
-    struct list *cp = list_new();
-
-    sage_assert (ctx);
-    sage_entity *hnd;
-    for (register size_t i = 0; i < ctx->len; i++) {
-        hnd = ctx->bfr[i];
-        list_push(cp, sage_entity_id(hnd), sage_entity_id_scene(hnd));
-    }
-
-    return cp;
-}
-
-
-static void list_free(struct list *ctx)
-{
-    if (sage_likely (ctx)) {
-        for (register size_t i = 0; i < ctx->cap; i++)
-            sage_entity_free(&ctx->bfr[i]);
-
-        sage_heap_free((void **) &ctx->bfr);
-        sage_heap_free((void **) &ctx);
-    }
-}
 
 
 static inline void start_default(sage_scene **ctx)
@@ -95,8 +26,11 @@ static inline void update_default(sage_scene **ctx)
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
 
-    for (register size_t i = 0; i < cd->ents->len; i++)
-        sage_entity_update(&cd->ents->bfr[i]);
+    sage_entity *ent;
+    for (register size_t i = 1; i <= sage_entity_list_length(cd->ents); i++) {
+        ent = sage_entity_list_get(cd->ents, i);
+        sage_entity_update(&ent);
+    }
 }
 
 
@@ -104,10 +38,9 @@ static inline void draw_default(const sage_scene *ctx)
 {
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
-    
-    struct list *lst = cd->ents;
-    for (register size_t i = 0; i < lst->len; i++)
-        sage_entity_draw(lst->bfr[i]);
+
+    for (register size_t i = 1; i <= sage_entity_list_length(cd->ents); i++)
+        sage_entity_draw(sage_entity_list_get(cd->ents, i));
 }
 
 
@@ -119,7 +52,7 @@ static struct cdata *cdata_new(sage_id scnid, sage_object *payload,
     struct cdata *ctx = sage_heap_new(sizeof *ctx);
 
     ctx->scnid = scnid;
-    ctx->ents = list_new();
+    ctx->ents = sage_entity_list_new();
     ctx->payload = sage_likely (payload) ? sage_object_copy(payload) : NULL;
 
     if (sage_likely (vt)) {
@@ -147,7 +80,7 @@ static void *cdata_copy(const void *ctx)
     const struct cdata *hnd = (const struct cdata *) ctx;
 
     struct cdata *cp = cdata_new(hnd->scnid, hnd->payload, &hnd->vt);
-    cp->ents = list_copy(hnd->ents);
+    cp->ents = sage_entity_list_copy(hnd->ents);
 
     return cp;
 }
@@ -159,7 +92,7 @@ static void cdata_free(void **ctx)
 {
     struct cdata *hnd = *((struct cdata **) ctx);
 
-    list_free(hnd->ents);
+    sage_entity_list_free(&hnd->ents);
     sage_object_free(&hnd->payload);
     sage_heap_free((void **) ctx);
 }
@@ -187,11 +120,6 @@ extern inline sage_scene *sage_scene_copy(const sage_scene *ctx);
 extern inline void sage_scene_free(sage_scene **ctx);
 
 
-extern size_t sage_scene_size(void)
-{
-    return sizeof (struct sage_scene);
-}
-
 extern sage_id sage_scene_id(const sage_scene *ctx)
 {
     sage_assert (ctx);
@@ -205,18 +133,8 @@ extern sage_entity *sage_scene_entity(const sage_scene *ctx, sage_id id)
     sage_assert (ctx);
     const struct cdata * cd = sage_object_cdata(ctx);
 
-    struct list *lst = cd->ents;
-
-    register size_t i;
     sage_assert (id);
-    for (i = 0; i < lst->len; i++) {
-        if (sage_entity_id_scene(lst->bfr[i]) == id)
-            return sage_entity_copy(lst->bfr[i]);
-    }
-
-    /* entity not found */
-    sage_assert (i < lst->len);
-    return NULL;
+    return sage_entity_list_get_key(cd->ents, id);
 }
 
 extern void sage_scene_entity_set(sage_scene **ctx, sage_id id, 
@@ -224,22 +142,9 @@ extern void sage_scene_entity_set(sage_scene **ctx, sage_id id,
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
-    struct list *lst = cd->ents;
 
-    sage_assert (id && ent);
-    register size_t i = 0;
-    for (; i < lst->len; i++) {
-        if (sage_entity_id_scene(lst->bfr[i]) == id) {
-            sage_entity_free(&lst->bfr[i]);
-            lst->bfr[i] = ent;
-            sage_entity_id_scene_set(&lst->bfr[i], id);
-
-            return;
-        }
-    }
-
-    /* entity not found */
-    sage_assert (i < cd->ents->len);
+    sage_assert (id);
+    sage_entity_list_set_key(&cd->ents, id, ent);
 }
 
 
@@ -247,7 +152,10 @@ extern void sage_scene_entity_push(sage_scene **ctx, sage_id entid, sage_id id)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
-    list_push(cd->ents, entid, id);
+    
+    sage_entity *ent = sage_entity_factory_clone(entid);
+    sage_entity_id_scene_set(&ent, id);
+    sage_entity_list_push(&cd->ents, ent);
 }
 
 
@@ -255,21 +163,7 @@ extern void sage_scene_entity_pop(sage_scene **ctx, sage_id id)
 {
     sage_assert (ctx);
     struct cdata *cd = sage_object_cdata_mutate(ctx);
-    struct list *lst = cd->ents;
-
-    sage_assert (id);
-    register size_t i = 0;
-    for (; i < lst->len; i++) {
-        if (sage_entity_id_scene(lst->bfr[i]) == id)
-            break;
-    }
-
-    sage_entity_free(&lst->bfr[i]);
-    cd->ents->bfr[i] = lst->bfr[lst->len];
-    cd->ents->bfr[lst->len--] = NULL;
-
-    /* entity not found */
-    sage_assert (i < lst->len);
+    sage_entity_list_pop(&cd->ents, id);
 }
 
 
