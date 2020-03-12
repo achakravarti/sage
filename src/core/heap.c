@@ -1,4 +1,5 @@
 #include "core.h"
+#include <string.h>
 
 
 extern void *sage_heap_new(size_t sz)
@@ -7,6 +8,7 @@ extern void *sage_heap_new(size_t sz)
 
     sage_assert (sz);
     sage_require (bfr = malloc (sz));
+    memset (bfr, 0, sz);
 
     return bfr;
 }

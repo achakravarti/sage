@@ -322,14 +322,14 @@ struct sage_object_vtable {
 
 typedef struct sage_object sage_object;
 
-extern sage_object *sage_object_new(enum sage_object_id id, void *cdata, 
+extern sage_object *sage_object_new(sage_id id, void *cdata, 
         const struct sage_object_vtable *vt);
 
 extern sage_object *sage_object_copy(const sage_object *ctx);
 
 extern void sage_object_free(sage_object **ctx);
 
-extern enum sage_object_id sage_object_id(const sage_object *ctx);
+extern sage_id sage_object_id(const sage_object *ctx);
 
 extern void sage_object_id_set(sage_object **ctx, sage_id id);
 

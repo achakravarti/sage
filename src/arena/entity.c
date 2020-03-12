@@ -78,7 +78,7 @@ static void *cdata_copy(const void *ctx)
 {
     const struct cdata *hnd = (const struct cdata *) ctx;
 
-    struct cdata *cp = sage_heap_new(sizeof *ctx);
+    struct cdata *cp = sage_heap_new(sizeof *cp);
 
     cp->entid = hnd->entid;
     cp->scnid = hnd->scnid;
