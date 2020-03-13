@@ -83,36 +83,63 @@ extern void sage_entity_draw(const sage_entity *ctx);
 /********************************************/
 
 
+/*
+ * sage_entity_list - array list of entities
+ */
 typedef sage_object_list sage_entity_list;
 
+
+/*
+ * sage_entity_list_new() - create new entity list
+ */
 inline sage_entity_list *sage_entity_list_new(void)
 {
     return sage_object_list_new();
 }
 
+
+/*
+ * sage_entity_list_copy() - copy entity list
+ */
 inline sage_entity_list *sage_entity_list_copy(const sage_entity_list *ctx)
 {
     sage_assert (ctx);
     return sage_object_list_copy(ctx);
 }
 
+
+/*
+ * sage_entity_list_free() - release entity least from heap
+ */
 inline void sage_entity_list_free(sage_entity_list **ctx)
 {
     sage_object_free(ctx);
 }
 
+
+/*
+ * sage_entity_list_len() - get entity list length
+ */
 inline size_t sage_entity_list_len(const sage_entity_list *ctx)
 {
     sage_assert (ctx);
     return sage_object_list_len(ctx);
 }
 
+
+/*
+ * sage_entity_list_find() - find entity in entity list
+ */
 inline size_t sage_entity_list_find(const sage_entity_list *ctx, sage_id id)
 {
     sage_assert (ctx && id);
     return sage_object_list_find(ctx, id);
 }
 
+
+/*
+ * sage_entity_list_get() - get entity by ID from entity list
+ */
 inline sage_entity *sage_entity_list_get(const sage_entity_list *ctx, 
         sage_id id)
 {
@@ -120,6 +147,10 @@ inline sage_entity *sage_entity_list_get(const sage_entity_list *ctx,
     return sage_object_list_get(ctx, id);
 }
 
+
+/*
+ * sage_entity_list_get_at() - get entity by index from entity list
+ */
 inline sage_entity *sage_entity_list_get_at(const sage_entity_list *ctx,
         size_t idx)
 {
@@ -127,6 +158,10 @@ inline sage_entity *sage_entity_list_get_at(const sage_entity_list *ctx,
     return sage_object_list_get_at(ctx, idx);
 }
 
+
+/*
+ * sage_entity_list_set() - set entity by ID in entity list
+ */
 inline void sage_entity_list_set(sage_entity_list **ctx, sage_id id,
         const sage_entity *obj)
 {
@@ -134,6 +169,10 @@ inline void sage_entity_list_set(sage_entity_list **ctx, sage_id id,
     sage_object_list_set(ctx, id, obj);
 }
 
+
+/*
+ * sage_entity_list_set_at() - set entity by index in entity list
+ */
 inline void sage_entity_list_set_at(sage_entity_list **ctx, size_t idx,
         const sage_entity *obj)
 {
@@ -141,6 +180,10 @@ inline void sage_entity_list_set_at(sage_entity_list **ctx, size_t idx,
     sage_object_list_set(ctx, idx, obj);
 }
 
+
+/*
+ * sage_entity_list_push() - push entity into entity list
+ */
 inline void sage_entity_list_push(sage_entity_list **ctx, 
         const sage_entity *obj)
 {
@@ -148,12 +191,20 @@ inline void sage_entity_list_push(sage_entity_list **ctx,
     sage_object_list_push(ctx, obj);
 }
 
+
+/*
+ * sage_entity_list_pop() - pop entity by ID from entity list
+ */
 inline void sage_entity_list_pop(sage_entity_list **ctx, sage_id id)
 {
     sage_assert (ctx && id);
     sage_object_list_pop(ctx, id);
 }
 
+
+/*
+ * sage_entity_list_pop() - pop entity by index from entity list
+ */
 inline void sage_entity_list_pop_at(sage_entity_list **ctx, size_t idx)
 {
     sage_assert (ctx && idx);
