@@ -57,9 +57,15 @@ inline sage_id sage_entity_id(const sage_entity *ctx)
     return sage_object_id(ctx);
 }
 
-extern sage_id sage_entity_guid(const sage_entity *ctx);
+inline void sage_entity_id_set(sage_entity **ctx, sage_id id)
+{
+    sage_assert (ctx);
+    sage_object_id_set(ctx, id);
+}
 
-extern void sage_entity_guid_set(sage_entity **ctx, sage_id guid);
+extern sage_id sage_entity_class(const sage_entity *ctx);
+
+extern void sage_entity_class_set(sage_entity **ctx, sage_id guid);
 
 extern sage_vector *sage_entity_position(const sage_entity *ctx);
 

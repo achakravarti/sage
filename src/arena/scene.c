@@ -147,7 +147,7 @@ extern void sage_scene_entity_push(sage_scene **ctx, sage_id entid,
     struct cdata *cd = sage_object_cdata_mutable(ctx);
     
     sage_entity *ent = sage_entity_factory_clone(entid);
-    sage_entity_guid_set(&ent, guid);
+    sage_entity_id_set(&ent, guid);
     sage_entity_list_push(&cd->ents, ent);
 }
 
