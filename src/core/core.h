@@ -353,6 +353,45 @@ extern void sage_object_map_value_set(sage_object_map *ctx, sage_id key,
         const sage_object *val);
 
 
+typedef sage_object sage_object_list;
+
+extern sage_object_list *sage_object_list_new(void);
+
+inline sage_object_list *sage_object_list_copy(const sage_object_list *ctx)
+{
+    sage_assert (ctx);
+    return sage_object_copy(ctx);
+}
+
+inline void sage_object_list_free(sage_object_list **ctx)
+{
+    sage_object_free(ctx);
+}
+
+extern size_t sage_object_list_len(const sage_object_list *ctx);
+
+extern size_t sage_object_list_find(const sage_object_list *ctx, sage_id id);
+
+extern sage_object *sage_object_list_get(const sage_object_list *ctx, 
+        sage_id id);
+
+extern sage_object *sage_object_list_get_at(const sage_object_list *ctx,
+        size_t idx);
+
+extern void sage_object_list_set(sage_object_list **ctx, sage_id id,
+        const sage_object *obj);
+
+extern void sage_object_list_set_at(sage_object_list **ctx, size_t idx,
+        const sage_object *obj);
+
+extern void sage_object_list_push(sage_object_list **ctx, 
+        const sage_object *obj);
+
+extern void sage_object_list_pop(sage_object_list **ctx, sage_id id);
+
+extern void sage_object_list_pop_at(sage_object_list **ctx, size_t idx);
+
+
 struct sage_point_t {
     float x;
     float y;

@@ -26,7 +26,7 @@ static inline void update_default(sage_scene **ctx)
     struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     sage_entity *ent;
-    for (register size_t i = 1; i <= sage_entity_list_length(cd->ents); i++) {
+    for (register size_t i = 1; i <= sage_entity_list_len(cd->ents); i++) {
         ent = sage_entity_list_get(cd->ents, i);
         sage_entity_update(&ent);
     }
@@ -38,7 +38,7 @@ static inline void draw_default(const sage_scene *ctx)
     sage_assert (ctx);
     const struct cdata *cd = sage_object_cdata(ctx);
 
-    for (register size_t i = 1; i <= sage_entity_list_length(cd->ents); i++)
+    for (register size_t i = 1; i <= sage_entity_list_len(cd->ents); i++)
         sage_entity_draw(sage_entity_list_get(cd->ents, i));
 }
 
@@ -126,7 +126,7 @@ extern sage_entity *sage_scene_entity(const sage_scene *ctx, sage_id guid)
     const struct cdata * cd = sage_object_cdata(ctx);
 
     sage_assert (guid);
-    return sage_entity_list_get_guid(cd->ents, guid);
+    return sage_entity_list_get(cd->ents, guid);
 }
 
 extern void sage_scene_entity_set(sage_scene **ctx, sage_id guid, 
@@ -136,7 +136,7 @@ extern void sage_scene_entity_set(sage_scene **ctx, sage_id guid,
     struct cdata *cd = sage_object_cdata_mutable(ctx);
 
     sage_assert (guid);
-    sage_entity_list_set_guid(&cd->ents, guid, ent);
+    sage_entity_list_set(&cd->ents, guid, ent);
 }
 
 

@@ -83,51 +83,82 @@ extern void sage_entity_draw(const sage_entity *ctx);
 /********************************************/
 
 
-typedef sage_object sage_entity_list;
+typedef sage_object_list sage_entity_list;
 
-extern sage_entity_list *sage_entity_list_new(void);
+inline sage_entity_list *sage_entity_list_new(void)
+{
+    return sage_object_list_new();
+}
 
 inline sage_entity_list *sage_entity_list_copy(const sage_entity_list *ctx)
 {
     sage_assert (ctx);
-    return sage_object_copy(ctx);
+    return sage_object_list_copy(ctx);
 }
-
 
 inline void sage_entity_list_free(sage_entity_list **ctx)
 {
     sage_object_free(ctx);
 }
 
-
-inline enum sage_object_id sage_entity_list_id_object(
-        const sage_entity_list *ctx)
+inline size_t sage_entity_list_len(const sage_entity_list *ctx)
 {
     sage_assert (ctx);
-    return sage_object_id(ctx);
+    return sage_object_list_len(ctx);
 }
 
+inline size_t sage_entity_list_find(const sage_entity_list *ctx, sage_id id)
+{
+    sage_assert (ctx && id);
+    return sage_object_list_find(ctx, id);
+}
 
-extern size_t sage_entity_list_length(const sage_entity_list *ctx);
+inline sage_entity *sage_entity_list_get(const sage_entity_list *ctx, 
+        sage_id id)
+{
+    sage_assert (ctx && id);
+    return sage_object_list_get(ctx, id);
+}
 
-extern size_t sage_entity_list_find(const sage_entity_list *ctx, sage_id guid);
+inline sage_entity *sage_entity_list_get_at(const sage_entity_list *ctx,
+        size_t idx)
+{
+    sage_assert (ctx && idx);
+    return sage_object_list_get_at(ctx, idx);
+}
 
-extern sage_entity *sage_entity_list_get(const sage_entity_list *ctx, 
-        size_t idx);
+inline void sage_entity_list_set(sage_entity_list **ctx, sage_id id,
+        const sage_entity *obj)
+{
+    sage_assert (ctx && id && obj);
+    sage_object_list_set(ctx, id, obj);
+}
 
-extern sage_entity *sage_entity_list_get_guid(const sage_entity_list *ctx,
-        sage_id guid);
+inline void sage_entity_list_set_at(sage_entity_list **ctx, size_t idx,
+        const sage_entity *obj)
+{
+    sage_assert (ctx && idx && obj);
+    sage_object_list_set(ctx, idx, obj);
+}
 
-extern void sage_entity_list_set(sage_entity_list **ctx, size_t idx, 
-        const sage_entity *ent);
+inline void sage_entity_list_push(sage_entity_list **ctx, 
+        const sage_entity *obj)
+{
+    sage_assert (ctx && obj);
+    sage_object_list_push(ctx, obj);
+}
 
-extern void sage_entity_list_set_guid(sage_entity_list **ctx, sage_id guid,
-        const sage_entity *ent);
+inline void sage_entity_list_pop(sage_entity_list **ctx, sage_id id)
+{
+    sage_assert (ctx && id);
+    sage_object_list_pop(ctx, id);
+}
 
-extern void sage_entity_list_push(sage_entity_list **ctx, 
-        const sage_entity *ent);
-
-extern void sage_entity_list_pop(sage_entity_list **ctx, sage_id guid);
+inline void sage_entity_list_pop_at(sage_entity_list **ctx, size_t idx)
+{
+    sage_assert (ctx && idx);
+    sage_object_list_pop_at(ctx, idx);
+}
 
 
 /*****************************************/
